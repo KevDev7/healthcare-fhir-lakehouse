@@ -34,6 +34,12 @@ erDiagram
         string ethnicity
         string birth_sex
         string marital_status_code
+        string source_file
+        string resource_family
+        string profile_url
+        string source_dataset_name
+        string source_dataset_version
+        string bronze_ingested_at
         string bronze_resource_id FK
     }
 
@@ -48,6 +54,13 @@ erDiagram
         string service_type_code
         string admit_source
         string discharge_disposition
+        string discharge_disposition_display
+        string source_file
+        string resource_family
+        string profile_url
+        string source_dataset_name
+        string source_dataset_version
+        string bronze_ingested_at
         string bronze_resource_id FK
     }
 
@@ -59,12 +72,21 @@ erDiagram
         string effective_datetime
         string issued_datetime
         string category_code
+        string category_system
+        string category_display
         string code
+        string code_system
         string display
         string value_type
         string value
         string unit
         string specimen_id
+        string source_file
+        string resource_family
+        string profile_url
+        string source_dataset_name
+        string source_dataset_version
+        string bronze_ingested_at
         string bronze_resource_id FK
     }
 
@@ -73,8 +95,17 @@ erDiagram
         string patient_id FK
         string encounter_id FK
         string category_code
+        string category_system
+        string category_display
         string code
+        string code_system
         string display
+        string source_file
+        string resource_family
+        string profile_url
+        string source_dataset_name
+        string source_dataset_version
+        string bronze_ingested_at
         string bronze_resource_id FK
     }
 
@@ -96,6 +127,7 @@ erDiagram
         string condition_code
         string condition_display
         string encounter_class
+        string encounter_class_display
         int patient_count
         int encounter_count
         int condition_row_count

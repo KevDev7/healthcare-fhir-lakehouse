@@ -101,51 +101,125 @@ flowchart LR
 ```mermaid
 erDiagram
     BRONZE_FHIR_RESOURCES {
-        string resource_id PK
         string resource_type
+        string resource_id PK
         string source_file
+        string resource_family
+        string profile_url
+        string source_dataset_name
+        string source_dataset_version
+        string ingested_at
         string raw_json
     }
 
     SILVER_PATIENT {
         string patient_id PK
+        string source_patient_identifier
+        string synthetic_patient_name
         string gender
         string birth_date
+        string deceased_datetime
+        string race
+        string ethnicity
+        string birth_sex
+        string marital_status_code
+        string source_file
+        string resource_family
+        string profile_url
+        string source_dataset_name
+        string source_dataset_version
+        string bronze_ingested_at
         string bronze_resource_id FK
     }
 
     SILVER_ENCOUNTER {
         string encounter_id PK
         string patient_id FK
+        string status
         string class_code
+        string class_display
         string start_datetime
         string end_datetime
+        string service_type_code
+        string admit_source
+        string discharge_disposition
+        string discharge_disposition_display
+        string source_file
+        string resource_family
+        string profile_url
+        string source_dataset_name
+        string source_dataset_version
+        string bronze_ingested_at
+        string bronze_resource_id FK
     }
 
     SILVER_OBSERVATION {
         string observation_id PK
         string patient_id FK
         string encounter_id FK
+        string status
+        string effective_datetime
+        string issued_datetime
+        string category_code
+        string category_system
+        string category_display
         string code
+        string code_system
         string display
+        string value_type
         string value
         string unit
+        string specimen_id
+        string source_file
+        string resource_family
+        string profile_url
+        string source_dataset_name
+        string source_dataset_version
+        string bronze_ingested_at
+        string bronze_resource_id FK
     }
 
     SILVER_CONDITION {
         string condition_id PK
         string patient_id FK
         string encounter_id FK
+        string category_code
+        string category_system
+        string category_display
         string code
+        string code_system
         string display
+        string source_file
+        string resource_family
+        string profile_url
+        string source_dataset_name
+        string source_dataset_version
+        string bronze_ingested_at
+        string bronze_resource_id FK
     }
 
     GOLD_ENCOUNTER_SUMMARY {
         string encounter_key PK
         string patient_key
+        string encounter_status
+        string encounter_class
+        int encounter_start_year
+        int encounter_start_month
+        int length_of_stay_hours
         int observation_count
         int condition_count
-        int length_of_stay_hours
+        int distinct_condition_count
+        string discharge_disposition
+    }
+
+    GOLD_CONDITION_SUMMARY {
+        string condition_code
+        string condition_display
+        string encounter_class
+        string encounter_class_display
+        int patient_count
+        int encounter_count
+        int condition_row_count
     }
 
     GOLD_VITALS_DAILY {
@@ -153,7 +227,11 @@ erDiagram
         string encounter_key
         int event_day_index
         string measurement_name
+        string unit
+        int measurement_count
+        float min_value
         float avg_value
+        float max_value
     }
 
     GOLD_LABS_DAILY {
@@ -161,24 +239,33 @@ erDiagram
         string encounter_key
         int event_day_index
         string measurement_name
+        string unit
+        int measurement_count
+        float min_value
         float avg_value
+        float max_value
     }
 
-    BRONZE_FHIR_RESOURCES ||--o| SILVER_PATIENT : "Patient"
-    BRONZE_FHIR_RESOURCES ||--o| SILVER_ENCOUNTER : "Encounter"
-    BRONZE_FHIR_RESOURCES ||--o| SILVER_OBSERVATION : "Observation"
-    BRONZE_FHIR_RESOURCES ||--o| SILVER_CONDITION : "Condition"
+    BRONZE_FHIR_RESOURCES ||--o| SILVER_PATIENT : "Patient resource"
+    BRONZE_FHIR_RESOURCES ||--o| SILVER_ENCOUNTER : "Encounter resource"
+    BRONZE_FHIR_RESOURCES ||--o| SILVER_OBSERVATION : "Observation resource"
+    BRONZE_FHIR_RESOURCES ||--o| SILVER_CONDITION : "Condition resource"
+
     SILVER_PATIENT ||--o{ SILVER_ENCOUNTER : "patient_id"
     SILVER_PATIENT ||--o{ SILVER_OBSERVATION : "patient_id"
     SILVER_PATIENT ||--o{ SILVER_CONDITION : "patient_id"
     SILVER_ENCOUNTER ||--o{ SILVER_OBSERVATION : "encounter_id"
     SILVER_ENCOUNTER ||--o{ SILVER_CONDITION : "encounter_id"
-    SILVER_ENCOUNTER ||--o{ GOLD_ENCOUNTER_SUMMARY : "rollup"
-    SILVER_OBSERVATION ||--o{ GOLD_VITALS_DAILY : "vitals"
-    SILVER_OBSERVATION ||--o{ GOLD_LABS_DAILY : "labs"
+
+    SILVER_ENCOUNTER ||--o{ GOLD_ENCOUNTER_SUMMARY : "aggregates"
+    SILVER_OBSERVATION ||--o{ GOLD_ENCOUNTER_SUMMARY : "observation_count"
+    SILVER_CONDITION ||--o{ GOLD_ENCOUNTER_SUMMARY : "condition_count"
+    SILVER_CONDITION ||--o{ GOLD_CONDITION_SUMMARY : "diagnosis rollup"
+    SILVER_OBSERVATION ||--o{ GOLD_VITALS_DAILY : "vital measurements"
+    SILVER_OBSERVATION ||--o{ GOLD_LABS_DAILY : "lab measurements"
 ```
 
-Full table lineage and column details are documented in
+Full table lineage, row counts, and design notes are documented in
 `documentation/table_lineage.md`.
 
 ## Implemented Tables
