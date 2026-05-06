@@ -9,6 +9,8 @@ as a realistic public healthcare dataset and implements a Bronze -> Silver ->
 Gold lakehouse pipeline with privacy-aware validation, data quality checks, local
 orchestration, and Databricks/Spark/Delta cloud execution.
 
+**Dashboard:** [View the interactive lakehouse dashboard](https://kevdev7.github.io/healthcare-fhir-lakehouse/)
+
 ## Highlights
 
 * **Healthcare domain modeling:** FHIR Patient, Encounter, Observation, and
