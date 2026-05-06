@@ -2,6 +2,13 @@ const DATA_URL = "./data/dashboard.json";
 const COLORS = ["#2563eb", "#0f766e", "#6d28d9", "#b7791f", "#475569", "#be123c"];
 
 const format = new Intl.NumberFormat("en-US");
+const DISPLAY_LABELS = {
+  "Non Invasive Blood Pressure diastolic": "BP diastolic",
+  "Non Invasive Blood Pressure mean": "BP mean",
+  "Non Invasive Blood Pressure systolic": "BP systolic",
+  "O2 saturation pulseoxymetry": "O2 saturation",
+  "Temperature Fahrenheit": "Temperature",
+};
 
 function el(tag, className, text) {
   const node = document.createElement(tag);
@@ -14,6 +21,10 @@ function maxValue(rows) {
   return Math.max(...rows.map((row) => Number(row.value) || 0), 1);
 }
 
+function displayLabel(label) {
+  return DISPLAY_LABELS[label] || label || "unknown";
+}
+
 function renderMetrics(data) {
   const metrics = [
     ["FHIR resources", data.meta.source_resources, "Bronze input volume"],
@@ -21,7 +32,11 @@ function renderMetrics(data) {
     ["Encounters", data.meta.encounters, "Silver encounter rows"],
     ["Observations", data.meta.observations, "Silver observation rows"],
     ["Conditions", data.meta.conditions, "Silver condition rows"],
-    ["Quality checks", data.quality_checks.length, "0 failed checks"],
+    [
+      "Quality checks",
+      data.quality_checks.length,
+      `${data.meta.failed_checks} failed, ${data.meta.warning_checks} warning`,
+    ],
   ];
 
   const grid = document.querySelector("#metric-grid");
@@ -46,8 +61,13 @@ function renderBars(target, rows, options = {}) {
   rows.slice(0, limit).forEach((row) => {
     const value = Number(row.value) || 0;
     const item = el("div", "bar-row");
-    const label = el("div", "bar-label", row.label || "unknown");
+    const labelWrap = el("div", "bar-label-wrap");
+    const label = el("div", "bar-label", displayLabel(row.label));
     label.title = row.label || "unknown";
+    labelWrap.append(label);
+    if (options.detail) {
+      labelWrap.append(el("div", "bar-detail", options.detail(row)));
+    }
 
     const track = el("div", "bar-track");
     const fill = el("div", "bar-fill");
@@ -55,7 +75,7 @@ function renderBars(target, rows, options = {}) {
     fill.style.background = color;
     track.append(fill);
 
-    item.append(label, track, el("div", "bar-value", format.format(value)));
+    item.append(labelWrap, track, el("div", "bar-value", format.format(value)));
     list.append(item);
   });
 
@@ -98,7 +118,7 @@ function renderTrend(target, rows) {
   svg.setAttribute("viewBox", "0 0 900 330");
 
   const series = seriesFrom(rows);
-  const allValues = rows.map((row) => Number(row.avg_value)).filter(Number.isFinite);
+  const allValues = rows.map((row) => Number(row.index_value)).filter(Number.isFinite);
   const yMin = Math.min(...allValues);
   const yMax = Math.max(...allValues);
   const xMin = 0;
@@ -116,6 +136,16 @@ function renderTrend(target, rows) {
     return bottom - ((Number(value) - yMin) / (yMax - yMin || 1)) * (bottom - top);
   }
 
+  [yMin, 100, yMax].forEach((tick) => {
+    const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
+    text.setAttribute("x", 48);
+    text.setAttribute("y", y(tick) + 4);
+    text.setAttribute("text-anchor", "end");
+    text.setAttribute("class", "trend-label");
+    text.textContent = Math.round(tick);
+    svg.append(text);
+  });
+
   for (let day = 0; day <= 7; day += 1) {
     const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
     text.setAttribute("x", x(day));
@@ -128,7 +158,7 @@ function renderTrend(target, rows) {
 
   series.forEach((line, index) => {
     const points = line.values
-      .map((row) => `${x(row.event_day_index)},${y(row.avg_value)}`)
+      .map((row) => `${x(row.event_day_index)},${y(row.index_value)}`)
       .join(" ");
     const polyline = document.createElementNS("http://www.w3.org/2000/svg", "polyline");
     polyline.setAttribute("points", points);
@@ -141,9 +171,16 @@ function renderTrend(target, rows) {
     label.setAttribute("y", 44 + index * 26);
     label.setAttribute("class", "trend-label");
     label.setAttribute("fill", line.color);
-    label.textContent = line.name;
+    label.textContent = displayLabel(line.name);
     svg.append(label);
   });
+
+  const axisLabel = document.createElementNS("http://www.w3.org/2000/svg", "text");
+  axisLabel.setAttribute("x", left);
+  axisLabel.setAttribute("y", 18);
+  axisLabel.setAttribute("class", "trend-label");
+  axisLabel.textContent = "Index, first observed day = 100";
+  svg.append(axisLabel);
 
   wrap.append(svg);
   root.replaceChildren(wrap);
@@ -198,20 +235,30 @@ async function main() {
   const data = await response.json();
 
   document.querySelector("#dataset-title").textContent =
-    `${data.meta.dataset} ${data.meta.dataset_version}`;
-  document.querySelector("#quality-status").textContent =
-    `${data.meta.failed_checks} failed checks`;
+    `${data.meta.display_dataset} v${data.meta.dataset_version}`;
+  const qualityStatus = document.querySelector("#quality-status");
+  qualityStatus.textContent =
+    `${data.meta.failed_checks} failed, ${data.meta.warning_checks} warning`;
+  if (data.meta.warning_checks > 0) {
+    qualityStatus.classList.add("warning");
+  }
   document.querySelector("#cloud-status").textContent = data.meta.cloud_status;
 
   renderMetrics(data);
   renderTableCounts(data.table_counts);
   renderBars("#encounter-class-chart", data.encounters.by_class, { color: "#2563eb" });
-  renderBars("#encounter-status-chart", data.encounters.by_status, { color: "#0f766e" });
+  renderBars("#discharge-disposition-chart", data.encounters.by_discharge_disposition, {
+    color: "#0f766e",
+    limit: 8,
+  });
   renderBars("#los-chart", data.encounters.length_of_stay_bins, { color: "#6d28d9" });
   renderBars("#observation-load-chart", data.encounters.observation_load, {
     color: "#b7791f",
   });
-  renderBars("#condition-chart", data.conditions.top, { color: "#2563eb" });
+  renderBars("#condition-chart", data.conditions.top, {
+    color: "#2563eb",
+    detail: (row) => `${format.format(row.patient_count)} patients · ${format.format(row.encounter_count)} encounters`,
+  });
   renderBars("#vitals-volume-chart", data.measurements.vitals_volume, {
     color: "#0f766e",
   });

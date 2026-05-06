@@ -8,6 +8,7 @@ import duckdb
 
 ROOT = Path(__file__).resolve().parents[1]
 GOLD = ROOT / "output" / "gold"
+SILVER = ROOT / "output" / "silver"
 QUALITY_REPORT = ROOT / "output" / "quality" / "data_quality_report.json"
 RELATIONSHIP_AUDIT = ROOT / "output" / "silver" / "relationship_audit.json"
 OUTPUT = ROOT / "docs" / "data" / "dashboard.json"
@@ -32,11 +33,16 @@ def table_path(table: str) -> str:
     return str(GOLD / table / "*.parquet")
 
 
+def silver_table_path(table: str) -> str:
+    return str(SILVER / table / "*.parquet")
+
+
 def build_dashboard() -> dict[str, Any]:
     quality = read_json(QUALITY_REPORT)
     relationships = read_json(RELATIONSHIP_AUDIT)
     encounter = table_path("encounter_summary")
     condition = table_path("condition_summary")
+    silver_condition = silver_table_path("condition")
     vitals = table_path("vitals_daily")
     labs = table_path("labs_daily")
 
@@ -84,6 +90,7 @@ def build_dashboard() -> dict[str, Any]:
         "meta": {
             "title": "Healthcare FHIR Lakehouse Dashboard",
             "dataset": quality["dataset_name"],
+            "display_dataset": "MIMIC-IV Demo on FHIR",
             "dataset_version": quality["dataset_version"],
             "generated_at": quality["generated_at"],
             "source_resources": 928935,
@@ -111,14 +118,15 @@ def build_dashboard() -> dict[str, Any]:
                 order by value desc
                 """
             ),
-            "by_status": query(
+            "by_discharge_disposition": query(
                 f"""
                 select
-                  coalesce(encounter_status, 'unknown') as label,
+                  coalesce(discharge_disposition, 'unknown') as label,
                   count(*) as value
                 from read_parquet('{encounter}')
                 group by 1
                 order by value desc
+                limit 12
                 """
             ),
             "length_of_stay_bins": query(
@@ -172,13 +180,14 @@ def build_dashboard() -> dict[str, Any]:
             "top": query(
                 f"""
                 select
-                  condition_display as label,
-                  patient_count,
-                  encounter_count,
-                  condition_row_count as value
-                from read_parquet('{condition}')
-                where condition_display is not null
-                order by condition_row_count desc, patient_count desc
+                  display as label,
+                  count(distinct patient_id) as patient_count,
+                  count(distinct encounter_id) as encounter_count,
+                  count(*) as value
+                from read_parquet('{silver_condition}')
+                where display is not null
+                group by 1
+                order by value desc, patient_count desc
                 limit 12
                 """
             )
@@ -207,14 +216,33 @@ def build_dashboard() -> dict[str, Any]:
             ),
             "vitals_trend": query(
                 f"""
+                with daily as (
+                  select
+                    measurement_name,
+                    event_day_index,
+                    round(avg(avg_value), 2) as avg_value,
+                    sum(measurement_count) as measurement_count
+                  from read_parquet('{vitals}')
+                  where event_day_index between 0 and 7
+                  group by 1, 2
+                ),
+                indexed as (
+                  select
+                    *,
+                    first_value(avg_value) over (
+                      partition by measurement_name
+                      order by event_day_index
+                    ) as baseline_value
+                  from daily
+                )
                 select
                   measurement_name,
                   event_day_index,
-                  round(avg(avg_value), 2) as avg_value,
-                  sum(measurement_count) as measurement_count
-                from read_parquet('{vitals}')
-                where event_day_index between 0 and 7
-                group by 1, 2
+                  avg_value,
+                  round((avg_value / nullif(baseline_value, 0)) * 100, 2)
+                    as index_value,
+                  measurement_count
+                from indexed
                 order by measurement_name, event_day_index
                 """
             ),
@@ -226,17 +254,36 @@ def build_dashboard() -> dict[str, Any]:
                   group by 1
                   order by sum(measurement_count) desc
                   limit 6
+                ),
+                daily as (
+                  select
+                    l.measurement_name,
+                    l.event_day_index,
+                    round(avg(l.avg_value), 2) as avg_value,
+                    sum(l.measurement_count) as measurement_count
+                  from read_parquet('{labs}') l
+                  join top_labs t on l.measurement_name = t.measurement_name
+                  where l.event_day_index between 0 and 7
+                  group by 1, 2
+                ),
+                indexed as (
+                  select
+                    *,
+                    first_value(avg_value) over (
+                      partition by measurement_name
+                      order by event_day_index
+                    ) as baseline_value
+                  from daily
                 )
                 select
-                  l.measurement_name,
-                  l.event_day_index,
-                  round(avg(l.avg_value), 2) as avg_value,
-                  sum(l.measurement_count) as measurement_count
-                from read_parquet('{labs}') l
-                join top_labs t on l.measurement_name = t.measurement_name
-                where l.event_day_index between 0 and 7
-                group by 1, 2
-                order by l.measurement_name, l.event_day_index
+                  measurement_name,
+                  event_day_index,
+                  avg_value,
+                  round((avg_value / nullif(baseline_value, 0)) * 100, 2)
+                    as index_value,
+                  measurement_count
+                from indexed
+                order by measurement_name, event_day_index
                 """
             ),
         },
