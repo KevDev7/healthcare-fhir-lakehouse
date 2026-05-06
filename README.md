@@ -68,20 +68,28 @@ mimic-iv-clinical-database-demo-on-fhir-2.1.0/fhir/
 
 ## Architecture
 
-```text
-FHIR NDJSON (.ndjson.gz)
-        |
-        v
-Bronze: raw FHIR preservation + ingestion metadata
-        |
-        v
-Silver: normalized Patient, Encounter, Observation, Condition tables
-        |
-        v
-Audit: relationship integrity + privacy validation + data quality
-        |
-        v
-Gold: encounter summaries, diagnosis summaries, daily vitals, daily labs
+```mermaid
+flowchart LR
+    source["MIMIC-IV Demo on FHIR<br/>30 compressed NDJSON files<br/>928,935 FHIR resources"]
+
+    subgraph local["Local Python Lakehouse"]
+        bronze["Bronze Parquet<br/>raw FHIR JSON + lineage metadata"]
+        silver["Silver Clinical Tables<br/>Patient, Encounter, Observation, Condition"]
+        audit["Audit Layer<br/>relationship integrity, privacy validation, data quality"]
+        gold["Gold Analytics Tables<br/>encounter summaries, diagnoses, daily vitals, daily labs"]
+    end
+
+    subgraph cloud["Databricks Lakehouse"]
+        volume["Unity Catalog Volume<br/>raw FHIR landing zone"]
+        spark["Serverless Spark Job<br/>PySpark pipeline"]
+        delta["Delta Tables<br/>Bronze, Silver, Gold, Audit schemas"]
+    end
+
+    source --> bronze --> silver --> audit --> gold
+    source --> volume --> spark --> delta
+    silver --> spark
+    audit --> delta
+    gold --> delta
 ```
 
 ## Implemented Tables
