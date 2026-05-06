@@ -104,7 +104,7 @@ make test
 Current expected test result:
 
 ```text
-104 passed
+115 passed
 ```
 
 Run individual stages if needed:

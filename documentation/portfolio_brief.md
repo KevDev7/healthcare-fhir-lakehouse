@@ -48,7 +48,7 @@ Local:
 * 5,051 conditions
 * 93,667 medication-related source resources
 * 3,450 procedures
-* 104 automated tests passing
+* 115 automated tests passing
 
 Databricks:
 

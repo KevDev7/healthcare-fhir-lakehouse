@@ -94,7 +94,7 @@ def build_dashboard() -> dict[str, Any]:
             ),
             "procedures": relationships["procedure_rows"],
             "cloud_status": "Databricks serverless run succeeded",
-            "test_status": "104 pytest tests passed",
+            "test_status": "115 pytest tests passed",
             "quality_status": quality["status"],
             "failed_checks": quality["failed_check_count"],
             "warning_checks": quality["warning_check_count"],

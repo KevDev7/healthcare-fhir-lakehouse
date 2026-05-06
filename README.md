@@ -12,7 +12,7 @@ orchestration, and Databricks/Spark/Delta cloud execution.
 [![CI](https://github.com/KevDev7/healthcare-fhir-lakehouse/actions/workflows/ci.yml/badge.svg)](https://github.com/KevDev7/healthcare-fhir-lakehouse/actions/workflows/ci.yml)
 [![Live Dashboard](https://img.shields.io/badge/live-dashboard-2563eb)](https://kevdev7.github.io/healthcare-fhir-lakehouse/)
 [![Databricks Evidence](https://img.shields.io/badge/databricks-run%20evidence-ff6f00)](documentation/cloud_run_evidence.md)
-[![Tests](https://img.shields.io/badge/tests-104%20passing-16a34a)](tests/)
+[![Tests](https://img.shields.io/badge/tests-115%20passing-16a34a)](tests/)
 
 **Dashboard:** [View the interactive lakehouse dashboard](https://kevdev7.github.io/healthcare-fhir-lakehouse/)
 
@@ -35,7 +35,7 @@ orchestration, and Databricks/Spark/Delta cloud execution.
 * **Static analytics dashboard:** GitHub Pages-ready dashboard built from safe
   aggregate Gold and audit outputs.
 * **Engineering rigor:** Python package layout, Typer CLI, Makefile entry points,
-  `uv` dependency management, Ruff linting, and 104 pytest tests.
+  `uv` dependency management, Ruff linting, and 115 pytest tests.
 
 ## Healthcare Data Engineering Mapping
 
@@ -539,7 +539,7 @@ Local verification:
 
 ```text
 make lint -> passed
-make test -> 104 passed
+make test -> 115 passed
 ```
 
 Databricks cloud run:

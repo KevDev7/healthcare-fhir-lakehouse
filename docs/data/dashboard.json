@@ -1190,7 +1190,7 @@
     "procedures": 3450,
     "quality_status": "warning",
     "source_resources": 928935,
-    "test_status": "104 pytest tests passed",
+    "test_status": "115 pytest tests passed",
     "title": "Healthcare FHIR Lakehouse Dashboard",
     "warning_checks": 4
   },
