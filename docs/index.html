@@ -16,6 +16,15 @@
     </header>
 
     <main>
+      <section id="load-error" class="load-error" aria-live="polite" hidden>
+        <h2>Dashboard Data Could Not Load</h2>
+        <p>
+          The static dashboard shell loaded, but `docs/data/dashboard.json` was
+          unavailable. Re-run `make dashboard-data` and verify GitHub Pages has
+          published the latest commit.
+        </p>
+      </section>
+
       <section class="hero-grid" aria-label="Project summary">
         <article class="summary-panel">
           <div>
@@ -54,7 +63,11 @@
       <section class="view" id="encounters">
         <div class="section-header">
           <h2>Encounter Analytics</h2>
-          <p>Encounter classes, discharge destinations, length-of-stay bands, and observation load.</p>
+          <p>
+            Encounter classes, discharge destinations, length-of-stay bands, and
+            observation load. `unknown` means no populated discharge disposition
+            was present in the Gold output.
+          </p>
         </div>
         <div class="chart-grid two">
           <article class="chart-panel">
@@ -63,6 +76,7 @@
           </article>
           <article class="chart-panel">
             <h3>Discharge Disposition</h3>
+            <p class="panel-note">Top populated values plus `unknown` source coverage.</p>
             <div id="discharge-disposition-chart"></div>
           </article>
           <article class="chart-panel">
@@ -79,9 +93,16 @@
       <section class="view" id="conditions">
         <div class="section-header">
           <h2>Condition Summary</h2>
-          <p>Top diagnosis concepts aggregated by display, with patient and encounter coverage.</p>
+          <p>
+            Top diagnosis concepts aggregated by display and sorted by condition
+            row count, with patient and encounter coverage.
+          </p>
         </div>
         <article class="chart-panel wide">
+          <div class="chart-legend-row">
+            <span>Condition concept</span>
+            <span>Condition rows</span>
+          </div>
           <div id="condition-chart"></div>
         </article>
       </section>
@@ -89,7 +110,7 @@
       <section class="view" id="measurements">
         <div class="section-header">
           <h2>Vitals And Labs</h2>
-          <p>Gold measurement volumes and event-day aggregate trends.</p>
+          <p>Gold measurement volumes and indexed event-day trends.</p>
         </div>
         <div class="chart-grid two">
           <article class="chart-panel">
@@ -102,10 +123,18 @@
           </article>
           <article class="chart-panel wide">
             <h3>Vitals Trend Index</h3>
+            <p class="panel-note">
+              Indexed values compare each measurement to its own first observed
+              event day, so different units can be compared safely.
+            </p>
             <div id="vitals-trend-chart"></div>
           </article>
           <article class="chart-panel wide">
             <h3>Labs Trend Index</h3>
+            <p class="panel-note">
+              Indexed values compare each measurement to its own first observed
+              event day, so different units can be compared safely.
+            </p>
             <div id="labs-trend-chart"></div>
           </article>
         </div>
@@ -119,6 +148,11 @@
         <div class="quality-layout">
           <article class="chart-panel">
             <h3>Relationship Audit</h3>
+            <div id="audit-hero" class="audit-hero-grid"></div>
+            <p class="panel-note">
+              Missing Observation encounter references are tracked as a FHIR-valid
+              coverage gap. Populated patient and encounter references resolve.
+            </p>
             <div id="relationship-summary" class="audit-list"></div>
           </article>
           <article class="chart-panel">
@@ -127,6 +161,19 @@
           </article>
         </div>
       </section>
+
+      <footer class="dashboard-footer">
+        <div>
+          <strong>Aggregate demo data only.</strong>
+          No raw FHIR payloads, direct patient identifiers, or row-level patient
+          records are published in this dashboard.
+        </div>
+        <div class="footer-links">
+          <a href="../documentation/cloud_run_evidence.md">Cloud evidence</a>
+          <a href="../documentation/privacy_audit.md">Privacy audit</a>
+          <a href="../documentation/data_quality_report.md">Quality report</a>
+        </div>
+      </footer>
     </main>
 
     <script src="./assets/dashboard.js"></script>

@@ -179,7 +179,7 @@ function renderTrend(target, rows) {
   axisLabel.setAttribute("x", left);
   axisLabel.setAttribute("y", 18);
   axisLabel.setAttribute("class", "trend-label");
-  axisLabel.textContent = "Index, first observed day = 100";
+  axisLabel.textContent = "Index value, first observed day = 100";
   svg.append(axisLabel);
 
   wrap.append(svg);
@@ -188,6 +188,43 @@ function renderTrend(target, rows) {
 
 function renderQuality(data) {
   const relationship = data.relationship_audit;
+  const orphanReferences =
+    relationship.observation_orphan_patient_id +
+    relationship.observation_orphan_encounter_id +
+    relationship.condition_orphan_patient_id +
+    relationship.condition_orphan_encounter_id;
+
+  const auditHeroRows = [
+    ["Orphan references", orphanReferences, "populated references"],
+    [
+      "Missing encounter context",
+      relationship.observation_missing_encounter_id,
+      "Observation rows",
+    ],
+    [
+      "Quality result",
+      `${data.meta.failed_checks}/${data.meta.warning_checks}`,
+      "failed / warning",
+    ],
+  ];
+
+  const auditHero = document.querySelector("#audit-hero");
+  auditHero.replaceChildren(
+    ...auditHeroRows.map(([label, value, note]) => {
+      const card = el("div", "audit-hero-card");
+      card.append(el("div", "audit-hero-label", label));
+      card.append(
+        el(
+          "div",
+          "audit-hero-value",
+          typeof value === "number" ? format.format(value) : value,
+        ),
+      );
+      card.append(el("div", "audit-hero-note", note));
+      return card;
+    }),
+  );
+
   const auditRows = [
     ["Patient rows", relationship.patient_rows],
     ["Encounter rows", relationship.encounter_rows],
@@ -230,9 +267,25 @@ function wireTabs() {
   });
 }
 
+function showLoadError(error) {
+  console.error(error);
+  document.querySelector("#load-error").hidden = false;
+  document.querySelector("#quality-status").textContent = "Data unavailable";
+}
+
 async function main() {
-  const response = await fetch(DATA_URL);
-  const data = await response.json();
+  let data;
+  try {
+    const response = await fetch(DATA_URL);
+    if (!response.ok) {
+      throw new Error(`Dashboard data request failed: ${response.status}`);
+    }
+    data = await response.json();
+  } catch (error) {
+    showLoadError(error);
+    wireTabs();
+    return;
+  }
 
   document.querySelector("#dataset-title").textContent =
     `${data.meta.display_dataset} v${data.meta.dataset_version}`;

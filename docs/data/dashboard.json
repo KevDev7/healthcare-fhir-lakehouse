@@ -144,7 +144,7 @@
         "value": 4
       },
       {
-        "label": "LEFT AGAINST MEDICAL ADVICE",
+        "label": "LEFT WITHOUT BEING SEEN",
         "value": 2
       }
     ],
@@ -586,7 +586,7 @@
         "value": 2748
       },
       {
-        "label": "MCH",
+        "label": "MCHC",
         "value": 2748
       }
     ],
@@ -986,11 +986,11 @@
     ],
     "vitals_volume": [
       {
-        "label": "Heart Rate",
+        "label": "Respiratory Rate",
         "value": 13913
       },
       {
-        "label": "Respiratory Rate",
+        "label": "Heart Rate",
         "value": 13913
       },
       {
