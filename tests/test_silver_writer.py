@@ -9,6 +9,7 @@ from healthcare_fhir_lakehouse.common.config import ProjectConfig
 from healthcare_fhir_lakehouse.silver.writer import (
     lineage_columns,
     silver_output_dir,
+    write_silver_rows,
     write_silver_table,
 )
 
@@ -74,3 +75,23 @@ def test_write_silver_table_filters_bronze_and_writes_parquet(tmp_path: Path) ->
     assert result.total_rows == 1
     assert rows[0]["patient_id"] == "patient-1"
     assert rows[0]["gender"] == "female"
+
+
+def test_write_silver_rows_writes_child_table_rows(tmp_path: Path) -> None:
+    config = make_config(tmp_path)
+
+    result = write_silver_rows(
+        config,
+        "medication_ingredient",
+        [
+            {"medication_id": "mix-1", "ingredient_medication_id": "med-1"},
+            {"medication_id": "mix-1", "ingredient_medication_id": "med-2"},
+        ],
+        batch_size=1,
+    )
+    rows = pq.read_table(result.output_dir).to_pylist()
+
+    assert result.output_dir == silver_output_dir(config, "medication_ingredient")
+    assert result.total_rows == 2
+    assert len(result.parquet_files) == 2
+    assert {row["ingredient_medication_id"] for row in rows} == {"med-1", "med-2"}

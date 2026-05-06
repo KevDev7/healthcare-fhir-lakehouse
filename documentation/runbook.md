@@ -64,12 +64,22 @@ output/silver/patient/*.parquet
 output/silver/encounter/*.parquet
 output/silver/observation/*.parquet
 output/silver/condition/*.parquet
+output/silver/medication/*.parquet
+output/silver/medication_ingredient/*.parquet
+output/silver/medication_request/*.parquet
+output/silver/medication_administration/*.parquet
+output/silver/medication_dispense/*.parquet
+output/silver/medication_statement/*.parquet
+output/silver/procedure/*.parquet
 output/silver/relationship_audit.json
 output/privacy/privacy_audit.json
 output/gold/encounter_summary/*.parquet
 output/gold/condition_summary/*.parquet
 output/gold/vitals_daily/*.parquet
 output/gold/labs_daily/*.parquet
+output/gold/medication_activity/*.parquet
+output/gold/medication_order_fulfillment/*.parquet
+output/gold/procedure_summary/*.parquet
 output/quality/data_quality_report.json
 output/pipeline/pipeline_run.json
 ```
@@ -94,7 +104,7 @@ make test
 Current expected test result:
 
 ```text
-76 passed
+104 passed
 ```
 
 Run individual stages if needed:
@@ -140,9 +150,9 @@ job id: 1036260011587635
 Successful run evidence:
 
 ```text
-run id: 961090542671457
+run id: 377334542675458
 result: SUCCESS
-execution duration: 115 seconds
+execution duration: 158 seconds
 ```
 
 See `documentation/cloud_run_evidence.md` for table names, row counts, and data
@@ -157,15 +167,25 @@ quality results.
 | Silver | `encounter` | 637 |
 | Silver | `observation` | 813,540 |
 | Silver | `condition` | 5,051 |
+| Silver | `medication` | 1,794 |
+| Silver | `medication_ingredient` | 634 |
+| Silver | `medication_request` | 17,552 |
+| Silver | `medication_administration` | 56,535 |
+| Silver | `medication_dispense` | 15,375 |
+| Silver | `medication_statement` | 2,411 |
+| Silver | `procedure` | 3,450 |
 | Gold | `encounter_summary` | 637 |
 | Gold | `condition_summary` | 2,319 |
 | Gold | `vitals_daily` | 3,986 |
 | Gold | `labs_daily` | 90,719 |
+| Gold | `medication_activity` | 7,160 |
+| Gold | `medication_order_fulfillment` | 17,552 |
+| Gold | `procedure_summary` | 536 |
 
 Expected cloud data quality result:
 
 ```text
-10 passing checks, 0 failing checks
+19 passing checks, 0 failing checks
 ```
 
 ## Cloud Deployment Note

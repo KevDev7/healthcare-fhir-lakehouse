@@ -75,6 +75,78 @@ def write_silver_gold_fixture(tmp_path: Path) -> ProjectConfig:
             }
         ],
     )
+    write_parquet(
+        output / "medication_request" / "part-00001.parquet",
+        [
+            {
+                "medication_request_id": "req-1",
+                "patient_id": "pat-1",
+                "encounter_id": "enc-1",
+                "medication_code": "MED1",
+                "medication_display": "Medication One",
+                "status": "completed",
+                "intent": "order",
+                "authored_datetime": "2180-05-06T23:00:00-04:00",
+            }
+        ],
+    )
+    write_parquet(
+        output / "medication_administration" / "part-00001.parquet",
+        [
+            {
+                "medication_administration_id": "admin-1",
+                "patient_id": "pat-1",
+                "encounter_id": "enc-1",
+                "medication_code": "MED1",
+                "medication_display": "Medication One",
+                "medication_request_id": "req-1",
+                "effective_start_datetime": "2180-05-06T23:15:00-04:00",
+                "source_system": "hospital",
+            }
+        ],
+    )
+    write_parquet(
+        output / "medication_dispense" / "part-00001.parquet",
+        [
+            {
+                "medication_dispense_id": "disp-1",
+                "patient_id": "pat-1",
+                "encounter_id": "enc-1",
+                "medication_code": "MED1",
+                "medication_display": "Medication One",
+                "medication_request_id": "req-1",
+                "when_handed_over_datetime": "2180-05-06T23:10:00-04:00",
+                "source_system": "inpatient",
+            }
+        ],
+    )
+    write_parquet(
+        output / "medication_statement" / "part-00001.parquet",
+        [
+            {
+                "medication_statement_id": "stmt-1",
+                "patient_id": "pat-1",
+                "encounter_id": "enc-1",
+                "medication_code": "MED2",
+                "medication_display": "Medication Two",
+                "source_system": "ed",
+            }
+        ],
+    )
+    write_parquet(
+        output / "procedure" / "part-00001.parquet",
+        [
+            {
+                "procedure_id": "proc-1",
+                "patient_id": "pat-1",
+                "encounter_id": "enc-1",
+                "procedure_code": "PROC1",
+                "procedure_display": "Procedure One",
+                "body_site_code": None,
+                "source_system": "hospital",
+            }
+        ],
+    )
     return ProjectConfig(repo_root=tmp_path, paths=PathSettings(output_dir="output"))
 
 
@@ -91,6 +163,11 @@ def test_build_encounter_and_condition_gold_tables(tmp_path: Path) -> None:
         params=[gold_parquet_glob(config, "encounter_summary")],
     ).fetchone()
     assert encounter_row is not None
+    columns = duckdb.sql(
+        "describe select * from read_parquet(?)",
+        params=[gold_parquet_glob(config, "encounter_summary")],
+    ).fetchall()
+    assert "medication_request_count" in {row[0] for row in columns}
 
 
 def test_build_observation_daily_gold_tables(tmp_path: Path) -> None:
@@ -116,4 +193,33 @@ def test_validate_gold_tables_accepts_publishable_column_surface(
         "condition_summary",
         "vitals_daily",
         "labs_daily",
+        "medication_activity",
+        "medication_order_fulfillment",
+        "procedure_summary",
     }
+
+
+def test_build_medication_and_procedure_gold_tables(tmp_path: Path) -> None:
+    config = write_silver_gold_fixture(tmp_path)
+
+    build_all_gold_tables(config)
+
+    medication_activity_rows = duckdb.sql(
+        "select count(*) from read_parquet(?)",
+        params=[gold_parquet_glob(config, "medication_activity")],
+    ).fetchone()[0]
+    fulfillment_row = duckdb.sql(
+        """
+        select fulfillment_path
+        from read_parquet(?)
+        """,
+        params=[gold_parquet_glob(config, "medication_order_fulfillment")],
+    ).fetchone()
+    procedure_rows = duckdb.sql(
+        "select count(*) from read_parquet(?)",
+        params=[gold_parquet_glob(config, "procedure_summary")],
+    ).fetchone()[0]
+
+    assert medication_activity_rows == 4
+    assert fulfillment_row == ("administered_and_dispensed",)
+    assert procedure_rows == 1

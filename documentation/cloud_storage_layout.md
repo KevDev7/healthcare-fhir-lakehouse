@@ -67,6 +67,13 @@ workspace.healthcare_fhir_lakehouse_silver.patient
 workspace.healthcare_fhir_lakehouse_silver.encounter
 workspace.healthcare_fhir_lakehouse_silver.observation
 workspace.healthcare_fhir_lakehouse_silver.condition
+workspace.healthcare_fhir_lakehouse_silver.medication
+workspace.healthcare_fhir_lakehouse_silver.medication_ingredient
+workspace.healthcare_fhir_lakehouse_silver.medication_request
+workspace.healthcare_fhir_lakehouse_silver.medication_administration
+workspace.healthcare_fhir_lakehouse_silver.medication_dispense
+workspace.healthcare_fhir_lakehouse_silver.medication_statement
+workspace.healthcare_fhir_lakehouse_silver.procedure
 ```
 
 Gold:
@@ -76,6 +83,9 @@ workspace.healthcare_fhir_lakehouse_gold.encounter_summary
 workspace.healthcare_fhir_lakehouse_gold.condition_summary
 workspace.healthcare_fhir_lakehouse_gold.vitals_daily
 workspace.healthcare_fhir_lakehouse_gold.labs_daily
+workspace.healthcare_fhir_lakehouse_gold.medication_activity
+workspace.healthcare_fhir_lakehouse_gold.medication_order_fulfillment
+workspace.healthcare_fhir_lakehouse_gold.procedure_summary
 ```
 
 Audit:

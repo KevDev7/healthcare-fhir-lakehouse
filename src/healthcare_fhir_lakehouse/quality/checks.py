@@ -175,6 +175,36 @@ def check_silver_required_ids(config: ProjectConfig) -> list[QualityCheckResult]
             "condition_id is null or patient_id is null",
             "condition_id and patient_id present",
         ),
+        "medication_required_ids": (
+            "medication",
+            "medication_id is null",
+            "medication_id present",
+        ),
+        "medication_request_required_ids": (
+            "medication_request",
+            "medication_request_id is null or patient_id is null",
+            "medication_request_id and patient_id present",
+        ),
+        "medication_administration_required_ids": (
+            "medication_administration",
+            "medication_administration_id is null or patient_id is null",
+            "medication_administration_id and patient_id present",
+        ),
+        "medication_dispense_required_ids": (
+            "medication_dispense",
+            "medication_dispense_id is null or patient_id is null",
+            "medication_dispense_id and patient_id present",
+        ),
+        "medication_statement_required_ids": (
+            "medication_statement",
+            "medication_statement_id is null or patient_id is null",
+            "medication_statement_id and patient_id present",
+        ),
+        "procedure_required_ids": (
+            "procedure",
+            "procedure_id is null or patient_id is null or encounter_id is null",
+            "procedure_id, patient_id, and encounter_id present",
+        ),
     }
 
     results: list[QualityCheckResult] = []
@@ -204,15 +234,15 @@ def check_relationships(config: ProjectConfig) -> list[QualityCheckResult]:
                 "relationships",
                 0,
                 "0 orphan populated references",
-                "All populated core patient and encounter references resolve.",
+                "All populated Silver patient, encounter, medication, and "
+                "request references resolve.",
             )
         )
     else:
-        orphan_count = (
-            audit.observation_orphan_patient_id
-            + audit.observation_orphan_encounter_id
-            + audit.condition_orphan_patient_id
-            + audit.condition_orphan_encounter_id
+        orphan_count = sum(
+            value
+            for key, value in audit.to_dict().items()
+            if key.endswith("_id") and "_orphan_" in key and isinstance(value, int)
         )
         results.append(
             fail_check(
@@ -224,14 +254,38 @@ def check_relationships(config: ProjectConfig) -> list[QualityCheckResult]:
             )
         )
 
-    if audit.observation_missing_encounter_id > 0:
+    warning_specs = [
+        (
+            "observation_missing_encounter_id",
+            audit.observation_missing_encounter_id,
+            "FHIR can support observations without encounter references.",
+        ),
+        (
+            "medication_administration_missing_encounter_id",
+            audit.medication_administration_missing_encounter_id,
+            "Some medication administrations lack encounter context in source.",
+        ),
+        (
+            "medication_administration_missing_request_id",
+            audit.medication_administration_missing_request_id,
+            "ICU and some hospital administrations are not order-linked.",
+        ),
+        (
+            "medication_dispense_missing_request_id",
+            audit.medication_dispense_missing_request_id,
+            "ED dispenses are not order-linked in this source.",
+        ),
+    ]
+    for check_name, observed, details in warning_specs:
+        if observed <= 0:
+            continue
         results.append(
             warn_check(
-                "observation_missing_encounter_id",
+                check_name,
                 "relationships",
-                audit.observation_missing_encounter_id,
+                observed,
                 "reported optional coverage gap",
-                "FHIR can support observations without encounter references.",
+                details,
             )
         )
     return results
@@ -451,6 +505,8 @@ Warnings: {len(report.warning_checks):,}.
 * Warnings are visible but do not fail the quality report.
 * Missing Observation encounter references are warnings because FHIR permits
   observations without encounter context.
+* Missing medication request links are warnings where the source system does
+  not represent every medication event as order-driven.
 * This report checks generated local outputs; it does not certify legal
   compliance or clinical correctness.
 """

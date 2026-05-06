@@ -15,6 +15,12 @@ FORBIDDEN_GOLD_COLUMNS = {
     "encounter_id",
     "observation_id",
     "condition_id",
+    "medication_id",
+    "medication_request_id",
+    "medication_administration_id",
+    "medication_dispense_id",
+    "medication_statement_id",
+    "procedure_id",
     "bronze_resource_id",
     "raw_json",
 }

@@ -208,10 +208,13 @@ Implemented local artifacts:
 
 Current checks cover:
 
-* Patient, Encounter, Observation, and Condition row counts
-* Missing patient and encounter reference coverage
+* Patient, Encounter, Observation, Condition, Medication, medication event, and
+  Procedure row counts
+* Missing patient, encounter, medication concept, and medication request
+  reference coverage
 * Orphan populated patient references
 * Orphan populated encounter references
+* Orphan populated medication catalog and medication request references
 
 Missing Observation encounter references are reported rather than failed because
 the FHIR schema can support observations without encounter context. Populated
@@ -365,11 +368,12 @@ separate production orchestration work.
 Layering strategy:
 
 1. Preserve compressed FHIR NDJSON in a raw Bronze table with lineage.
-2. Normalize high-value Patient, Encounter, Observation, and Condition resources
-   into Silver tables.
+2. Normalize high-value Patient, Encounter, Observation, Condition, Medication,
+   medication event, and Procedure resources into Silver tables.
 3. Validate Silver relationships and privacy-sensitive fields before analytics
    modeling.
-4. Build Gold encounter summaries and vitals/labs aggregates with safer
+4. Build Gold encounter summaries, condition rollups, vitals/labs aggregates,
+   medication activity/order fulfillment, and procedure summaries with safer
    pseudonymous keys.
 5. Run the same core lakehouse pattern in Databricks/Spark/Delta for cloud
    execution evidence.

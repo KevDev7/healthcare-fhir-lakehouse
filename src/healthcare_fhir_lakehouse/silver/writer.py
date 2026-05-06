@@ -135,6 +135,35 @@ def write_silver_table(
     )
 
 
+def write_silver_rows(
+    config: ProjectConfig,
+    table_name: str,
+    rows: Iterable[dict[str, Any]],
+    batch_size: int = DEFAULT_SILVER_BATCH_SIZE,
+    overwrite: bool = True,
+) -> SilverWriteResult:
+    output_dir = silver_output_dir(config, table_name)
+    if overwrite and output_dir.exists():
+        shutil.rmtree(output_dir)
+    output_dir.mkdir(parents=True, exist_ok=True)
+
+    parquet_files: list[Path] = []
+    total_rows = 0
+    for part_number, batch in enumerate(batched(rows, batch_size), start=1):
+        table = pa.Table.from_pylist(batch)
+        output_path = output_dir / f"part-{part_number:05d}.parquet"
+        pq.write_table(table, output_path)
+        parquet_files.append(output_path)
+        total_rows += table.num_rows
+
+    return SilverWriteResult(
+        table_name=table_name,
+        output_dir=output_dir,
+        parquet_files=parquet_files,
+        total_rows=total_rows,
+    )
+
+
 __all__ = [
     "DEFAULT_SILVER_BATCH_SIZE",
     "SilverTransform",
@@ -146,4 +175,5 @@ __all__ = [
     "silver_output_dir",
     "transform_bronze_records",
     "write_silver_table",
+    "write_silver_rows",
 ]

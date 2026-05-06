@@ -45,6 +45,9 @@ def build_dashboard() -> dict[str, Any]:
     silver_condition = silver_table_path("condition")
     vitals = table_path("vitals_daily")
     labs = table_path("labs_daily")
+    medication_activity = table_path("medication_activity")
+    medication_fulfillment = table_path("medication_order_fulfillment")
+    procedure = table_path("procedure_summary")
 
     table_counts = [
         {"layer": "Bronze", "table": "fhir_resources", "rows": 928935},
@@ -63,6 +66,36 @@ def build_dashboard() -> dict[str, Any]:
             "layer": "Silver",
             "table": "condition",
             "rows": relationships["condition_rows"],
+        },
+        {
+            "layer": "Silver",
+            "table": "medication",
+            "rows": relationships["medication_rows"],
+        },
+        {
+            "layer": "Silver",
+            "table": "medication_request",
+            "rows": relationships["medication_request_rows"],
+        },
+        {
+            "layer": "Silver",
+            "table": "medication_administration",
+            "rows": relationships["medication_administration_rows"],
+        },
+        {
+            "layer": "Silver",
+            "table": "medication_dispense",
+            "rows": relationships["medication_dispense_rows"],
+        },
+        {
+            "layer": "Silver",
+            "table": "medication_statement",
+            "rows": relationships["medication_statement_rows"],
+        },
+        {
+            "layer": "Silver",
+            "table": "procedure",
+            "rows": relationships["procedure_rows"],
         },
         {
             "layer": "Gold",
@@ -84,6 +117,25 @@ def build_dashboard() -> dict[str, Any]:
             "table": "labs_daily",
             "rows": scalar(f"select count(*) from read_parquet('{labs}')"),
         },
+        {
+            "layer": "Gold",
+            "table": "medication_activity",
+            "rows": scalar(
+                f"select count(*) from read_parquet('{medication_activity}')"
+            ),
+        },
+        {
+            "layer": "Gold",
+            "table": "medication_order_fulfillment",
+            "rows": scalar(
+                f"select count(*) from read_parquet('{medication_fulfillment}')"
+            ),
+        },
+        {
+            "layer": "Gold",
+            "table": "procedure_summary",
+            "rows": scalar(f"select count(*) from read_parquet('{procedure}')"),
+        },
     ]
 
     return {
@@ -98,8 +150,15 @@ def build_dashboard() -> dict[str, Any]:
             "encounters": relationships["encounter_rows"],
             "observations": relationships["observation_rows"],
             "conditions": relationships["condition_rows"],
+            "medication_events": (
+                relationships["medication_request_rows"]
+                + relationships["medication_administration_rows"]
+                + relationships["medication_dispense_rows"]
+                + relationships["medication_statement_rows"]
+            ),
+            "procedures": relationships["procedure_rows"],
             "cloud_status": "Databricks serverless run succeeded",
-            "test_status": "76 pytest tests passed",
+            "test_status": "104 pytest tests passed",
             "quality_status": quality["status"],
             "failed_checks": quality["failed_check_count"],
             "warning_checks": quality["warning_check_count"],
@@ -286,6 +345,61 @@ def build_dashboard() -> dict[str, Any]:
                 order by measurement_name, event_day_index
                 """
             ),
+        },
+        "medications": {
+            "by_activity_type": query(
+                f"""
+                select
+                  activity_type as label,
+                  sum(event_count) as value
+                from read_parquet('{medication_activity}')
+                group by 1
+                order by value desc
+                """
+            ),
+            "top_activity": query(
+                f"""
+                select
+                  medication_display as label,
+                  activity_type,
+                  source_system,
+                  sum(event_count) as value,
+                  sum(patient_count) as patient_count,
+                  sum(encounter_count) as encounter_count
+                from read_parquet('{medication_activity}')
+                where medication_display is not null
+                group by 1, 2, 3
+                order by value desc
+                limit 15
+                """
+            ),
+            "fulfillment_paths": query(
+                f"""
+                select
+                  fulfillment_path as label,
+                  count(*) as value
+                from read_parquet('{medication_fulfillment}')
+                group by 1
+                order by value desc
+                """
+            ),
+        },
+        "procedures": {
+            "top": query(
+                f"""
+                select
+                  procedure_display as label,
+                  source_system,
+                  sum(procedure_count) as value,
+                  sum(patient_count) as patient_count,
+                  sum(encounter_count) as encounter_count
+                from read_parquet('{procedure}')
+                where procedure_display is not null
+                group by 1, 2
+                order by value desc
+                limit 15
+                """
+            )
         },
     }
 

@@ -70,6 +70,9 @@ def silver_table_glob(config: ProjectConfig, table_name: str) -> str:
 
 
 def get_silver_columns(config: ProjectConfig, table_name: str) -> set[str]:
+    output_dir = silver_output_dir(config, table_name)
+    if not output_dir.is_dir() or not any(output_dir.glob("*.parquet")):
+        return set()
     rows = duckdb.sql(
         "describe select * from read_parquet(?)",
         params=[silver_table_glob(config, table_name)],
@@ -93,12 +96,17 @@ def build_column_finding(
 
 def build_column_findings(config: ProjectConfig) -> list[PrivacyColumnFinding]:
     findings: list[PrivacyColumnFinding] = []
+    table_count_with_columns = 0
     for table_name in CORE_SILVER_TABLES:
         present_columns = get_silver_columns(config, table_name)
+        if present_columns:
+            table_count_with_columns += 1
         findings.extend(
             build_column_finding(rule, present_columns)
             for rule in rules_for_table(table_name)
         )
+    if table_count_with_columns == 0:
+        raise ValueError("No Silver tables found for privacy audit.")
     return findings
 
 
@@ -161,7 +169,7 @@ def build_privacy_audit(config: ProjectConfig) -> PrivacyAudit:
         dataset_name=config.dataset.name,
         dataset_version=config.dataset.version,
         generated_at=datetime.now(UTC).isoformat(),
-        scope="core_silver_tables",
+        scope="expanded_silver_clinical_tables",
         column_findings=build_column_findings(config),
         pattern_findings=build_pattern_findings(config),
     )

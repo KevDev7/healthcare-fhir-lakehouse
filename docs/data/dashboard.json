@@ -132,11 +132,11 @@
         "value": 9
       },
       {
-        "label": "HOSPICE",
+        "label": "TRANSFER",
         "value": 5
       },
       {
-        "label": "TRANSFER",
+        "label": "HOSPICE",
         "value": 5
       },
       {
@@ -144,7 +144,7 @@
         "value": 4
       },
       {
-        "label": "LEFT WITHOUT BEING SEEN",
+        "label": "PSYCH FACILITY",
         "value": 2
       }
     ],
@@ -582,7 +582,7 @@
         "value": 2759
       },
       {
-        "label": "Red Blood Cells",
+        "label": "MCH",
         "value": 2748
       },
       {
@@ -1015,6 +1015,166 @@
       }
     ]
   },
+  "medications": {
+    "by_activity_type": [
+      {
+        "label": "administration",
+        "value": 56535
+      },
+      {
+        "label": "request",
+        "value": 17552
+      },
+      {
+        "label": "dispense",
+        "value": 15375
+      },
+      {
+        "label": "statement",
+        "value": 2411
+      }
+    ],
+    "fulfillment_paths": [
+      {
+        "label": "dispensed",
+        "value": 8425
+      },
+      {
+        "label": "administered_and_dispensed",
+        "value": 5868
+      },
+      {
+        "label": "no_linked_event",
+        "value": 2210
+      },
+      {
+        "label": "administered",
+        "value": 1049
+      }
+    ],
+    "top_activity": [
+      {
+        "activity_type": "administration",
+        "encounter_count": 125,
+        "label": "NaCl 0.9%",
+        "patient_count": 92,
+        "source_system": "icu",
+        "value": 2870
+      },
+      {
+        "activity_type": "request",
+        "encounter_count": 207,
+        "label": "unknown",
+        "patient_count": 136,
+        "source_system": "order",
+        "value": 2843
+      },
+      {
+        "activity_type": "administration",
+        "encounter_count": 146,
+        "label": "NACLFLUSH",
+        "patient_count": 99,
+        "source_system": "hospital",
+        "value": 2513
+      },
+      {
+        "activity_type": "administration",
+        "encounter_count": 99,
+        "label": "Dextrose 5%",
+        "patient_count": 75,
+        "source_system": "icu",
+        "value": 2358
+      },
+      {
+        "activity_type": "administration",
+        "encounter_count": 77,
+        "label": "Solution",
+        "patient_count": 67,
+        "source_system": "icu",
+        "value": 1287
+      },
+      {
+        "activity_type": "administration",
+        "encounter_count": 90,
+        "label": "HEPA5I",
+        "patient_count": 71,
+        "source_system": "hospital",
+        "value": 1157
+      },
+      {
+        "activity_type": "request",
+        "encounter_count": 322,
+        "label": "Insulin",
+        "patient_count": 200,
+        "source_system": "order",
+        "value": 1127
+      },
+      {
+        "activity_type": "administration",
+        "encounter_count": 62,
+        "label": "OXYC5",
+        "patient_count": 48,
+        "source_system": "hospital",
+        "value": 1074
+      },
+      {
+        "activity_type": "dispense",
+        "encounter_count": 133,
+        "label": "Insulin",
+        "patient_count": 84,
+        "source_system": "inpatient",
+        "value": 956
+      },
+      {
+        "activity_type": "administration",
+        "encounter_count": 33,
+        "label": "Norepinephrine",
+        "patient_count": 26,
+        "source_system": "icu",
+        "value": 947
+      },
+      {
+        "activity_type": "administration",
+        "encounter_count": 50,
+        "label": "HUMU100I",
+        "patient_count": 29,
+        "source_system": "hospital",
+        "value": 820
+      },
+      {
+        "activity_type": "administration",
+        "encounter_count": 9,
+        "label": "MIDO5",
+        "patient_count": 8,
+        "source_system": "hospital",
+        "value": 807
+      },
+      {
+        "activity_type": "administration",
+        "encounter_count": 88,
+        "label": "PO Intake",
+        "patient_count": 65,
+        "source_system": "icu",
+        "value": 805
+      },
+      {
+        "activity_type": "administration",
+        "encounter_count": 53,
+        "label": "Propofol",
+        "patient_count": 48,
+        "source_system": "icu",
+        "value": 794
+      },
+      {
+        "activity_type": "administration",
+        "encounter_count": 64,
+        "label": "ACET325",
+        "patient_count": 54,
+        "source_system": "hospital",
+        "value": 745
+      }
+    ]
+  },
   "meta": {
     "cloud_status": "Databricks serverless run succeeded",
     "conditions": 5051,
@@ -1023,14 +1183,125 @@
     "display_dataset": "MIMIC-IV Demo on FHIR",
     "encounters": 637,
     "failed_checks": 0,
-    "generated_at": "2026-05-05T12:18:02.870190+00:00",
+    "generated_at": "2026-05-06T09:03:35.952296+00:00",
+    "medication_events": 91873,
     "observations": 813540,
     "patients": 100,
+    "procedures": 3450,
     "quality_status": "warning",
     "source_resources": 928935,
-    "test_status": "76 pytest tests passed",
+    "test_status": "104 pytest tests passed",
     "title": "Healthcare FHIR Lakehouse Dashboard",
-    "warning_checks": 1
+    "warning_checks": 4
+  },
+  "procedures": {
+    "top": [
+      {
+        "encounter_count": 206,
+        "label": "Taking patient vital signs assessment (procedure)",
+        "patient_count": 54,
+        "source_system": "ed",
+        "value": 1038
+      },
+      {
+        "encounter_count": 222,
+        "label": "Triage: emergency center (procedure)",
+        "patient_count": 64,
+        "source_system": "ed",
+        "value": 222
+      },
+      {
+        "encounter_count": 96,
+        "label": "20 Gauge",
+        "patient_count": 78,
+        "source_system": "icu",
+        "value": 174
+      },
+      {
+        "encounter_count": 64,
+        "label": "Chest X-Ray",
+        "patient_count": 56,
+        "source_system": "icu",
+        "value": 171
+      },
+      {
+        "encounter_count": 74,
+        "label": "18 Gauge",
+        "patient_count": 64,
+        "source_system": "icu",
+        "value": 109
+      },
+      {
+        "encounter_count": 66,
+        "label": "Arterial Line",
+        "patient_count": 56,
+        "source_system": "icu",
+        "value": 82
+      },
+      {
+        "encounter_count": 47,
+        "label": "EKG",
+        "patient_count": 44,
+        "source_system": "icu",
+        "value": 69
+      },
+      {
+        "encounter_count": 60,
+        "label": "Invasive Ventilation",
+        "patient_count": 51,
+        "source_system": "icu",
+        "value": 65
+      },
+      {
+        "encounter_count": 35,
+        "label": "CT scan",
+        "patient_count": 30,
+        "source_system": "icu",
+        "value": 58
+      },
+      {
+        "encounter_count": 45,
+        "label": "Extubation",
+        "patient_count": 40,
+        "source_system": "icu",
+        "value": 49
+      },
+      {
+        "encounter_count": 39,
+        "label": "Multi Lumen",
+        "patient_count": 34,
+        "source_system": "icu",
+        "value": 45
+      },
+      {
+        "encounter_count": 27,
+        "label": "Family updated by RN",
+        "patient_count": 25,
+        "source_system": "icu",
+        "value": 43
+      },
+      {
+        "encounter_count": 36,
+        "label": "22 Gauge",
+        "patient_count": 34,
+        "source_system": "icu",
+        "value": 42
+      },
+      {
+        "encounter_count": 23,
+        "label": "Blood Cultured",
+        "patient_count": 22,
+        "source_system": "icu",
+        "value": 41
+      },
+      {
+        "encounter_count": 35,
+        "label": "PICC Line",
+        "patient_count": 24,
+        "source_system": "icu",
+        "value": 38
+      }
+    ]
   },
   "quality_checks": [
     {
@@ -1074,6 +1345,54 @@
       "status": "pass"
     },
     {
+      "details": "Silver table row count matches Bronze resource-type count.",
+      "expected": "1794 rows from Bronze Medication",
+      "layer": "silver",
+      "name": "silver_medication_row_count",
+      "observed": "1794",
+      "status": "pass"
+    },
+    {
+      "details": "Silver table row count matches Bronze resource-type count.",
+      "expected": "17552 rows from Bronze MedicationRequest",
+      "layer": "silver",
+      "name": "silver_medication_request_row_count",
+      "observed": "17552",
+      "status": "pass"
+    },
+    {
+      "details": "Silver table row count matches Bronze resource-type count.",
+      "expected": "56535 rows from Bronze MedicationAdministration",
+      "layer": "silver",
+      "name": "silver_medication_administration_row_count",
+      "observed": "56535",
+      "status": "pass"
+    },
+    {
+      "details": "Silver table row count matches Bronze resource-type count.",
+      "expected": "15375 rows from Bronze MedicationDispense",
+      "layer": "silver",
+      "name": "silver_medication_dispense_row_count",
+      "observed": "15375",
+      "status": "pass"
+    },
+    {
+      "details": "Silver table row count matches Bronze resource-type count.",
+      "expected": "2411 rows from Bronze MedicationStatement",
+      "layer": "silver",
+      "name": "silver_medication_statement_row_count",
+      "observed": "2411",
+      "status": "pass"
+    },
+    {
+      "details": "Silver table row count matches Bronze resource-type count.",
+      "expected": "3450 rows from Bronze Procedure",
+      "layer": "silver",
+      "name": "silver_procedure_row_count",
+      "observed": "3450",
+      "status": "pass"
+    },
+    {
       "details": "No missing ids.",
       "expected": "patient_id present",
       "layer": "silver",
@@ -1106,7 +1425,55 @@
       "status": "pass"
     },
     {
-      "details": "All populated core patient and encounter references resolve.",
+      "details": "No missing ids.",
+      "expected": "medication_id present",
+      "layer": "silver",
+      "name": "medication_required_ids",
+      "observed": "0",
+      "status": "pass"
+    },
+    {
+      "details": "No missing ids.",
+      "expected": "medication_request_id and patient_id present",
+      "layer": "silver",
+      "name": "medication_request_required_ids",
+      "observed": "0",
+      "status": "pass"
+    },
+    {
+      "details": "No missing ids.",
+      "expected": "medication_administration_id and patient_id present",
+      "layer": "silver",
+      "name": "medication_administration_required_ids",
+      "observed": "0",
+      "status": "pass"
+    },
+    {
+      "details": "No missing ids.",
+      "expected": "medication_dispense_id and patient_id present",
+      "layer": "silver",
+      "name": "medication_dispense_required_ids",
+      "observed": "0",
+      "status": "pass"
+    },
+    {
+      "details": "No missing ids.",
+      "expected": "medication_statement_id and patient_id present",
+      "layer": "silver",
+      "name": "medication_statement_required_ids",
+      "observed": "0",
+      "status": "pass"
+    },
+    {
+      "details": "No missing ids.",
+      "expected": "procedure_id, patient_id, and encounter_id present",
+      "layer": "silver",
+      "name": "procedure_required_ids",
+      "observed": "0",
+      "status": "pass"
+    },
+    {
+      "details": "All populated Silver patient, encounter, medication, and request references resolve.",
       "expected": "0 orphan populated references",
       "layer": "relationships",
       "name": "silver_relationship_orphans",
@@ -1119,6 +1486,30 @@
       "layer": "relationships",
       "name": "observation_missing_encounter_id",
       "observed": "30332",
+      "status": "warn"
+    },
+    {
+      "details": "Some medication administrations lack encounter context in source.",
+      "expected": "reported optional coverage gap",
+      "layer": "relationships",
+      "name": "medication_administration_missing_encounter_id",
+      "observed": "1059",
+      "status": "warn"
+    },
+    {
+      "details": "ICU and some hospital administrations are not order-linked.",
+      "expected": "reported optional coverage gap",
+      "layer": "relationships",
+      "name": "medication_administration_missing_request_id",
+      "observed": "21509",
+      "status": "warn"
+    },
+    {
+      "details": "ED dispenses are not order-linked in this source.",
+      "expected": "reported optional coverage gap",
+      "layer": "relationships",
+      "name": "medication_dispense_missing_request_id",
+      "observed": "1082",
       "status": "warn"
     },
     {
@@ -1159,6 +1550,30 @@
       "layer": "gold",
       "name": "gold_labs_daily_surface",
       "observed": "90719",
+      "status": "pass"
+    },
+    {
+      "details": "Gold validation passed for this table.",
+      "expected": "rows present and forbidden identifier columns absent",
+      "layer": "gold",
+      "name": "gold_medication_activity_surface",
+      "observed": "7160",
+      "status": "pass"
+    },
+    {
+      "details": "Gold validation passed for this table.",
+      "expected": "rows present and forbidden identifier columns absent",
+      "layer": "gold",
+      "name": "gold_medication_order_fulfillment_surface",
+      "observed": "17552",
+      "status": "pass"
+    },
+    {
+      "details": "Gold validation passed for this table.",
+      "expected": "rows present and forbidden identifier columns absent",
+      "layer": "gold",
+      "name": "gold_procedure_summary_surface",
+      "observed": "536",
       "status": "pass"
     },
     {
@@ -1211,14 +1626,49 @@
     "dataset_name": "mimic-iv-clinical-database-demo-on-fhir",
     "dataset_version": "2.1.0",
     "encounter_rows": 637,
-    "generated_at": "2026-05-05T12:17:59.051566+00:00",
+    "generated_at": "2026-05-06T08:57:16.775186+00:00",
+    "medication_administration_missing_encounter_id": 1059,
+    "medication_administration_missing_patient_id": 0,
+    "medication_administration_missing_request_id": 21509,
+    "medication_administration_orphan_encounter_id": 0,
+    "medication_administration_orphan_patient_id": 0,
+    "medication_administration_orphan_request_id": 0,
+    "medication_administration_rows": 56535,
+    "medication_dispense_missing_encounter_id": 0,
+    "medication_dispense_missing_patient_id": 0,
+    "medication_dispense_missing_request_id": 1082,
+    "medication_dispense_orphan_encounter_id": 0,
+    "medication_dispense_orphan_patient_id": 0,
+    "medication_dispense_orphan_request_id": 0,
+    "medication_dispense_rows": 15375,
+    "medication_ingredient_orphan_ingredient_medication_id": 0,
+    "medication_ingredient_orphan_medication_id": 0,
+    "medication_ingredient_rows": 634,
+    "medication_request_missing_encounter_id": 0,
+    "medication_request_missing_medication_concept": 0,
+    "medication_request_missing_patient_id": 0,
+    "medication_request_orphan_encounter_id": 0,
+    "medication_request_orphan_medication_id": 0,
+    "medication_request_orphan_patient_id": 0,
+    "medication_request_rows": 17552,
+    "medication_rows": 1794,
+    "medication_statement_missing_encounter_id": 0,
+    "medication_statement_missing_patient_id": 0,
+    "medication_statement_orphan_encounter_id": 0,
+    "medication_statement_orphan_patient_id": 0,
+    "medication_statement_rows": 2411,
     "observation_missing_encounter_id": 30332,
     "observation_missing_patient_id": 0,
     "observation_orphan_encounter_id": 0,
     "observation_orphan_patient_id": 0,
     "observation_rows": 813540,
     "passed": true,
-    "patient_rows": 100
+    "patient_rows": 100,
+    "procedure_missing_encounter_id": 0,
+    "procedure_missing_patient_id": 0,
+    "procedure_orphan_encounter_id": 0,
+    "procedure_orphan_patient_id": 0,
+    "procedure_rows": 3450
   },
   "table_counts": [
     {
@@ -1247,6 +1697,36 @@
       "table": "condition"
     },
     {
+      "layer": "Silver",
+      "rows": 1794,
+      "table": "medication"
+    },
+    {
+      "layer": "Silver",
+      "rows": 17552,
+      "table": "medication_request"
+    },
+    {
+      "layer": "Silver",
+      "rows": 56535,
+      "table": "medication_administration"
+    },
+    {
+      "layer": "Silver",
+      "rows": 15375,
+      "table": "medication_dispense"
+    },
+    {
+      "layer": "Silver",
+      "rows": 2411,
+      "table": "medication_statement"
+    },
+    {
+      "layer": "Silver",
+      "rows": 3450,
+      "table": "procedure"
+    },
+    {
       "layer": "Gold",
       "rows": 637,
       "table": "encounter_summary"
@@ -1265,6 +1745,21 @@
       "layer": "Gold",
       "rows": 90719,
       "table": "labs_daily"
+    },
+    {
+      "layer": "Gold",
+      "rows": 7160,
+      "table": "medication_activity"
+    },
+    {
+      "layer": "Gold",
+      "rows": 17552,
+      "table": "medication_order_fulfillment"
+    },
+    {
+      "layer": "Gold",
+      "rows": 536,
+      "table": "procedure_summary"
     }
   ]
 }

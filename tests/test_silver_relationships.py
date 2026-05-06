@@ -26,6 +26,15 @@ def test_relationship_audit_passed_depends_on_orphan_counts() -> None:
     assert audit.passed is True
     assert audit.to_dict()["passed"] is True
 
+    failed_audit = RelationshipAudit(
+        dataset_name="dataset",
+        dataset_version="1",
+        generated_at="now",
+        medication_request_orphan_medication_id=1,
+    )
+
+    assert failed_audit.passed is False
+
 
 def test_relationship_report_includes_missing_and_orphan_sections() -> None:
     audit = RelationshipAudit(
@@ -51,3 +60,5 @@ def test_relationship_report_includes_missing_and_orphan_sections() -> None:
     assert "# FHIR Relationship Audit" in report
     assert "Observation missing encounter_id" in report
     assert "Observation orphan patient_id" in report
+    assert "MedicationAdministration missing request id" in report
+    assert "Procedure orphan encounter_id" in report

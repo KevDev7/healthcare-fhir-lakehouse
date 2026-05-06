@@ -38,6 +38,8 @@ function renderMetrics(data) {
     ["Encounters", data.meta.encounters, "Silver encounter rows"],
     ["Observations", data.meta.observations, "Silver observation rows"],
     ["Conditions", data.meta.conditions, "Silver condition rows"],
+    ["Medication events", data.meta.medication_events, "Requests, admins, dispenses, statements"],
+    ["Procedures", data.meta.procedures, "Silver procedure rows"],
     [
       "Quality checks",
       data.quality_checks.length,
@@ -198,7 +200,14 @@ function renderQuality(data) {
     relationship.observation_orphan_patient_id +
     relationship.observation_orphan_encounter_id +
     relationship.condition_orphan_patient_id +
-    relationship.condition_orphan_encounter_id;
+    relationship.condition_orphan_encounter_id +
+    relationship.medication_request_orphan_patient_id +
+    relationship.medication_request_orphan_encounter_id +
+    relationship.medication_request_orphan_medication_id +
+    relationship.medication_administration_orphan_request_id +
+    relationship.medication_dispense_orphan_request_id +
+    relationship.procedure_orphan_patient_id +
+    relationship.procedure_orphan_encounter_id;
 
   const auditHeroRows = [
     ["Orphan references", orphanReferences, "populated references"],
@@ -236,6 +245,11 @@ function renderQuality(data) {
     ["Encounter rows", relationship.encounter_rows],
     ["Observation rows", relationship.observation_rows],
     ["Condition rows", relationship.condition_rows],
+    ["Medication request rows", relationship.medication_request_rows],
+    ["Medication administration rows", relationship.medication_administration_rows],
+    ["Medication dispense rows", relationship.medication_dispense_rows],
+    ["Medication statement rows", relationship.medication_statement_rows],
+    ["Procedure rows", relationship.procedure_rows],
     ["Observation orphan patients", relationship.observation_orphan_patient_id],
     ["Observation orphan encounters", relationship.observation_orphan_encounter_id],
     ["Condition orphan patients", relationship.condition_orphan_patient_id],
@@ -326,6 +340,22 @@ async function main() {
   });
   renderTrend("#vitals-trend-chart", data.measurements.vitals_trend);
   renderTrend("#labs-trend-chart", data.measurements.labs_trend);
+  renderBars("#medication-activity-type-chart", data.medications.by_activity_type, {
+    color: "#0f766e",
+  });
+  renderBars("#medication-fulfillment-chart", data.medications.fulfillment_paths, {
+    color: "#6d28d9",
+  });
+  renderBars("#medication-top-chart", data.medications.top_activity, {
+    color: "#2563eb",
+    detail: (row) =>
+      `${row.activity_type} · ${row.source_system} · ${format.format(row.patient_count)} patients`,
+  });
+  renderBars("#procedure-chart", data.procedures.top, {
+    color: "#b7791f",
+    detail: (row) =>
+      `${row.source_system} · ${format.format(row.patient_count)} patients · ${format.format(row.encounter_count)} encounters`,
+  });
   renderQuality(data);
   wireTabs();
 }

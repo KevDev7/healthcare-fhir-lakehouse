@@ -4,6 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Healthcare FHIR Lakehouse Dashboard</title>
+    <link rel="icon" href="data:," />
     <link rel="stylesheet" href="./assets/styles.css" />
   </head>
   <body>
@@ -12,7 +13,7 @@
         <p class="eyebrow">Healthcare FHIR Lakehouse</p>
         <h1>Lakehouse Quality And Analytics Dashboard</h1>
       </div>
-      <a class="repo-link" href="../">Repository</a>
+      <a class="repo-link" href="https://github.com/KevDev7/healthcare-fhir-lakehouse">Repository</a>
     </header>
 
     <main>
@@ -49,6 +50,8 @@
         <button class="tab" data-view="encounters" type="button">Encounters</button>
         <button class="tab" data-view="conditions" type="button">Conditions</button>
         <button class="tab" data-view="measurements" type="button">Measurements</button>
+        <button class="tab" data-view="medications" type="button">Medications</button>
+        <button class="tab" data-view="procedures" type="button">Procedures</button>
         <button class="tab" data-view="quality" type="button">Quality</button>
       </nav>
 
@@ -138,6 +141,43 @@
             <div id="labs-trend-chart"></div>
           </article>
         </div>
+      </section>
+
+      <section class="view" id="medications">
+        <div class="section-header">
+          <h2>Medication Analytics</h2>
+          <p>
+            Medication activity across orders, administrations, dispenses, and
+            ED statements, plus explicit order-to-event linkage.
+          </p>
+        </div>
+        <div class="chart-grid two">
+          <article class="chart-panel">
+            <h3>Activity Type</h3>
+            <div id="medication-activity-type-chart"></div>
+          </article>
+          <article class="chart-panel">
+            <h3>Order Fulfillment</h3>
+            <div id="medication-fulfillment-chart"></div>
+          </article>
+          <article class="chart-panel wide">
+            <h3>Top Medication Activity</h3>
+            <div id="medication-top-chart"></div>
+          </article>
+        </div>
+      </section>
+
+      <section class="view" id="procedures">
+        <div class="section-header">
+          <h2>Procedure Summary</h2>
+          <p>
+            Top procedure concepts across hospital, ED, and ICU source systems
+            with patient and encounter coverage.
+          </p>
+        </div>
+        <article class="chart-panel wide">
+          <div id="procedure-chart"></div>
+        </article>
       </section>
 
       <section class="view" id="quality">

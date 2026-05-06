@@ -29,9 +29,13 @@ The Spark task runs the same lakehouse flow as the local pipeline:
 
 1. Read compressed FHIR NDJSON from the managed Unity Catalog volume.
 2. Build Bronze Delta table `workspace.healthcare_fhir_lakehouse_bronze.fhir_resources`.
-3. Build Silver Delta tables for Patient, Encounter, Observation, and Condition.
-4. Write relationship and privacy audit Delta tables.
-5. Build Gold Delta tables for encounter summaries, condition summaries, daily vitals, and daily labs.
+3. Build Silver Delta tables for Patient, Encounter, Observation, Condition,
+   Medication catalog, medication event resources, and Procedure.
+4. Write relationship and privacy audit Delta tables across the expanded Silver
+   clinical model.
+5. Build Gold Delta tables for encounter summaries, condition summaries, daily
+   vitals/labs, medication activity, medication order fulfillment, and procedure
+   summaries.
 6. Write a cloud data quality report and fail the task if a hard check fails.
 
 ## Parameters

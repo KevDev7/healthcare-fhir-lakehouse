@@ -15,6 +15,8 @@ REQUIRED_TOP_LEVEL_KEYS = {
     "encounters",
     "conditions",
     "measurements",
+    "medications",
+    "procedures",
 }
 
 REQUIRED_MEASUREMENT_KEYS = {
@@ -48,6 +50,8 @@ def main() -> None:
     meta = data["meta"]
     require(meta["source_resources"] == 928935, "source resource count changed")
     require(meta["patients"] == 100, "patient count changed")
+    require(meta["medication_events"] == 91873, "medication event count changed")
+    require(meta["procedures"] == 3450, "procedure count changed")
     require(meta["failed_checks"] == 0, "dashboard should not publish failed checks")
 
     require_non_empty_list(data, "table_counts")
@@ -70,6 +74,11 @@ def main() -> None:
     )
     for key in REQUIRED_MEASUREMENT_KEYS:
         require_non_empty_list(measurements, key)
+
+    require_non_empty_list(data["medications"], "by_activity_type")
+    require_non_empty_list(data["medications"], "top_activity")
+    require_non_empty_list(data["medications"], "fulfillment_paths")
+    require_non_empty_list(data["procedures"], "top")
 
     print(f"Validated {DASHBOARD_JSON.relative_to(ROOT)}")
 

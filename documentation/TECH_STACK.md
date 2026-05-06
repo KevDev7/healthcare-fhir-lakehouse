@@ -164,7 +164,9 @@ Databricks:
 
 * Spark DataFrames or SQL parse nested fields
 * Writes resource-specific Delta tables
-* Implemented for Patient, Encounter, Observation, and Condition
+* Implemented for Patient, Encounter, Observation, Condition, Medication,
+  MedicationRequest, MedicationAdministration, MedicationDispense,
+  MedicationStatement, and Procedure
 
 ### Privacy Validation
 

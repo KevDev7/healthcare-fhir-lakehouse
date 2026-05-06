@@ -182,7 +182,7 @@ main {
 }
 
 .metric .value {
-  font-size: clamp(25px, 3vw, 36px);
+  font-size: 34px;
   font-weight: 850;
 }
 
@@ -190,6 +190,7 @@ main {
   margin-top: 6px;
   color: var(--muted);
   font-size: 12px;
+  overflow-wrap: anywhere;
 }
 
 .tabs {

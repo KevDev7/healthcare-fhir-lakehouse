@@ -47,6 +47,12 @@ PATTERN_SCAN_COLUMNS = {
     "encounter": ("admit_source", "discharge_disposition"),
     "observation": ("display", "value"),
     "condition": ("display",),
+    "medication": ("medication_display", "medication_text"),
+    "medication_request": ("medication_display",),
+    "medication_administration": ("medication_display",),
+    "medication_dispense": ("medication_display", "medication_text"),
+    "medication_statement": ("medication_display", "medication_text"),
+    "procedure": ("procedure_display", "body_site_display"),
 }
 
 
