@@ -92,6 +92,91 @@ flowchart LR
     gold --> delta
 ```
 
+## Core Schema
+
+```mermaid
+erDiagram
+    BRONZE_FHIR_RESOURCES {
+        string resource_id PK
+        string resource_type
+        string source_file
+        string raw_json
+    }
+
+    SILVER_PATIENT {
+        string patient_id PK
+        string gender
+        string birth_date
+        string bronze_resource_id FK
+    }
+
+    SILVER_ENCOUNTER {
+        string encounter_id PK
+        string patient_id FK
+        string class_code
+        string start_datetime
+        string end_datetime
+    }
+
+    SILVER_OBSERVATION {
+        string observation_id PK
+        string patient_id FK
+        string encounter_id FK
+        string code
+        string display
+        string value
+        string unit
+    }
+
+    SILVER_CONDITION {
+        string condition_id PK
+        string patient_id FK
+        string encounter_id FK
+        string code
+        string display
+    }
+
+    GOLD_ENCOUNTER_SUMMARY {
+        string encounter_key PK
+        string patient_key
+        int observation_count
+        int condition_count
+        int length_of_stay_hours
+    }
+
+    GOLD_VITALS_DAILY {
+        string patient_key
+        string encounter_key
+        int event_day_index
+        string measurement_name
+        float avg_value
+    }
+
+    GOLD_LABS_DAILY {
+        string patient_key
+        string encounter_key
+        int event_day_index
+        string measurement_name
+        float avg_value
+    }
+
+    BRONZE_FHIR_RESOURCES ||--o| SILVER_PATIENT : "Patient"
+    BRONZE_FHIR_RESOURCES ||--o| SILVER_ENCOUNTER : "Encounter"
+    BRONZE_FHIR_RESOURCES ||--o| SILVER_OBSERVATION : "Observation"
+    BRONZE_FHIR_RESOURCES ||--o| SILVER_CONDITION : "Condition"
+    SILVER_PATIENT ||--o{ SILVER_ENCOUNTER : "patient_id"
+    SILVER_PATIENT ||--o{ SILVER_OBSERVATION : "patient_id"
+    SILVER_PATIENT ||--o{ SILVER_CONDITION : "patient_id"
+    SILVER_ENCOUNTER ||--o{ SILVER_OBSERVATION : "encounter_id"
+    SILVER_ENCOUNTER ||--o{ SILVER_CONDITION : "encounter_id"
+    SILVER_ENCOUNTER ||--o{ GOLD_ENCOUNTER_SUMMARY : "rollup"
+    SILVER_OBSERVATION ||--o{ GOLD_VITALS_DAILY : "vitals"
+    SILVER_OBSERVATION ||--o{ GOLD_LABS_DAILY : "labs"
+```
+
+Full table lineage and column details are documented in
+`documentation/table_lineage.md`.
+
 ## Implemented Tables
 
 Local Parquet outputs:
