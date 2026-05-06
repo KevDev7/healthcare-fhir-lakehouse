@@ -3,11 +3,17 @@ const COLORS = ["#2563eb", "#0f766e", "#6d28d9", "#b7791f", "#475569", "#be123c"
 
 const format = new Intl.NumberFormat("en-US");
 const DISPLAY_LABELS = {
+  "AGAINST ADVICE": "Against advice",
+  "CHRONIC/LONG TERM ACUTE CARE": "Chronic/LTAC",
+  "HOME HEALTH CARE": "Home health care",
+  "LEFT WITHOUT BEING SEEN": "Left without being seen",
   "Non Invasive Blood Pressure diastolic": "BP diastolic",
   "Non Invasive Blood Pressure mean": "BP mean",
   "Non Invasive Blood Pressure systolic": "BP systolic",
   "O2 saturation pulseoxymetry": "O2 saturation",
+  "SKILLED NURSING FACILITY": "Skilled nursing facility",
   "Temperature Fahrenheit": "Temperature",
+  unknown: "Unknown",
 };
 
 function el(tag, className, text) {

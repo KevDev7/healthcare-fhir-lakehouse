@@ -9,7 +9,14 @@ as a realistic public healthcare dataset and implements a Bronze -> Silver ->
 Gold lakehouse pipeline with privacy-aware validation, data quality checks, local
 orchestration, and Databricks/Spark/Delta cloud execution.
 
+[![CI](https://github.com/KevDev7/healthcare-fhir-lakehouse/actions/workflows/ci.yml/badge.svg)](https://github.com/KevDev7/healthcare-fhir-lakehouse/actions/workflows/ci.yml)
+[![Live Dashboard](https://img.shields.io/badge/live-dashboard-2563eb)](https://kevdev7.github.io/healthcare-fhir-lakehouse/)
+[![Databricks Evidence](https://img.shields.io/badge/databricks-run%20evidence-ff6f00)](documentation/cloud_run_evidence.md)
+[![Tests](https://img.shields.io/badge/tests-76%20passing-16a34a)](tests/)
+
 **Dashboard:** [View the interactive lakehouse dashboard](https://kevdev7.github.io/healthcare-fhir-lakehouse/)
+
+![Dashboard preview](docs/assets/dashboard-preview.png)
 
 ## Highlights
 
@@ -27,6 +34,17 @@ orchestration, and Databricks/Spark/Delta cloud execution.
   aggregate Gold and audit outputs.
 * **Engineering rigor:** Python package layout, Typer CLI, Makefile entry points,
   `uv` dependency management, Ruff linting, and 76 pytest tests.
+
+## Healthcare Data Engineering Mapping
+
+| Real-world pattern | Project evidence |
+| --- | --- |
+| FHIR ingestion and parsing | Compressed NDJSON resources are profiled, ingested, and normalized into Patient, Encounter, Observation, and Condition tables. |
+| Raw-to-curated lakehouse design | Bronze preserves raw FHIR payloads; Silver exposes queryable clinical entities; Gold publishes analytics-ready aggregates. |
+| Clinical relationship modeling | Patient and encounter references are parsed into join keys and audited before Gold tables rely on them. |
+| Privacy-aware analytics | Safe Harbor-inspired checks flag identifiers, precise dates, lineage fields, and text-like values before publication. |
+| Data quality gates | Row counts, required keys, relationship integrity, privacy findings, and Gold table surfaces are consolidated into quality reports. |
+| Cloud lakehouse execution | A Databricks serverless Spark job writes Delta tables to Unity Catalog schemas with documented run evidence. |
 
 ## Stack
 
@@ -453,6 +471,7 @@ Start with:
 * `documentation/runbook.md` for reproduction steps
 * `documentation/ARCHITECTURE.md` for system design
 * `documentation/table_lineage.md` for the Mermaid schema and lineage diagram
+* `documentation/data_dictionary.md` for table grains, keys, and field meanings
 * `documentation/TECH_STACK.md` for stack decisions
 * `documentation/source_data_profile.md` for dataset profiling
 * `documentation/data_quality_report.md` for quality checks

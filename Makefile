@@ -1,4 +1,4 @@
-.PHONY: install test lint doctor profile profile-inventory profile-schema profile-report bronze bronze-ingest bronze-validate silver silver-build silver-validate relationships relationships-audit relationships-report privacy privacy-audit privacy-report gold gold-build gold-validate quality quality-check quality-report pipeline dashboard-data cloud-validate clean-output
+.PHONY: install test lint doctor profile profile-inventory profile-schema profile-report bronze bronze-ingest bronze-validate silver silver-build silver-validate relationships relationships-audit relationships-report privacy privacy-audit privacy-report gold gold-build gold-validate quality quality-check quality-report pipeline dashboard-data dashboard-check cloud-validate clean-output
 
 install:
 	uv sync
@@ -76,6 +76,10 @@ pipeline:
 
 dashboard-data:
 	uv run python scripts/build_dashboard_data.py
+
+dashboard-check:
+	uv run python scripts/validate_dashboard_data.py
+	node --check docs/assets/dashboard.js
 
 cloud-validate:
 	databricks bundle validate
