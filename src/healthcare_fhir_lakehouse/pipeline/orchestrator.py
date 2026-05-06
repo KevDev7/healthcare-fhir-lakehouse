@@ -25,11 +25,11 @@ from healthcare_fhir_lakehouse.quality.checks import (
     write_data_quality_json,
     write_data_quality_markdown,
 )
-from healthcare_fhir_lakehouse.silver.build import build_all_core_silver_tables
+from healthcare_fhir_lakehouse.silver.build import build_all_silver_tables
 from healthcare_fhir_lakehouse.silver.relationships import (
     build_and_write_relationship_report,
 )
-from healthcare_fhir_lakehouse.silver.validation import validate_core_silver_tables
+from healthcare_fhir_lakehouse.silver.validation import validate_silver_tables
 
 PIPELINE_RUN_JSON = "pipeline_run.json"
 PIPELINE_RUN_MARKDOWN = Path("documentation/pipeline_run.md")
@@ -71,6 +71,19 @@ class PipelineRun:
 PipelineStep = Callable[[ProjectConfig], tuple[list[Path], str]]
 
 
+def display_artifact_path(config: ProjectConfig, path: Path) -> str:
+    try:
+        return str(path.relative_to(config.repo_root))
+    except ValueError:
+        return str(path)
+
+
+def render_artifacts(artifacts: list[str]) -> str:
+    if not artifacts:
+        return "n/a"
+    return "; ".join(f"`{artifact}`" for artifact in artifacts)
+
+
 def run_pipeline_step(
     config: ProjectConfig,
     name: str,
@@ -92,7 +105,7 @@ def run_pipeline_step(
         name=name,
         status=status,
         duration_seconds=duration_seconds,
-        artifacts=[str(path) for path in artifacts],
+        artifacts=[display_artifact_path(config, path) for path in artifacts],
         details=details,
         error=error,
     )
@@ -115,11 +128,11 @@ def bronze_step(config: ProjectConfig) -> tuple[list[Path], str]:
 
 
 def silver_step(config: ProjectConfig) -> tuple[list[Path], str]:
-    results = build_all_core_silver_tables(config)
-    validate_core_silver_tables(config)
+    results = build_all_silver_tables(config)
+    validate_silver_tables(config)
     artifacts = [result.output_dir for result in results]
     total_rows = sum(result.total_rows for result in results)
-    return artifacts, f"Silver wrote and validated {total_rows:,} core rows."
+    return artifacts, f"Silver wrote and validated {total_rows:,} rows."
 
 
 def relationships_step(config: ProjectConfig) -> tuple[list[Path], str]:
@@ -197,7 +210,7 @@ def render_pipeline_run(run: PipelineRun) -> str:
         f"{step.name} | "
         f"{step.status} | "
         f"{step.duration_seconds:.3f} | "
-        f"{'; '.join(step.artifacts) or 'n/a'} | "
+        f"{render_artifacts(step.artifacts)} | "
         f"{step.details} | "
         f"{step.error or 'n/a'} |"
         for step in run.steps
@@ -251,8 +264,10 @@ __all__ = [
     "PipelineRun",
     "PipelineStep",
     "PipelineStepResult",
+    "display_artifact_path",
     "local_pipeline_steps",
     "pipeline_run_json_path",
+    "render_artifacts",
     "render_pipeline_run",
     "run_and_write_local_pipeline",
     "run_local_pipeline",

@@ -15,10 +15,10 @@ medications, specimens, locations, and organization metadata.
 ## Implementation Status
 
 The repository contains a local Python implementation with source profiling,
-Bronze Parquet ingestion, core Silver clinical tables, FHIR relationship
-auditing, privacy validation, Gold analytics tables, and consolidated data
-quality reporting. A local pipeline runner executes the full flow and writes a
-run manifest.
+Bronze Parquet ingestion, Silver clinical tables, FHIR relationship auditing,
+privacy validation, Gold analytics tables, and consolidated data quality
+reporting. A local pipeline runner executes the full flow and writes a run
+manifest.
 
 The project also includes a Databricks/Spark/Delta implementation. The
 Databricks version has run successfully on serverless compute and writes Bronze,
@@ -198,8 +198,8 @@ approved.
 
 ### Purpose
 
-Validate that populated core Silver relationships resolve before Gold tables rely
-on them.
+Validate that populated Silver relationships resolve before Gold tables rely on
+them.
 
 Implemented local artifacts:
 

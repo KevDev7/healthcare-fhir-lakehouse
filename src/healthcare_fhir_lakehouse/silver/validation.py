@@ -11,7 +11,7 @@ from healthcare_fhir_lakehouse.silver.writer import (
     silver_output_dir,
 )
 
-CORE_SILVER_TABLES = {
+SILVER_RESOURCE_TYPES = {
     "patient": "Patient",
     "encounter": "Encounter",
     "observation": "Observation",
@@ -223,9 +223,9 @@ def validate_medication_dispense_request_ids(config: ProjectConfig) -> int:
     return orphan_count
 
 
-def validate_core_silver_tables(config: ProjectConfig) -> list[SilverValidationResult]:
+def validate_silver_tables(config: ProjectConfig) -> list[SilverValidationResult]:
     results: list[SilverValidationResult] = []
-    for table_name, resource_type in CORE_SILVER_TABLES.items():
+    for table_name, resource_type in SILVER_RESOURCE_TYPES.items():
         expected_rows = count_bronze_resource_type(config, resource_type)
         actual_rows = count_silver_table(silver_output_dir(config, table_name))
         result = SilverValidationResult(
@@ -248,7 +248,7 @@ def validate_core_silver_tables(config: ProjectConfig) -> list[SilverValidationR
 
 
 __all__ = [
-    "CORE_SILVER_TABLES",
+    "SILVER_RESOURCE_TYPES",
     "SilverValidationError",
     "SilverValidationResult",
     "count_bronze_resource_type",
@@ -258,5 +258,5 @@ __all__ = [
     "validate_medication_administration_request_ids",
     "validate_medication_dispense_request_ids",
     "validate_medication_request_medication_ids",
-    "validate_core_silver_tables",
+    "validate_silver_tables",
 ]

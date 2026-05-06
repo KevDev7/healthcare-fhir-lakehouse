@@ -10,7 +10,7 @@ from healthcare_fhir_lakehouse.silver.condition import build_condition_table
 from healthcare_fhir_lakehouse.silver.patient import build_patient_table
 from healthcare_fhir_lakehouse.silver.validation import (
     SilverValidationError,
-    validate_core_silver_tables,
+    validate_silver_tables,
 )
 from healthcare_fhir_lakehouse.silver.writer import write_silver_rows
 
@@ -34,7 +34,7 @@ def make_config(tmp_path: Path) -> ProjectConfig:
     )
 
 
-def test_validate_core_silver_tables_fails_for_missing_expected_rows(
+def test_validate_silver_tables_fails_for_missing_expected_rows(
     tmp_path: Path,
 ) -> None:
     config = make_config(tmp_path)
@@ -49,10 +49,10 @@ def test_validate_core_silver_tables_fails_for_missing_expected_rows(
     build_patient_table(config)
 
     with pytest.raises(SilverValidationError, match="encounter"):
-        validate_core_silver_tables(config)
+        validate_silver_tables(config)
 
 
-def test_validate_core_silver_tables_passes_when_counts_match_for_present_types(
+def test_validate_silver_tables_passes_when_counts_match_for_present_types(
     tmp_path: Path,
 ) -> None:
     config = make_config(tmp_path)
@@ -67,7 +67,7 @@ def test_validate_core_silver_tables_passes_when_counts_match_for_present_types(
     build_patient_table(config)
     build_condition_table(config)
 
-    results = validate_core_silver_tables(config)
+    results = validate_silver_tables(config)
 
     assert {result.table_name: result.actual_rows for result in results} == {
         "patient": 1,
@@ -83,7 +83,7 @@ def test_validate_core_silver_tables_passes_when_counts_match_for_present_types(
     }
 
 
-def test_validate_core_silver_tables_rejects_medication_ingredient_orphans(
+def test_validate_silver_tables_rejects_medication_ingredient_orphans(
     tmp_path: Path,
 ) -> None:
     config = make_config(tmp_path)
@@ -104,10 +104,10 @@ def test_validate_core_silver_tables_rejects_medication_ingredient_orphans(
     )
 
     with pytest.raises(SilverValidationError, match="parent id mismatch"):
-        validate_core_silver_tables(config)
+        validate_silver_tables(config)
 
 
-def test_validate_core_silver_tables_rejects_medication_request_orphans(
+def test_validate_silver_tables_rejects_medication_request_orphans(
     tmp_path: Path,
 ) -> None:
     config = make_config(tmp_path)
@@ -132,10 +132,10 @@ def test_validate_core_silver_tables_rejects_medication_request_orphans(
     )
 
     with pytest.raises(SilverValidationError, match="medication id mismatch"):
-        validate_core_silver_tables(config)
+        validate_silver_tables(config)
 
 
-def test_validate_core_silver_tables_rejects_medication_administration_orphans(
+def test_validate_silver_tables_rejects_medication_administration_orphans(
     tmp_path: Path,
 ) -> None:
     config = make_config(tmp_path)
@@ -165,10 +165,10 @@ def test_validate_core_silver_tables_rejects_medication_administration_orphans(
     )
 
     with pytest.raises(SilverValidationError, match="request id mismatch"):
-        validate_core_silver_tables(config)
+        validate_silver_tables(config)
 
 
-def test_validate_core_silver_tables_rejects_medication_dispense_orphans(
+def test_validate_silver_tables_rejects_medication_dispense_orphans(
     tmp_path: Path,
 ) -> None:
     config = make_config(tmp_path)
@@ -198,4 +198,4 @@ def test_validate_core_silver_tables_rejects_medication_dispense_orphans(
     )
 
     with pytest.raises(SilverValidationError, match="request id mismatch"):
-        validate_core_silver_tables(config)
+        validate_silver_tables(config)

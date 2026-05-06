@@ -19,7 +19,7 @@ def test_run_pipeline_step_records_success(tmp_path) -> None:
 
     assert result.status == "success"
     assert result.error is None
-    assert result.artifacts == [str(tmp_path / "output")]
+    assert result.artifacts == ["output"]
 
 
 def test_run_pipeline_step_records_failure(tmp_path) -> None:

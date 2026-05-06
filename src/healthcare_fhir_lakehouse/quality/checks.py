@@ -15,7 +15,7 @@ from healthcare_fhir_lakehouse.gold.validation import validate_gold_tables
 from healthcare_fhir_lakehouse.gold.writer import gold_parquet_glob
 from healthcare_fhir_lakehouse.privacy.audit import build_privacy_audit
 from healthcare_fhir_lakehouse.silver.relationships import build_relationship_audit
-from healthcare_fhir_lakehouse.silver.validation import validate_core_silver_tables
+from healthcare_fhir_lakehouse.silver.validation import validate_silver_tables
 from healthcare_fhir_lakehouse.silver.writer import silver_output_dir
 
 DATA_QUALITY_JSON = "data_quality_report.json"
@@ -140,7 +140,7 @@ def check_bronze_manifest(config: ProjectConfig) -> list[QualityCheckResult]:
 
 
 def check_silver_validation(config: ProjectConfig) -> list[QualityCheckResult]:
-    results = validate_core_silver_tables(config)
+    results = validate_silver_tables(config)
     return [
         pass_check(
             f"silver_{result.table_name}_row_count",

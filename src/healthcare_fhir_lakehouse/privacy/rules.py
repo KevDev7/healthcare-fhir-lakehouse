@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-CORE_SILVER_TABLES = (
+SILVER_PRIVACY_TABLES = (
     "patient",
     "encounter",
     "observation",
@@ -424,7 +424,7 @@ LINEAGE_COLUMNS = (
 
 def iter_privacy_rules() -> tuple[PrivacyColumnRule, ...]:
     rules = list(SILVER_PRIVACY_RULES)
-    for table_name in CORE_SILVER_TABLES:
+    for table_name in SILVER_PRIVACY_TABLES:
         for column_name in LINEAGE_COLUMNS:
             rules.append(
                 PrivacyColumnRule(
@@ -452,9 +452,9 @@ def find_rule(table_name: str, column_name: str) -> PrivacyColumnRule | None:
 
 
 __all__ = [
-    "CORE_SILVER_TABLES",
     "LINEAGE_COLUMNS",
     "PrivacyColumnRule",
+    "SILVER_PRIVACY_TABLES",
     "SILVER_PRIVACY_RULES",
     "find_rule",
     "iter_privacy_rules",

@@ -50,12 +50,12 @@ def build_silver_table(config: ProjectConfig, table_name: str) -> SilverWriteRes
     return builder(config)
 
 
-def build_all_core_silver_tables(config: ProjectConfig) -> list[SilverWriteResult]:
+def build_all_silver_tables(config: ProjectConfig) -> list[SilverWriteResult]:
     return [builder(config) for builder in SILVER_BUILDERS.values()]
 
 
 __all__ = [
     "SILVER_BUILDERS",
-    "build_all_core_silver_tables",
+    "build_all_silver_tables",
     "build_silver_table",
 ]

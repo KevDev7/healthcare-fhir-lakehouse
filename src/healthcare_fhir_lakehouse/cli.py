@@ -41,14 +41,14 @@ from healthcare_fhir_lakehouse.quality.checks import (
 )
 from healthcare_fhir_lakehouse.silver.build import (
     SILVER_BUILDERS,
-    build_all_core_silver_tables,
+    build_all_silver_tables,
     build_silver_table,
 )
 from healthcare_fhir_lakehouse.silver.relationships import (
     build_and_write_relationship_audit,
     build_and_write_relationship_report,
 )
-from healthcare_fhir_lakehouse.silver.validation import validate_core_silver_tables
+from healthcare_fhir_lakehouse.silver.validation import validate_silver_tables
 
 PACKAGE_NAME = "healthcare-fhir-lakehouse"
 
@@ -308,10 +308,10 @@ def silver_build_command(
         ),
     ] = None,
 ) -> None:
-    """Build one or all core Silver tables."""
+    """Build one or all Silver tables."""
     project_config = _load_config(config_path)
     if table_name == "all":
-        results = build_all_core_silver_tables(project_config)
+        results = build_all_silver_tables(project_config)
     else:
         if table_name not in SILVER_BUILDERS:
             supported = ", ".join(["all", *SILVER_BUILDERS])
@@ -336,9 +336,9 @@ def silver_validate_command(
         ),
     ] = None,
 ) -> None:
-    """Validate core Silver row counts against Bronze."""
+    """Validate Silver row counts against Bronze."""
     project_config = _load_config(config_path)
-    results = validate_core_silver_tables(project_config)
+    results = validate_silver_tables(project_config)
 
     typer.echo("Silver validation passed.")
     for result in results:

@@ -14,7 +14,7 @@ from healthcare_fhir_lakehouse.privacy.patterns import (
     find_privacy_pattern_matches,
 )
 from healthcare_fhir_lakehouse.privacy.rules import (
-    CORE_SILVER_TABLES,
+    SILVER_PRIVACY_TABLES,
     PrivacyColumnRule,
     rules_for_table,
 )
@@ -97,7 +97,7 @@ def build_column_finding(
 def build_column_findings(config: ProjectConfig) -> list[PrivacyColumnFinding]:
     findings: list[PrivacyColumnFinding] = []
     table_count_with_columns = 0
-    for table_name in CORE_SILVER_TABLES:
+    for table_name in SILVER_PRIVACY_TABLES:
         present_columns = get_silver_columns(config, table_name)
         if present_columns:
             table_count_with_columns += 1
