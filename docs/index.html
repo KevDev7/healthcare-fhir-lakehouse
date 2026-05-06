@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Healthcare FHIR Lakehouse Dashboard</title>
+    <link rel="stylesheet" href="./assets/styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">Healthcare FHIR Lakehouse</p>
+        <h1>Lakehouse Quality And Analytics Dashboard</h1>
+      </div>
+      <a class="repo-link" href="../">Repository</a>
+    </header>
+
+    <main>
+      <section class="hero-grid" aria-label="Project summary">
+        <article class="summary-panel">
+          <div>
+            <p class="section-label">Dataset</p>
+            <h2 id="dataset-title">MIMIC-IV Demo on FHIR</h2>
+          </div>
+          <p class="summary-copy">
+            FHIR resources transformed into Bronze, Silver, Gold, and audit
+            tables with local Python pipelines and Databricks Spark/Delta
+            execution.
+          </p>
+          <div class="status-row">
+            <span id="quality-status" class="status-pill">Loading</span>
+            <span id="cloud-status" class="status-pill muted">Cloud evidence</span>
+          </div>
+        </article>
+        <section id="metric-grid" class="metric-grid" aria-label="Key metrics"></section>
+      </section>
+
+      <nav class="tabs" aria-label="Dashboard views">
+        <button class="tab active" data-view="overview" type="button">Overview</button>
+        <button class="tab" data-view="encounters" type="button">Encounters</button>
+        <button class="tab" data-view="conditions" type="button">Conditions</button>
+        <button class="tab" data-view="measurements" type="button">Measurements</button>
+        <button class="tab" data-view="quality" type="button">Quality</button>
+      </nav>
+
+      <section class="view active" id="overview">
+        <div class="section-header">
+          <h2>Lakehouse Tables</h2>
+          <p>Row counts across the generated Bronze, Silver, and Gold layers.</p>
+        </div>
+        <div id="table-counts" class="chart-grid"></div>
+      </section>
+
+      <section class="view" id="encounters">
+        <div class="section-header">
+          <h2>Encounter Analytics</h2>
+          <p>Encounter classes, statuses, length-of-stay bands, and observation load.</p>
+        </div>
+        <div class="chart-grid two">
+          <article class="chart-panel">
+            <h3>Encounter Class</h3>
+            <div id="encounter-class-chart"></div>
+          </article>
+          <article class="chart-panel">
+            <h3>Encounter Status</h3>
+            <div id="encounter-status-chart"></div>
+          </article>
+          <article class="chart-panel">
+            <h3>Length Of Stay</h3>
+            <div id="los-chart"></div>
+          </article>
+          <article class="chart-panel">
+            <h3>Observation Load</h3>
+            <div id="observation-load-chart"></div>
+          </article>
+        </div>
+      </section>
+
+      <section class="view" id="conditions">
+        <div class="section-header">
+          <h2>Condition Summary</h2>
+          <p>Top diagnosis concepts by condition rows, with patient and encounter counts.</p>
+        </div>
+        <article class="chart-panel wide">
+          <div id="condition-chart"></div>
+        </article>
+      </section>
+
+      <section class="view" id="measurements">
+        <div class="section-header">
+          <h2>Vitals And Labs</h2>
+          <p>Gold measurement volumes and event-day aggregate trends.</p>
+        </div>
+        <div class="chart-grid two">
+          <article class="chart-panel">
+            <h3>Vitals Volume</h3>
+            <div id="vitals-volume-chart"></div>
+          </article>
+          <article class="chart-panel">
+            <h3>Labs Volume</h3>
+            <div id="labs-volume-chart"></div>
+          </article>
+          <article class="chart-panel wide">
+            <h3>Vitals Trend</h3>
+            <div id="vitals-trend-chart"></div>
+          </article>
+          <article class="chart-panel wide">
+            <h3>Labs Trend</h3>
+            <div id="labs-trend-chart"></div>
+          </article>
+        </div>
+      </section>
+
+      <section class="view" id="quality">
+        <div class="section-header">
+          <h2>Audit And Quality</h2>
+          <p>Reference integrity, privacy checks, and consolidated data quality results.</p>
+        </div>
+        <div class="quality-layout">
+          <article class="chart-panel">
+            <h3>Relationship Audit</h3>
+            <div id="relationship-summary" class="audit-list"></div>
+          </article>
+          <article class="chart-panel">
+            <h3>Quality Checks</h3>
+            <div id="quality-checks" class="check-list"></div>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <script src="./assets/dashboard.js"></script>
+  </body>
+</html>

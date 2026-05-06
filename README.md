@@ -21,6 +21,8 @@ orchestration, and Databricks/Spark/Delta cloud execution.
   dates, lineage fields, and text-like values.
 * **Cloud execution:** Databricks serverless Spark job writing Delta tables to
   Unity Catalog schemas.
+* **Static analytics dashboard:** GitHub Pages-ready dashboard built from safe
+  aggregate Gold and audit outputs.
 * **Engineering rigor:** Python package layout, Typer CLI, Makefile entry points,
   `uv` dependency management, Ruff linting, and 76 pytest tests.
 
@@ -236,6 +238,32 @@ Databricks cloud run:
 Full cloud evidence is documented in
 `documentation/cloud_run_evidence.md`.
 
+## Interactive Dashboard
+
+The repository includes a static dashboard under `docs/` for GitHub Pages:
+
+```text
+docs/index.html
+docs/data/dashboard.json
+docs/assets/
+```
+
+The dashboard uses committed aggregate data only: table counts, data quality
+checks, relationship audit metrics, encounter distributions, top condition
+summaries, and Gold vitals/labs trends.
+
+Refresh the dashboard data from local pipeline outputs:
+
+```bash
+make dashboard-data
+```
+
+When GitHub Pages is enabled for the `/docs` folder, the dashboard URL is:
+
+```text
+https://kevdev7.github.io/healthcare-fhir-lakehouse/
+```
+
 ## Quick Start
 
 Install dependencies:
@@ -280,6 +308,7 @@ make privacy          # privacy validation audit
 make gold             # analytics-ready Gold tables
 make quality          # consolidated quality report
 make pipeline         # full local pipeline
+make dashboard-data   # static dashboard aggregate data
 make cloud-validate   # Databricks Asset Bundle validation
 ```
 
@@ -303,6 +332,10 @@ healthcare-fhir-lakehouse/
     portfolio_brief.md
     runbook.md
     source_data_profile.md
+  docs/
+    index.html
+    assets/
+    data/
   notebooks/
     README.md
   src/

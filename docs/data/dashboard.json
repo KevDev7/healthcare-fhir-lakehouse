@@ -1,0 +1,1121 @@
+{
+  "conditions": {
+    "top": [
+      {
+        "encounter_count": 62,
+        "label": "Unspecified essential hypertension",
+        "patient_count": 33,
+        "value": 62
+      },
+      {
+        "encounter_count": 34,
+        "label": "Other and unspecified hyperlipidemia",
+        "patient_count": 20,
+        "value": 34
+      },
+      {
+        "encounter_count": 32,
+        "label": "Hyperlipidemia, unspecified",
+        "patient_count": 12,
+        "value": 32
+      },
+      {
+        "encounter_count": 29,
+        "label": "Diabetes mellitus without mention of complication, type II or unspecified type, not stated as uncontrolled",
+        "patient_count": 15,
+        "value": 29
+      },
+      {
+        "encounter_count": 29,
+        "label": "Long term (current) use of insulin",
+        "patient_count": 8,
+        "value": 29
+      },
+      {
+        "encounter_count": 27,
+        "label": "Hypothyroidism, unspecified",
+        "patient_count": 8,
+        "value": 27
+      },
+      {
+        "encounter_count": 25,
+        "label": "Acute kidney failure, unspecified",
+        "patient_count": 12,
+        "value": 26
+      },
+      {
+        "encounter_count": 26,
+        "label": "Atrial fibrillation",
+        "patient_count": 11,
+        "value": 26
+      },
+      {
+        "encounter_count": 25,
+        "label": "Long term (current) use of insulin",
+        "patient_count": 8,
+        "value": 25
+      },
+      {
+        "encounter_count": 22,
+        "label": "Urinary tract infection, site not specified",
+        "patient_count": 13,
+        "value": 22
+      },
+      {
+        "encounter_count": 21,
+        "label": "Personal history of tobacco use",
+        "patient_count": 16,
+        "value": 21
+      },
+      {
+        "encounter_count": 20,
+        "label": "Pure hypercholesterolemia",
+        "patient_count": 12,
+        "value": 20
+      }
+    ]
+  },
+  "encounters": {
+    "by_class": [
+      {
+        "label": "EMER",
+        "value": 341
+      },
+      {
+        "label": "ACUTE",
+        "value": 140
+      },
+      {
+        "label": "OBSENC",
+        "value": 82
+      },
+      {
+        "label": "AMB",
+        "value": 56
+      },
+      {
+        "label": "SS",
+        "value": 18
+      }
+    ],
+    "by_status": [
+      {
+        "label": "finished",
+        "value": 637
+      }
+    ],
+    "length_of_stay_bins": [
+      {
+        "label": "< 1 day",
+        "value": 268
+      },
+      {
+        "label": "1-3 days",
+        "value": 123
+      },
+      {
+        "label": "3-7 days",
+        "value": 134
+      },
+      {
+        "label": "7+ days",
+        "value": 112
+      }
+    ],
+    "observation_load": [
+      {
+        "label": "0",
+        "value": 23
+      },
+      {
+        "label": "1-99",
+        "value": 285
+      },
+      {
+        "label": "100-999",
+        "value": 197
+      },
+      {
+        "label": "1k-5k",
+        "value": 93
+      },
+      {
+        "label": "5k+",
+        "value": 39
+      }
+    ]
+  },
+  "measurements": {
+    "labs_trend": [
+      {
+        "avg_value": 160.54,
+        "event_day_index": 0,
+        "measurement_count": 281,
+        "measurement_name": "Glucose"
+      },
+      {
+        "avg_value": 139.58,
+        "event_day_index": 1,
+        "measurement_count": 382,
+        "measurement_name": "Glucose"
+      },
+      {
+        "avg_value": 133.87,
+        "event_day_index": 2,
+        "measurement_count": 308,
+        "measurement_name": "Glucose"
+      },
+      {
+        "avg_value": 130.83,
+        "event_day_index": 3,
+        "measurement_count": 248,
+        "measurement_name": "Glucose"
+      },
+      {
+        "avg_value": 136.09,
+        "event_day_index": 4,
+        "measurement_count": 198,
+        "measurement_name": "Glucose"
+      },
+      {
+        "avg_value": 131.94,
+        "event_day_index": 5,
+        "measurement_count": 168,
+        "measurement_name": "Glucose"
+      },
+      {
+        "avg_value": 133.32,
+        "event_day_index": 6,
+        "measurement_count": 146,
+        "measurement_name": "Glucose"
+      },
+      {
+        "avg_value": 132.98,
+        "event_day_index": 7,
+        "measurement_count": 117,
+        "measurement_name": "Glucose"
+      },
+      {
+        "avg_value": 11.23,
+        "event_day_index": 0,
+        "measurement_count": 441,
+        "measurement_name": "Hemoglobin"
+      },
+      {
+        "avg_value": 10.48,
+        "event_day_index": 1,
+        "measurement_count": 570,
+        "measurement_name": "Hemoglobin"
+      },
+      {
+        "avg_value": 10.21,
+        "event_day_index": 2,
+        "measurement_count": 427,
+        "measurement_name": "Hemoglobin"
+      },
+      {
+        "avg_value": 10.01,
+        "event_day_index": 3,
+        "measurement_count": 310,
+        "measurement_name": "Hemoglobin"
+      },
+      {
+        "avg_value": 9.84,
+        "event_day_index": 4,
+        "measurement_count": 245,
+        "measurement_name": "Hemoglobin"
+      },
+      {
+        "avg_value": 9.88,
+        "event_day_index": 5,
+        "measurement_count": 194,
+        "measurement_name": "Hemoglobin"
+      },
+      {
+        "avg_value": 9.78,
+        "event_day_index": 6,
+        "measurement_count": 153,
+        "measurement_name": "Hemoglobin"
+      },
+      {
+        "avg_value": 9.7,
+        "event_day_index": 7,
+        "measurement_count": 121,
+        "measurement_name": "Hemoglobin"
+      },
+      {
+        "avg_value": 1.93,
+        "event_day_index": 0,
+        "measurement_count": 293,
+        "measurement_name": "Magnesium"
+      },
+      {
+        "avg_value": 2.03,
+        "event_day_index": 1,
+        "measurement_count": 530,
+        "measurement_name": "Magnesium"
+      },
+      {
+        "avg_value": 2.03,
+        "event_day_index": 2,
+        "measurement_count": 400,
+        "measurement_name": "Magnesium"
+      },
+      {
+        "avg_value": 2.05,
+        "event_day_index": 3,
+        "measurement_count": 312,
+        "measurement_name": "Magnesium"
+      },
+      {
+        "avg_value": 2.07,
+        "event_day_index": 4,
+        "measurement_count": 256,
+        "measurement_name": "Magnesium"
+      },
+      {
+        "avg_value": 2.08,
+        "event_day_index": 5,
+        "measurement_count": 221,
+        "measurement_name": "Magnesium"
+      },
+      {
+        "avg_value": 2.04,
+        "event_day_index": 6,
+        "measurement_count": 167,
+        "measurement_name": "Magnesium"
+      },
+      {
+        "avg_value": 2.1,
+        "event_day_index": 7,
+        "measurement_count": 144,
+        "measurement_name": "Magnesium"
+      },
+      {
+        "avg_value": 219.06,
+        "event_day_index": 0,
+        "measurement_count": 345,
+        "measurement_name": "Platelet Count"
+      },
+      {
+        "avg_value": 216.12,
+        "event_day_index": 1,
+        "measurement_count": 527,
+        "measurement_name": "Platelet Count"
+      },
+      {
+        "avg_value": 204.11,
+        "event_day_index": 2,
+        "measurement_count": 398,
+        "measurement_name": "Platelet Count"
+      },
+      {
+        "avg_value": 200.26,
+        "event_day_index": 3,
+        "measurement_count": 293,
+        "measurement_name": "Platelet Count"
+      },
+      {
+        "avg_value": 205.98,
+        "event_day_index": 4,
+        "measurement_count": 241,
+        "measurement_name": "Platelet Count"
+      },
+      {
+        "avg_value": 212.81,
+        "event_day_index": 5,
+        "measurement_count": 197,
+        "measurement_name": "Platelet Count"
+      },
+      {
+        "avg_value": 225.77,
+        "event_day_index": 6,
+        "measurement_count": 151,
+        "measurement_name": "Platelet Count"
+      },
+      {
+        "avg_value": 226.84,
+        "event_day_index": 7,
+        "measurement_count": 121,
+        "measurement_name": "Platelet Count"
+      },
+      {
+        "avg_value": 4.21,
+        "event_day_index": 0,
+        "measurement_count": 213,
+        "measurement_name": "Potassium"
+      },
+      {
+        "avg_value": 4.16,
+        "event_day_index": 1,
+        "measurement_count": 353,
+        "measurement_name": "Potassium"
+      },
+      {
+        "avg_value": 4.07,
+        "event_day_index": 2,
+        "measurement_count": 289,
+        "measurement_name": "Potassium"
+      },
+      {
+        "avg_value": 4.06,
+        "event_day_index": 3,
+        "measurement_count": 240,
+        "measurement_name": "Potassium"
+      },
+      {
+        "avg_value": 4.11,
+        "event_day_index": 4,
+        "measurement_count": 200,
+        "measurement_name": "Potassium"
+      },
+      {
+        "avg_value": 4.09,
+        "event_day_index": 5,
+        "measurement_count": 174,
+        "measurement_name": "Potassium"
+      },
+      {
+        "avg_value": 4.09,
+        "event_day_index": 6,
+        "measurement_count": 137,
+        "measurement_name": "Potassium"
+      },
+      {
+        "avg_value": 4.09,
+        "event_day_index": 7,
+        "measurement_count": 121,
+        "measurement_name": "Potassium"
+      },
+      {
+        "avg_value": 137.26,
+        "event_day_index": 0,
+        "measurement_count": 211,
+        "measurement_name": "Sodium"
+      },
+      {
+        "avg_value": 137.54,
+        "event_day_index": 1,
+        "measurement_count": 350,
+        "measurement_name": "Sodium"
+      },
+      {
+        "avg_value": 137.62,
+        "event_day_index": 2,
+        "measurement_count": 287,
+        "measurement_name": "Sodium"
+      },
+      {
+        "avg_value": 137.71,
+        "event_day_index": 3,
+        "measurement_count": 237,
+        "measurement_name": "Sodium"
+      },
+      {
+        "avg_value": 137.69,
+        "event_day_index": 4,
+        "measurement_count": 199,
+        "measurement_name": "Sodium"
+      },
+      {
+        "avg_value": 138.27,
+        "event_day_index": 5,
+        "measurement_count": 173,
+        "measurement_name": "Sodium"
+      },
+      {
+        "avg_value": 138.08,
+        "event_day_index": 6,
+        "measurement_count": 136,
+        "measurement_name": "Sodium"
+      },
+      {
+        "avg_value": 138.07,
+        "event_day_index": 7,
+        "measurement_count": 120,
+        "measurement_name": "Sodium"
+      }
+    ],
+    "labs_volume": [
+      {
+        "label": "Hemoglobin",
+        "value": 3840
+      },
+      {
+        "label": "Platelet Count",
+        "value": 3673
+      },
+      {
+        "label": "Magnesium",
+        "value": 3377
+      },
+      {
+        "label": "Glucose",
+        "value": 3039
+      },
+      {
+        "label": "Potassium",
+        "value": 3019
+      },
+      {
+        "label": "Sodium",
+        "value": 3007
+      },
+      {
+        "label": "Creatinine",
+        "value": 3003
+      },
+      {
+        "label": "Chloride",
+        "value": 2981
+      },
+      {
+        "label": "Urea Nitrogen",
+        "value": 2973
+      },
+      {
+        "label": "Hematocrit",
+        "value": 2908
+      },
+      {
+        "label": "Bicarbonate",
+        "value": 2863
+      },
+      {
+        "label": "Anion Gap",
+        "value": 2860
+      },
+      {
+        "label": "White Blood Cells",
+        "value": 2759
+      },
+      {
+        "label": "MCHC",
+        "value": 2748
+      },
+      {
+        "label": "Red Blood Cells",
+        "value": 2748
+      }
+    ],
+    "vitals_trend": [
+      {
+        "avg_value": 90.59,
+        "event_day_index": 0,
+        "measurement_count": 1903,
+        "measurement_name": "Heart Rate"
+      },
+      {
+        "avg_value": 89.71,
+        "event_day_index": 1,
+        "measurement_count": 3025,
+        "measurement_name": "Heart Rate"
+      },
+      {
+        "avg_value": 90.24,
+        "event_day_index": 2,
+        "measurement_count": 1996,
+        "measurement_name": "Heart Rate"
+      },
+      {
+        "avg_value": 88.61,
+        "event_day_index": 3,
+        "measurement_count": 1494,
+        "measurement_name": "Heart Rate"
+      },
+      {
+        "avg_value": 89.98,
+        "event_day_index": 4,
+        "measurement_count": 1117,
+        "measurement_name": "Heart Rate"
+      },
+      {
+        "avg_value": 88.68,
+        "event_day_index": 5,
+        "measurement_count": 895,
+        "measurement_name": "Heart Rate"
+      },
+      {
+        "avg_value": 88.02,
+        "event_day_index": 6,
+        "measurement_count": 622,
+        "measurement_name": "Heart Rate"
+      },
+      {
+        "avg_value": 94.32,
+        "event_day_index": 7,
+        "measurement_count": 504,
+        "measurement_name": "Heart Rate"
+      },
+      {
+        "avg_value": 64.99,
+        "event_day_index": 0,
+        "measurement_count": 1087,
+        "measurement_name": "Non Invasive Blood Pressure diastolic"
+      },
+      {
+        "avg_value": 63.0,
+        "event_day_index": 1,
+        "measurement_count": 2034,
+        "measurement_name": "Non Invasive Blood Pressure diastolic"
+      },
+      {
+        "avg_value": 61.94,
+        "event_day_index": 2,
+        "measurement_count": 1293,
+        "measurement_name": "Non Invasive Blood Pressure diastolic"
+      },
+      {
+        "avg_value": 65.01,
+        "event_day_index": 3,
+        "measurement_count": 881,
+        "measurement_name": "Non Invasive Blood Pressure diastolic"
+      },
+      {
+        "avg_value": 66.36,
+        "event_day_index": 4,
+        "measurement_count": 674,
+        "measurement_name": "Non Invasive Blood Pressure diastolic"
+      },
+      {
+        "avg_value": 64.25,
+        "event_day_index": 5,
+        "measurement_count": 581,
+        "measurement_name": "Non Invasive Blood Pressure diastolic"
+      },
+      {
+        "avg_value": 63.84,
+        "event_day_index": 6,
+        "measurement_count": 377,
+        "measurement_name": "Non Invasive Blood Pressure diastolic"
+      },
+      {
+        "avg_value": 66.83,
+        "event_day_index": 7,
+        "measurement_count": 343,
+        "measurement_name": "Non Invasive Blood Pressure diastolic"
+      },
+      {
+        "avg_value": 77.5,
+        "event_day_index": 0,
+        "measurement_count": 1088,
+        "measurement_name": "Non Invasive Blood Pressure mean"
+      },
+      {
+        "avg_value": 75.31,
+        "event_day_index": 1,
+        "measurement_count": 2031,
+        "measurement_name": "Non Invasive Blood Pressure mean"
+      },
+      {
+        "avg_value": 74.98,
+        "event_day_index": 2,
+        "measurement_count": 1289,
+        "measurement_name": "Non Invasive Blood Pressure mean"
+      },
+      {
+        "avg_value": 77.48,
+        "event_day_index": 3,
+        "measurement_count": 882,
+        "measurement_name": "Non Invasive Blood Pressure mean"
+      },
+      {
+        "avg_value": 77.85,
+        "event_day_index": 4,
+        "measurement_count": 674,
+        "measurement_name": "Non Invasive Blood Pressure mean"
+      },
+      {
+        "avg_value": 76.29,
+        "event_day_index": 5,
+        "measurement_count": 582,
+        "measurement_name": "Non Invasive Blood Pressure mean"
+      },
+      {
+        "avg_value": 75.9,
+        "event_day_index": 6,
+        "measurement_count": 373,
+        "measurement_name": "Non Invasive Blood Pressure mean"
+      },
+      {
+        "avg_value": 78.88,
+        "event_day_index": 7,
+        "measurement_count": 343,
+        "measurement_name": "Non Invasive Blood Pressure mean"
+      },
+      {
+        "avg_value": 118.28,
+        "event_day_index": 0,
+        "measurement_count": 1087,
+        "measurement_name": "Non Invasive Blood Pressure systolic"
+      },
+      {
+        "avg_value": 115.22,
+        "event_day_index": 1,
+        "measurement_count": 2031,
+        "measurement_name": "Non Invasive Blood Pressure systolic"
+      },
+      {
+        "avg_value": 116.13,
+        "event_day_index": 2,
+        "measurement_count": 1293,
+        "measurement_name": "Non Invasive Blood Pressure systolic"
+      },
+      {
+        "avg_value": 117.86,
+        "event_day_index": 3,
+        "measurement_count": 881,
+        "measurement_name": "Non Invasive Blood Pressure systolic"
+      },
+      {
+        "avg_value": 115.04,
+        "event_day_index": 4,
+        "measurement_count": 674,
+        "measurement_name": "Non Invasive Blood Pressure systolic"
+      },
+      {
+        "avg_value": 115.21,
+        "event_day_index": 5,
+        "measurement_count": 582,
+        "measurement_name": "Non Invasive Blood Pressure systolic"
+      },
+      {
+        "avg_value": 115.82,
+        "event_day_index": 6,
+        "measurement_count": 377,
+        "measurement_name": "Non Invasive Blood Pressure systolic"
+      },
+      {
+        "avg_value": 118.89,
+        "event_day_index": 7,
+        "measurement_count": 343,
+        "measurement_name": "Non Invasive Blood Pressure systolic"
+      },
+      {
+        "avg_value": 97.08,
+        "event_day_index": 0,
+        "measurement_count": 1821,
+        "measurement_name": "O2 saturation pulseoxymetry"
+      },
+      {
+        "avg_value": 96.66,
+        "event_day_index": 1,
+        "measurement_count": 2963,
+        "measurement_name": "O2 saturation pulseoxymetry"
+      },
+      {
+        "avg_value": 96.74,
+        "event_day_index": 2,
+        "measurement_count": 1943,
+        "measurement_name": "O2 saturation pulseoxymetry"
+      },
+      {
+        "avg_value": 96.83,
+        "event_day_index": 3,
+        "measurement_count": 1450,
+        "measurement_name": "O2 saturation pulseoxymetry"
+      },
+      {
+        "avg_value": 96.59,
+        "event_day_index": 4,
+        "measurement_count": 1089,
+        "measurement_name": "O2 saturation pulseoxymetry"
+      },
+      {
+        "avg_value": 96.4,
+        "event_day_index": 5,
+        "measurement_count": 883,
+        "measurement_name": "O2 saturation pulseoxymetry"
+      },
+      {
+        "avg_value": 96.59,
+        "event_day_index": 6,
+        "measurement_count": 618,
+        "measurement_name": "O2 saturation pulseoxymetry"
+      },
+      {
+        "avg_value": 96.44,
+        "event_day_index": 7,
+        "measurement_count": 505,
+        "measurement_name": "O2 saturation pulseoxymetry"
+      },
+      {
+        "avg_value": 19.6,
+        "event_day_index": 0,
+        "measurement_count": 1896,
+        "measurement_name": "Respiratory Rate"
+      },
+      {
+        "avg_value": 19.75,
+        "event_day_index": 1,
+        "measurement_count": 3043,
+        "measurement_name": "Respiratory Rate"
+      },
+      {
+        "avg_value": 19.85,
+        "event_day_index": 2,
+        "measurement_count": 2004,
+        "measurement_name": "Respiratory Rate"
+      },
+      {
+        "avg_value": 20.09,
+        "event_day_index": 3,
+        "measurement_count": 1490,
+        "measurement_name": "Respiratory Rate"
+      },
+      {
+        "avg_value": 19.79,
+        "event_day_index": 4,
+        "measurement_count": 1117,
+        "measurement_name": "Respiratory Rate"
+      },
+      {
+        "avg_value": 19.93,
+        "event_day_index": 5,
+        "measurement_count": 887,
+        "measurement_name": "Respiratory Rate"
+      },
+      {
+        "avg_value": 19.79,
+        "event_day_index": 6,
+        "measurement_count": 620,
+        "measurement_name": "Respiratory Rate"
+      },
+      {
+        "avg_value": 20.0,
+        "event_day_index": 7,
+        "measurement_count": 503,
+        "measurement_name": "Respiratory Rate"
+      },
+      {
+        "avg_value": 98.42,
+        "event_day_index": 0,
+        "measurement_count": 419,
+        "measurement_name": "Temperature Fahrenheit"
+      },
+      {
+        "avg_value": 98.48,
+        "event_day_index": 1,
+        "measurement_count": 719,
+        "measurement_name": "Temperature Fahrenheit"
+      },
+      {
+        "avg_value": 98.51,
+        "event_day_index": 2,
+        "measurement_count": 495,
+        "measurement_name": "Temperature Fahrenheit"
+      },
+      {
+        "avg_value": 98.4,
+        "event_day_index": 3,
+        "measurement_count": 376,
+        "measurement_name": "Temperature Fahrenheit"
+      },
+      {
+        "avg_value": 98.61,
+        "event_day_index": 4,
+        "measurement_count": 270,
+        "measurement_name": "Temperature Fahrenheit"
+      },
+      {
+        "avg_value": 98.57,
+        "event_day_index": 5,
+        "measurement_count": 227,
+        "measurement_name": "Temperature Fahrenheit"
+      },
+      {
+        "avg_value": 98.65,
+        "event_day_index": 6,
+        "measurement_count": 164,
+        "measurement_name": "Temperature Fahrenheit"
+      },
+      {
+        "avg_value": 98.66,
+        "event_day_index": 7,
+        "measurement_count": 143,
+        "measurement_name": "Temperature Fahrenheit"
+      }
+    ],
+    "vitals_volume": [
+      {
+        "label": "Respiratory Rate",
+        "value": 13913
+      },
+      {
+        "label": "Heart Rate",
+        "value": 13913
+      },
+      {
+        "label": "O2 saturation pulseoxymetry",
+        "value": 13540
+      },
+      {
+        "label": "Non Invasive Blood Pressure diastolic",
+        "value": 8349
+      },
+      {
+        "label": "Non Invasive Blood Pressure systolic",
+        "value": 8347
+      },
+      {
+        "label": "Non Invasive Blood Pressure mean",
+        "value": 8342
+      },
+      {
+        "label": "Temperature Fahrenheit",
+        "value": 3379
+      }
+    ]
+  },
+  "meta": {
+    "cloud_status": "Databricks serverless run succeeded",
+    "conditions": 5051,
+    "dataset": "mimic-iv-clinical-database-demo-on-fhir",
+    "dataset_version": "2.1.0",
+    "encounters": 637,
+    "failed_checks": 0,
+    "generated_at": "2026-05-05T12:18:02.870190+00:00",
+    "observations": 813540,
+    "patients": 100,
+    "quality_status": "warning",
+    "source_resources": 928935,
+    "test_status": "76 pytest tests passed",
+    "title": "Healthcare FHIR Lakehouse Dashboard",
+    "warning_checks": 1
+  },
+  "quality_checks": [
+    {
+      "details": "Bronze row counts match the source profiling inventory.",
+      "expected": "Bronze manifest validates against source inventory",
+      "layer": "bronze",
+      "name": "bronze_manifest_row_count",
+      "observed": "928935",
+      "status": "pass"
+    },
+    {
+      "details": "Silver table row count matches Bronze resource-type count.",
+      "expected": "100 rows from Bronze Patient",
+      "layer": "silver",
+      "name": "silver_patient_row_count",
+      "observed": "100",
+      "status": "pass"
+    },
+    {
+      "details": "Silver table row count matches Bronze resource-type count.",
+      "expected": "637 rows from Bronze Encounter",
+      "layer": "silver",
+      "name": "silver_encounter_row_count",
+      "observed": "637",
+      "status": "pass"
+    },
+    {
+      "details": "Silver table row count matches Bronze resource-type count.",
+      "expected": "813540 rows from Bronze Observation",
+      "layer": "silver",
+      "name": "silver_observation_row_count",
+      "observed": "813540",
+      "status": "pass"
+    },
+    {
+      "details": "Silver table row count matches Bronze resource-type count.",
+      "expected": "5051 rows from Bronze Condition",
+      "layer": "silver",
+      "name": "silver_condition_row_count",
+      "observed": "5051",
+      "status": "pass"
+    },
+    {
+      "details": "No missing ids.",
+      "expected": "patient_id present",
+      "layer": "silver",
+      "name": "patient_required_ids",
+      "observed": "0",
+      "status": "pass"
+    },
+    {
+      "details": "No missing ids.",
+      "expected": "encounter_id and patient_id present",
+      "layer": "silver",
+      "name": "encounter_required_ids",
+      "observed": "0",
+      "status": "pass"
+    },
+    {
+      "details": "No missing ids.",
+      "expected": "observation_id and patient_id present",
+      "layer": "silver",
+      "name": "observation_required_ids",
+      "observed": "0",
+      "status": "pass"
+    },
+    {
+      "details": "No missing ids.",
+      "expected": "condition_id and patient_id present",
+      "layer": "silver",
+      "name": "condition_required_ids",
+      "observed": "0",
+      "status": "pass"
+    },
+    {
+      "details": "All populated core patient and encounter references resolve.",
+      "expected": "0 orphan populated references",
+      "layer": "relationships",
+      "name": "silver_relationship_orphans",
+      "observed": "0",
+      "status": "pass"
+    },
+    {
+      "details": "FHIR can support observations without encounter references.",
+      "expected": "reported optional coverage gap",
+      "layer": "relationships",
+      "name": "observation_missing_encounter_id",
+      "observed": "30332",
+      "status": "warn"
+    },
+    {
+      "details": "No email, phone, SSN, IP, or URL-like values found in scanned fields.",
+      "expected": "0 unexpected pattern findings",
+      "layer": "privacy",
+      "name": "privacy_pattern_findings",
+      "observed": "0",
+      "status": "pass"
+    },
+    {
+      "details": "Gold validation passed for this table.",
+      "expected": "rows present and forbidden identifier columns absent",
+      "layer": "gold",
+      "name": "gold_encounter_summary_surface",
+      "observed": "637",
+      "status": "pass"
+    },
+    {
+      "details": "Gold validation passed for this table.",
+      "expected": "rows present and forbidden identifier columns absent",
+      "layer": "gold",
+      "name": "gold_condition_summary_surface",
+      "observed": "2319",
+      "status": "pass"
+    },
+    {
+      "details": "Gold validation passed for this table.",
+      "expected": "rows present and forbidden identifier columns absent",
+      "layer": "gold",
+      "name": "gold_vitals_daily_surface",
+      "observed": "3986",
+      "status": "pass"
+    },
+    {
+      "details": "Gold validation passed for this table.",
+      "expected": "rows present and forbidden identifier columns absent",
+      "layer": "gold",
+      "name": "gold_labs_daily_surface",
+      "observed": "90719",
+      "status": "pass"
+    },
+    {
+      "details": "",
+      "expected": "0 duplicate encounter keys",
+      "layer": "gold",
+      "name": "gold_encounter_unique_keys",
+      "observed": "0",
+      "status": "pass"
+    },
+    {
+      "details": "",
+      "expected": "0 non-positive measurement counts",
+      "layer": "gold",
+      "name": "gold_vitals_positive_counts",
+      "observed": "0",
+      "status": "pass"
+    },
+    {
+      "details": "",
+      "expected": "0 non-positive measurement counts",
+      "layer": "gold",
+      "name": "gold_labs_positive_counts",
+      "observed": "0",
+      "status": "pass"
+    },
+    {
+      "details": "",
+      "expected": "0 rows with min/avg/max ordering errors",
+      "layer": "gold",
+      "name": "gold_vitals_value_ordering",
+      "observed": "0",
+      "status": "pass"
+    },
+    {
+      "details": "",
+      "expected": "0 rows with min/avg/max ordering errors",
+      "layer": "gold",
+      "name": "gold_labs_value_ordering",
+      "observed": "0",
+      "status": "pass"
+    }
+  ],
+  "relationship_audit": {
+    "condition_missing_encounter_id": 0,
+    "condition_missing_patient_id": 0,
+    "condition_orphan_encounter_id": 0,
+    "condition_orphan_patient_id": 0,
+    "condition_rows": 5051,
+    "dataset_name": "mimic-iv-clinical-database-demo-on-fhir",
+    "dataset_version": "2.1.0",
+    "encounter_rows": 637,
+    "generated_at": "2026-05-05T12:17:59.051566+00:00",
+    "observation_missing_encounter_id": 30332,
+    "observation_missing_patient_id": 0,
+    "observation_orphan_encounter_id": 0,
+    "observation_orphan_patient_id": 0,
+    "observation_rows": 813540,
+    "passed": true,
+    "patient_rows": 100
+  },
+  "table_counts": [
+    {
+      "layer": "Bronze",
+      "rows": 928935,
+      "table": "fhir_resources"
+    },
+    {
+      "layer": "Silver",
+      "rows": 100,
+      "table": "patient"
+    },
+    {
+      "layer": "Silver",
+      "rows": 637,
+      "table": "encounter"
+    },
+    {
+      "layer": "Silver",
+      "rows": 813540,
+      "table": "observation"
+    },
+    {
+      "layer": "Silver",
+      "rows": 5051,
+      "table": "condition"
+    },
+    {
+      "layer": "Gold",
+      "rows": 637,
+      "table": "encounter_summary"
+    },
+    {
+      "layer": "Gold",
+      "rows": 2319,
+      "table": "condition_summary"
+    },
+    {
+      "layer": "Gold",
+      "rows": 3986,
+      "table": "vitals_daily"
+    },
+    {
+      "layer": "Gold",
+      "rows": 90719,
+      "table": "labs_daily"
+    }
+  ]
+}
