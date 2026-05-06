@@ -196,18 +196,9 @@ function renderTrend(target, rows) {
 
 function renderQuality(data) {
   const relationship = data.relationship_audit;
-  const orphanReferences =
-    relationship.observation_orphan_patient_id +
-    relationship.observation_orphan_encounter_id +
-    relationship.condition_orphan_patient_id +
-    relationship.condition_orphan_encounter_id +
-    relationship.medication_request_orphan_patient_id +
-    relationship.medication_request_orphan_encounter_id +
-    relationship.medication_request_orphan_medication_id +
-    relationship.medication_administration_orphan_request_id +
-    relationship.medication_dispense_orphan_request_id +
-    relationship.procedure_orphan_patient_id +
-    relationship.procedure_orphan_encounter_id;
+  const orphanReferences = Object.entries(relationship)
+    .filter(([key, value]) => key.includes("_orphan_") && typeof value === "number")
+    .reduce((total, [, value]) => total + value, 0);
 
   const auditHeroRows = [
     ["Orphan references", orphanReferences, "populated references"],

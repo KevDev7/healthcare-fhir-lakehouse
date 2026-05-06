@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from healthcare_fhir_lakehouse.common.config import ProjectConfig
+from healthcare_fhir_lakehouse.common.table_registry import SILVER_TABLE_NAMES
 from healthcare_fhir_lakehouse.silver.condition import build_condition_table
 from healthcare_fhir_lakehouse.silver.encounter import build_encounter_table
 from healthcare_fhir_lakehouse.silver.medication import (
@@ -51,7 +52,7 @@ def build_silver_table(config: ProjectConfig, table_name: str) -> SilverWriteRes
 
 
 def build_all_silver_tables(config: ProjectConfig) -> list[SilverWriteResult]:
-    return [builder(config) for builder in SILVER_BUILDERS.values()]
+    return [SILVER_BUILDERS[table_name](config) for table_name in SILVER_TABLE_NAMES]
 
 
 __all__ = [

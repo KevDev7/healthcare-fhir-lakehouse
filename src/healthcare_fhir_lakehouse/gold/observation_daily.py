@@ -1,8 +1,11 @@
 from __future__ import annotations
 
 from healthcare_fhir_lakehouse.common.config import ProjectConfig
-from healthcare_fhir_lakehouse.gold.writer import GoldWriteResult, write_gold_query
-from healthcare_fhir_lakehouse.silver.writer import silver_output_dir
+from healthcare_fhir_lakehouse.gold.writer import (
+    GoldWriteResult,
+    write_registered_gold_query,
+)
+from healthcare_fhir_lakehouse.silver.writer import silver_parquet_glob
 
 VITALS_DAILY_TABLE = "vitals_daily"
 LABS_DAILY_TABLE = "labs_daily"
@@ -40,8 +43,8 @@ def build_observation_daily(
     table_name: str,
     where_clause: str,
 ) -> GoldWriteResult:
-    observation_glob = str(silver_output_dir(config, "observation") / "*.parquet")
-    encounter_glob = str(silver_output_dir(config, "encounter") / "*.parquet")
+    observation_glob = silver_parquet_glob(config, "observation")
+    encounter_glob = silver_parquet_glob(config, "encounter")
 
     sql = f"""
     with observation_base as (
@@ -96,7 +99,12 @@ def build_observation_daily(
       unit
     order by patient_key, encounter_key, event_day_index, measurement_name
     """
-    return write_gold_query(config, table_name, sql, [observation_glob, encounter_glob])
+    return write_registered_gold_query(
+        config,
+        table_name,
+        sql,
+        [observation_glob, encounter_glob],
+    )
 
 
 __all__ = [

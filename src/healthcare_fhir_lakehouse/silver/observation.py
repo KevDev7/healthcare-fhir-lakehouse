@@ -15,7 +15,7 @@ from healthcare_fhir_lakehouse.silver.fhir_extract import (
 from healthcare_fhir_lakehouse.silver.writer import (
     SilverWriteResult,
     lineage_columns,
-    write_silver_table,
+    write_registered_silver_table,
 )
 
 OBSERVATION_TABLE = "observation"
@@ -65,10 +65,9 @@ def transform_observation(
 
 
 def build_observation_table(config: ProjectConfig) -> SilverWriteResult:
-    return write_silver_table(
+    return write_registered_silver_table(
         config,
         OBSERVATION_TABLE,
-        "Observation",
         transform_observation,
     )
 

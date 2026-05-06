@@ -9,6 +9,8 @@ from healthcare_fhir_lakehouse.common.config import ProjectConfig
 from healthcare_fhir_lakehouse.silver.writer import (
     lineage_columns,
     silver_output_dir,
+    silver_parquet_glob,
+    write_registered_silver_table,
     write_silver_rows,
     write_silver_table,
 )
@@ -50,6 +52,14 @@ def test_lineage_columns_maps_bronze_metadata() -> None:
     assert metadata["bronze_ingested_at"] == "now"
 
 
+def test_silver_parquet_glob_points_to_table_output(tmp_path: Path) -> None:
+    config = make_config(tmp_path)
+
+    assert silver_parquet_glob(config, "patient").endswith(
+        "output/silver/patient/*.parquet"
+    )
+
+
 def test_write_silver_table_filters_bronze_and_writes_parquet(tmp_path: Path) -> None:
     config = make_config(tmp_path)
     write_gzipped_ndjson(
@@ -75,6 +85,31 @@ def test_write_silver_table_filters_bronze_and_writes_parquet(tmp_path: Path) ->
     assert result.total_rows == 1
     assert rows[0]["patient_id"] == "patient-1"
     assert rows[0]["gender"] == "female"
+
+
+def test_write_registered_silver_table_uses_table_registry(tmp_path: Path) -> None:
+    config = make_config(tmp_path)
+    write_gzipped_ndjson(
+        config.source_fhir_dir / "Mixed.ndjson.gz",
+        [
+            {"id": "patient-1", "resourceType": "Patient", "gender": "female"},
+            {"id": "encounter-1", "resourceType": "Encounter"},
+        ],
+    )
+    write_bronze_resources(config)
+
+    def transform(resource: dict, bronze_record: dict) -> dict:
+        return {
+            "patient_id": resource["id"],
+            "gender": resource["gender"],
+            **lineage_columns(bronze_record),
+        }
+
+    result = write_registered_silver_table(config, "patient", transform)
+    rows = pq.read_table(result.output_dir).to_pylist()
+
+    assert result.total_rows == 1
+    assert rows[0]["patient_id"] == "patient-1"
 
 
 def test_write_silver_rows_writes_child_table_rows(tmp_path: Path) -> None:

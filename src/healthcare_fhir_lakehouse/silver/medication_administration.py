@@ -13,11 +13,10 @@ from healthcare_fhir_lakehouse.silver.fhir_extract import (
 from healthcare_fhir_lakehouse.silver.writer import (
     SilverWriteResult,
     lineage_columns,
-    write_silver_table,
+    write_registered_silver_table,
 )
 
 MEDICATION_ADMINISTRATION_TABLE = "medication_administration"
-MEDICATION_ADMINISTRATION_RESOURCE_TYPE = "MedicationAdministration"
 
 
 def medication_administration_source_system(resource_family: str) -> str:
@@ -68,16 +67,14 @@ def transform_medication_administration(
 
 
 def build_medication_administration_table(config: ProjectConfig) -> SilverWriteResult:
-    return write_silver_table(
+    return write_registered_silver_table(
         config,
         MEDICATION_ADMINISTRATION_TABLE,
-        MEDICATION_ADMINISTRATION_RESOURCE_TYPE,
         transform_medication_administration,
     )
 
 
 __all__ = [
-    "MEDICATION_ADMINISTRATION_RESOURCE_TYPE",
     "MEDICATION_ADMINISTRATION_TABLE",
     "build_medication_administration_table",
     "medication_administration_source_system",

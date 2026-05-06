@@ -775,6 +775,18 @@ def build_relationship_audit(spark: SparkSession, config: CloudConfig) -> None:
           (
             select count(*)
             from {administration} a
+            left join {patient} p on a.patient_id = p.patient_id
+            where a.patient_id is not null and p.patient_id is null
+          ) as medication_administration_orphan_patient_id,
+          (
+            select count(*)
+            from {administration} a
+            left join {encounter} e on a.encounter_id = e.encounter_id
+            where a.encounter_id is not null and e.encounter_id is null
+          ) as medication_administration_orphan_encounter_id,
+          (
+            select count(*)
+            from {administration} a
             left join {request} r
               on a.medication_request_id = r.medication_request_id
             where a.medication_request_id is not null
@@ -783,11 +795,35 @@ def build_relationship_audit(spark: SparkSession, config: CloudConfig) -> None:
           (
             select count(*)
             from {dispense} d
+            left join {patient} p on d.patient_id = p.patient_id
+            where d.patient_id is not null and p.patient_id is null
+          ) as medication_dispense_orphan_patient_id,
+          (
+            select count(*)
+            from {dispense} d
+            left join {encounter} e on d.encounter_id = e.encounter_id
+            where d.encounter_id is not null and e.encounter_id is null
+          ) as medication_dispense_orphan_encounter_id,
+          (
+            select count(*)
+            from {dispense} d
             left join {request} r
               on d.medication_request_id = r.medication_request_id
             where d.medication_request_id is not null
               and r.medication_request_id is null
           ) as medication_dispense_orphan_request_id,
+          (
+            select count(*)
+            from {statement} s
+            left join {patient} p on s.patient_id = p.patient_id
+            where s.patient_id is not null and p.patient_id is null
+          ) as medication_statement_orphan_patient_id,
+          (
+            select count(*)
+            from {statement} s
+            left join {encounter} e on s.encounter_id = e.encounter_id
+            where s.encounter_id is not null and e.encounter_id is null
+          ) as medication_statement_orphan_encounter_id,
           (
             select count(*)
             from {procedure} pr
@@ -1301,8 +1337,14 @@ def build_data_quality(spark: SparkSession, config: CloudConfig) -> None:
               and medication_request_orphan_patient_id = 0
               and medication_request_orphan_encounter_id = 0
               and medication_request_orphan_medication_id = 0
+              and medication_administration_orphan_patient_id = 0
+              and medication_administration_orphan_encounter_id = 0
               and medication_administration_orphan_request_id = 0
+              and medication_dispense_orphan_patient_id = 0
+              and medication_dispense_orphan_encounter_id = 0
               and medication_dispense_orphan_request_id = 0
+              and medication_statement_orphan_patient_id = 0
+              and medication_statement_orphan_encounter_id = 0
               and procedure_orphan_patient_id = 0
               and procedure_orphan_encounter_id = 0
             then 'pass' else 'fail'
@@ -1317,8 +1359,14 @@ def build_data_quality(spark: SparkSession, config: CloudConfig) -> None:
             + medication_request_orphan_patient_id
             + medication_request_orphan_encounter_id
             + medication_request_orphan_medication_id
+            + medication_administration_orphan_patient_id
+            + medication_administration_orphan_encounter_id
             + medication_administration_orphan_request_id
+            + medication_dispense_orphan_patient_id
+            + medication_dispense_orphan_encounter_id
             + medication_dispense_orphan_request_id
+            + medication_statement_orphan_patient_id
+            + medication_statement_orphan_encounter_id
             + procedure_orphan_patient_id
             + procedure_orphan_encounter_id
             as string

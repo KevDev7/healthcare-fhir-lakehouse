@@ -5,6 +5,7 @@ from collections.abc import Iterable
 from typing import Any
 
 from healthcare_fhir_lakehouse.common.config import ProjectConfig
+from healthcare_fhir_lakehouse.common.table_registry import silver_spec
 from healthcare_fhir_lakehouse.silver.fhir_extract import (
     count_array,
     extract_codeable_concept,
@@ -17,13 +18,12 @@ from healthcare_fhir_lakehouse.silver.writer import (
     SilverWriteResult,
     iter_bronze_records,
     lineage_columns,
+    write_registered_silver_table,
     write_silver_rows,
-    write_silver_table,
 )
 
 MEDICATION_TABLE = "medication"
 MEDICATION_INGREDIENT_TABLE = "medication_ingredient"
-MEDICATION_RESOURCE_TYPE = "Medication"
 MEDICATION_NAME_IDENTIFIER_SYSTEM = (
     "http://mimic.mit.edu/fhir/mimic/CodeSystem/mimic-medication-name"
 )
@@ -108,16 +108,16 @@ def transform_medication_ingredients(
 
 
 def iter_medication_ingredient_rows(config: ProjectConfig) -> Iterable[dict]:
-    for bronze_record in iter_bronze_records(config, MEDICATION_RESOURCE_TYPE):
+    resource_type = silver_spec(MEDICATION_TABLE).resource_type
+    for bronze_record in iter_bronze_records(config, resource_type):
         resource = json.loads(bronze_record["raw_json"])
         yield from transform_medication_ingredients(resource, bronze_record)
 
 
 def build_medication_table(config: ProjectConfig) -> SilverWriteResult:
-    return write_silver_table(
+    return write_registered_silver_table(
         config,
         MEDICATION_TABLE,
-        MEDICATION_RESOURCE_TYPE,
         transform_medication,
     )
 
@@ -133,7 +133,6 @@ def build_medication_ingredient_table(config: ProjectConfig) -> SilverWriteResul
 __all__ = [
     "MEDICATION_INGREDIENT_TABLE",
     "MEDICATION_NAME_IDENTIFIER_SYSTEM",
-    "MEDICATION_RESOURCE_TYPE",
     "MEDICATION_TABLE",
     "build_medication_ingredient_table",
     "build_medication_table",

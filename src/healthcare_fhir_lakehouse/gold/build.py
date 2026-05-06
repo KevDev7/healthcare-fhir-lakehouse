@@ -3,6 +3,7 @@ from __future__ import annotations
 from collections.abc import Callable
 
 from healthcare_fhir_lakehouse.common.config import ProjectConfig
+from healthcare_fhir_lakehouse.common.table_registry import GOLD_TABLE_NAMES
 from healthcare_fhir_lakehouse.gold.condition_summary import build_condition_summary
 from healthcare_fhir_lakehouse.gold.encounter_summary import build_encounter_summary
 from healthcare_fhir_lakehouse.gold.medication_activity import (
@@ -36,7 +37,7 @@ def build_gold_table(config: ProjectConfig, table_name: str) -> GoldWriteResult:
 
 
 def build_all_gold_tables(config: ProjectConfig) -> list[GoldWriteResult]:
-    return [builder(config) for builder in GOLD_BUILDERS.values()]
+    return [GOLD_BUILDERS[table_name](config) for table_name in GOLD_TABLE_NAMES]
 
 
 __all__ = [

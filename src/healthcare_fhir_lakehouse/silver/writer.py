@@ -13,6 +13,7 @@ import pyarrow.parquet as pq
 
 from healthcare_fhir_lakehouse.bronze.writer import bronze_output_dir
 from healthcare_fhir_lakehouse.common.config import ProjectConfig
+from healthcare_fhir_lakehouse.common.table_registry import silver_spec
 
 DEFAULT_SILVER_BATCH_SIZE = 50_000
 
@@ -29,6 +30,10 @@ class SilverWriteResult:
 
 def silver_output_dir(config: ProjectConfig, table_name: str) -> Path:
     return config.output_dir / "silver" / table_name
+
+
+def silver_parquet_glob(config: ProjectConfig, table_name: str) -> str:
+    return str(silver_output_dir(config, table_name) / "*.parquet")
 
 
 def bronze_parquet_glob(config: ProjectConfig) -> str:
@@ -135,6 +140,24 @@ def write_silver_table(
     )
 
 
+def write_registered_silver_table(
+    config: ProjectConfig,
+    table_name: str,
+    transform: SilverTransform,
+    batch_size: int = DEFAULT_SILVER_BATCH_SIZE,
+    overwrite: bool = True,
+) -> SilverWriteResult:
+    spec = silver_spec(table_name)
+    return write_silver_table(
+        config=config,
+        table_name=table_name,
+        resource_type=spec.resource_type,
+        transform=transform,
+        batch_size=batch_size,
+        overwrite=overwrite,
+    )
+
+
 def write_silver_rows(
     config: ProjectConfig,
     table_name: str,
@@ -173,7 +196,9 @@ __all__ = [
     "iter_bronze_records",
     "lineage_columns",
     "silver_output_dir",
+    "silver_parquet_glob",
     "transform_bronze_records",
+    "write_registered_silver_table",
     "write_silver_table",
     "write_silver_rows",
 ]

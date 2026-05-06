@@ -1,18 +1,22 @@
 from __future__ import annotations
 
 from healthcare_fhir_lakehouse.common.config import ProjectConfig
-from healthcare_fhir_lakehouse.gold.writer import GoldWriteResult, write_gold_query
-from healthcare_fhir_lakehouse.silver.writer import silver_output_dir
+from healthcare_fhir_lakehouse.gold.writer import (
+    GoldWriteResult,
+    write_registered_gold_query,
+)
+from healthcare_fhir_lakehouse.silver.writer import silver_parquet_glob
 
 TABLE_NAME = "medication_order_fulfillment"
 
 
 def build_medication_order_fulfillment(config: ProjectConfig) -> GoldWriteResult:
-    request_glob = str(silver_output_dir(config, "medication_request") / "*.parquet")
-    administration_glob = str(
-        silver_output_dir(config, "medication_administration") / "*.parquet"
+    request_glob = silver_parquet_glob(config, "medication_request")
+    administration_glob = silver_parquet_glob(
+        config,
+        "medication_administration",
     )
-    dispense_glob = str(silver_output_dir(config, "medication_dispense") / "*.parquet")
+    dispense_glob = silver_parquet_glob(config, "medication_dispense")
 
     sql = """
     with administration_counts as (
@@ -70,7 +74,7 @@ def build_medication_order_fulfillment(config: ProjectConfig) -> GoldWriteResult
       on r.medication_request_id = d.medication_request_id
     order by authored_year, medication_request_key
     """
-    return write_gold_query(
+    return write_registered_gold_query(
         config,
         TABLE_NAME,
         sql,

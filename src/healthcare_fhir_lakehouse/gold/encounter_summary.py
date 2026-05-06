@@ -1,29 +1,27 @@
 from __future__ import annotations
 
 from healthcare_fhir_lakehouse.common.config import ProjectConfig
-from healthcare_fhir_lakehouse.gold.writer import GoldWriteResult, write_gold_query
-from healthcare_fhir_lakehouse.silver.writer import silver_output_dir
+from healthcare_fhir_lakehouse.gold.writer import (
+    GoldWriteResult,
+    write_registered_gold_query,
+)
+from healthcare_fhir_lakehouse.silver.writer import silver_parquet_glob
 
 TABLE_NAME = "encounter_summary"
 
 
 def build_encounter_summary(config: ProjectConfig) -> GoldWriteResult:
-    encounter_glob = str(silver_output_dir(config, "encounter") / "*.parquet")
-    observation_glob = str(silver_output_dir(config, "observation") / "*.parquet")
-    condition_glob = str(silver_output_dir(config, "condition") / "*.parquet")
-    medication_request_glob = str(
-        silver_output_dir(config, "medication_request") / "*.parquet"
+    encounter_glob = silver_parquet_glob(config, "encounter")
+    observation_glob = silver_parquet_glob(config, "observation")
+    condition_glob = silver_parquet_glob(config, "condition")
+    medication_request_glob = silver_parquet_glob(config, "medication_request")
+    medication_administration_glob = silver_parquet_glob(
+        config,
+        "medication_administration",
     )
-    medication_administration_glob = str(
-        silver_output_dir(config, "medication_administration") / "*.parquet"
-    )
-    medication_dispense_glob = str(
-        silver_output_dir(config, "medication_dispense") / "*.parquet"
-    )
-    medication_statement_glob = str(
-        silver_output_dir(config, "medication_statement") / "*.parquet"
-    )
-    procedure_glob = str(silver_output_dir(config, "procedure") / "*.parquet")
+    medication_dispense_glob = silver_parquet_glob(config, "medication_dispense")
+    medication_statement_glob = silver_parquet_glob(config, "medication_statement")
+    procedure_glob = silver_parquet_glob(config, "procedure")
 
     sql = """
     with encounter_base as (
@@ -147,7 +145,7 @@ def build_encounter_summary(config: ProjectConfig) -> GoldWriteResult:
     left join procedure_counts pc on e.encounter_id = pc.encounter_id
     order by encounter_start_year, encounter_start_month, encounter_key
     """
-    return write_gold_query(
+    return write_registered_gold_query(
         config,
         TABLE_NAME,
         sql,

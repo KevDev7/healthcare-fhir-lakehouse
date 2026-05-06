@@ -14,7 +14,7 @@ from healthcare_fhir_lakehouse.silver.fhir_extract import (
 from healthcare_fhir_lakehouse.silver.writer import (
     SilverWriteResult,
     lineage_columns,
-    write_silver_table,
+    write_registered_silver_table,
 )
 
 CONDITION_TABLE = "condition"
@@ -42,7 +42,7 @@ def transform_condition(
 
 
 def build_condition_table(config: ProjectConfig) -> SilverWriteResult:
-    return write_silver_table(config, CONDITION_TABLE, "Condition", transform_condition)
+    return write_registered_silver_table(config, CONDITION_TABLE, transform_condition)
 
 
 __all__ = ["CONDITION_TABLE", "build_condition_table", "transform_condition"]

@@ -6,23 +6,11 @@ from pathlib import Path
 import duckdb
 
 from healthcare_fhir_lakehouse.common.config import ProjectConfig
+from healthcare_fhir_lakehouse.common.table_registry import SILVER_RESOURCE_TYPES
 from healthcare_fhir_lakehouse.silver.writer import (
     bronze_parquet_glob,
     silver_output_dir,
 )
-
-SILVER_RESOURCE_TYPES = {
-    "patient": "Patient",
-    "encounter": "Encounter",
-    "observation": "Observation",
-    "condition": "Condition",
-    "medication": "Medication",
-    "medication_request": "MedicationRequest",
-    "medication_administration": "MedicationAdministration",
-    "medication_dispense": "MedicationDispense",
-    "medication_statement": "MedicationStatement",
-    "procedure": "Procedure",
-}
 
 
 class SilverValidationError(ValueError):

@@ -1,15 +1,18 @@
 from __future__ import annotations
 
 from healthcare_fhir_lakehouse.common.config import ProjectConfig
-from healthcare_fhir_lakehouse.gold.writer import GoldWriteResult, write_gold_query
-from healthcare_fhir_lakehouse.silver.writer import silver_output_dir
+from healthcare_fhir_lakehouse.gold.writer import (
+    GoldWriteResult,
+    write_registered_gold_query,
+)
+from healthcare_fhir_lakehouse.silver.writer import silver_parquet_glob
 
 TABLE_NAME = "condition_summary"
 
 
 def build_condition_summary(config: ProjectConfig) -> GoldWriteResult:
-    condition_glob = str(silver_output_dir(config, "condition") / "*.parquet")
-    encounter_glob = str(silver_output_dir(config, "encounter") / "*.parquet")
+    condition_glob = silver_parquet_glob(config, "condition")
+    encounter_glob = silver_parquet_glob(config, "encounter")
 
     sql = """
     select
@@ -29,7 +32,12 @@ def build_condition_summary(config: ProjectConfig) -> GoldWriteResult:
       e.class_display
     order by condition_row_count desc, patient_count desc, condition_display
     """
-    return write_gold_query(config, TABLE_NAME, sql, [condition_glob, encounter_glob])
+    return write_registered_gold_query(
+        config,
+        TABLE_NAME,
+        sql,
+        [condition_glob, encounter_glob],
+    )
 
 
 __all__ = ["TABLE_NAME", "build_condition_summary"]

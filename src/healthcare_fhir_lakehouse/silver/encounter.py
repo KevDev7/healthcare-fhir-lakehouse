@@ -12,7 +12,7 @@ from healthcare_fhir_lakehouse.silver.fhir_extract import (
 from healthcare_fhir_lakehouse.silver.writer import (
     SilverWriteResult,
     lineage_columns,
-    write_silver_table,
+    write_registered_silver_table,
 )
 
 ENCOUNTER_TABLE = "encounter"
@@ -53,7 +53,7 @@ def transform_encounter(
 
 
 def build_encounter_table(config: ProjectConfig) -> SilverWriteResult:
-    return write_silver_table(config, ENCOUNTER_TABLE, "Encounter", transform_encounter)
+    return write_registered_silver_table(config, ENCOUNTER_TABLE, transform_encounter)
 
 
 __all__ = ["ENCOUNTER_TABLE", "build_encounter_table", "transform_encounter"]

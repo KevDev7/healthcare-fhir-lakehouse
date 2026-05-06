@@ -2,19 +2,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-SILVER_PRIVACY_TABLES = (
-    "patient",
-    "encounter",
-    "observation",
-    "condition",
-    "medication",
-    "medication_ingredient",
-    "medication_request",
-    "medication_administration",
-    "medication_dispense",
-    "medication_statement",
-    "procedure",
-)
+from healthcare_fhir_lakehouse.common.table_registry import SILVER_PRIVACY_TABLES
 
 
 @dataclass(frozen=True)

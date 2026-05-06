@@ -13,11 +13,10 @@ from healthcare_fhir_lakehouse.silver.fhir_extract import (
 from healthcare_fhir_lakehouse.silver.writer import (
     SilverWriteResult,
     lineage_columns,
-    write_silver_table,
+    write_registered_silver_table,
 )
 
 PROCEDURE_TABLE = "procedure"
-PROCEDURE_RESOURCE_TYPE = "Procedure"
 
 
 def procedure_source_system(resource_family: str) -> str:
@@ -63,16 +62,14 @@ def transform_procedure(
 
 
 def build_procedure_table(config: ProjectConfig) -> SilverWriteResult:
-    return write_silver_table(
+    return write_registered_silver_table(
         config,
         PROCEDURE_TABLE,
-        PROCEDURE_RESOURCE_TYPE,
         transform_procedure,
     )
 
 
 __all__ = [
-    "PROCEDURE_RESOURCE_TYPE",
     "PROCEDURE_TABLE",
     "build_procedure_table",
     "procedure_source_system",

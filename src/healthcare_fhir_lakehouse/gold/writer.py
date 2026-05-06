@@ -8,6 +8,7 @@ import duckdb
 import pyarrow.parquet as pq
 
 from healthcare_fhir_lakehouse.common.config import ProjectConfig
+from healthcare_fhir_lakehouse.common.table_registry import gold_spec
 
 
 @dataclass(frozen=True)
@@ -50,9 +51,21 @@ def write_gold_query(
     )
 
 
+def write_registered_gold_query(
+    config: ProjectConfig,
+    table_name: str,
+    sql: str,
+    params: list[str] | None = None,
+    overwrite: bool = True,
+) -> GoldWriteResult:
+    gold_spec(table_name)
+    return write_gold_query(config, table_name, sql, params, overwrite)
+
+
 __all__ = [
     "GoldWriteResult",
     "gold_output_dir",
     "gold_parquet_glob",
+    "write_registered_gold_query",
     "write_gold_query",
 ]

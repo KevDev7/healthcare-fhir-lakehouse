@@ -14,7 +14,7 @@ from healthcare_fhir_lakehouse.silver.fhir_extract import (
 from healthcare_fhir_lakehouse.silver.writer import (
     SilverWriteResult,
     lineage_columns,
-    write_silver_table,
+    write_registered_silver_table,
 )
 
 PATIENT_TABLE = "patient"
@@ -52,7 +52,7 @@ def transform_patient(resource: dict[str, Any], bronze_record: dict[str, Any]) -
 
 
 def build_patient_table(config: ProjectConfig) -> SilverWriteResult:
-    return write_silver_table(config, PATIENT_TABLE, "Patient", transform_patient)
+    return write_registered_silver_table(config, PATIENT_TABLE, transform_patient)
 
 
 __all__ = ["PATIENT_TABLE", "build_patient_table", "transform_patient"]

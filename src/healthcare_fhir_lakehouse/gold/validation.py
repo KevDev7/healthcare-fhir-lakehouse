@@ -5,7 +5,7 @@ from dataclasses import dataclass
 import duckdb
 
 from healthcare_fhir_lakehouse.common.config import ProjectConfig
-from healthcare_fhir_lakehouse.gold.build import GOLD_BUILDERS
+from healthcare_fhir_lakehouse.common.table_registry import GOLD_TABLE_NAMES
 from healthcare_fhir_lakehouse.gold.writer import gold_parquet_glob
 
 FORBIDDEN_GOLD_COLUMNS = {
@@ -54,7 +54,7 @@ def get_gold_columns(config: ProjectConfig, table_name: str) -> set[str]:
 
 def validate_gold_tables(config: ProjectConfig) -> list[GoldValidationResult]:
     results: list[GoldValidationResult] = []
-    for table_name in GOLD_BUILDERS:
+    for table_name in GOLD_TABLE_NAMES:
         row_count = count_gold_rows(config, table_name)
         columns = get_gold_columns(config, table_name)
         forbidden_columns_present = tuple(sorted(columns & FORBIDDEN_GOLD_COLUMNS))

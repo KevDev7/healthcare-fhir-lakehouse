@@ -50,7 +50,7 @@ Warnings: 4.
 | silver | procedure_required_ids | pass | 0 | procedure_id, patient_id, and encounter_id present | No missing ids. |
 | relationships | silver_relationship_orphans | pass | 0 | 0 orphan populated references | All populated Silver patient, encounter, medication, and request references resolve. |
 | relationships | observation_missing_encounter_id | warn | 30332 | reported optional coverage gap | FHIR can support observations without encounter references. |
-| relationships | medication_administration_missing_encounter_id | warn | 1059 | reported optional coverage gap | Some medication administrations lack encounter context in source. |
+| relationships | medication_administration_missing_encounter_id | warn | 1059 | reported optional coverage gap | Some medication administrations lack encounter context. |
 | relationships | medication_administration_missing_request_id | warn | 21509 | reported optional coverage gap | ICU and some hospital administrations are not order-linked. |
 | relationships | medication_dispense_missing_request_id | warn | 1082 | reported optional coverage gap | ED dispenses are not order-linked in this source. |
 | privacy | privacy_pattern_findings | pass | 0 | 0 unexpected pattern findings | No email, phone, SSN, IP, or URL-like values found in scanned fields. |

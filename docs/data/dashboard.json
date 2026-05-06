@@ -144,7 +144,7 @@
         "value": 4
       },
       {
-        "label": "PSYCH FACILITY",
+        "label": "LEFT WITHOUT BEING SEEN",
         "value": 2
       }
     ],
@@ -582,11 +582,11 @@
         "value": 2759
       },
       {
-        "label": "MCH",
+        "label": "MCHC",
         "value": 2748
       },
       {
-        "label": "MCHC",
+        "label": "Red Blood Cells",
         "value": 2748
       }
     ],
@@ -1183,7 +1183,7 @@
     "display_dataset": "MIMIC-IV Demo on FHIR",
     "encounters": 637,
     "failed_checks": 0,
-    "generated_at": "2026-05-06T09:03:35.952296+00:00",
+    "generated_at": "2026-05-06T10:03:03.821526+00:00",
     "medication_events": 91873,
     "observations": 813540,
     "patients": 100,
@@ -1489,7 +1489,7 @@
       "status": "warn"
     },
     {
-      "details": "Some medication administrations lack encounter context in source.",
+      "details": "Some medication administrations lack encounter context.",
       "expected": "reported optional coverage gap",
       "layer": "relationships",
       "name": "medication_administration_missing_encounter_id",
@@ -1626,7 +1626,7 @@
     "dataset_name": "mimic-iv-clinical-database-demo-on-fhir",
     "dataset_version": "2.1.0",
     "encounter_rows": 637,
-    "generated_at": "2026-05-06T08:57:16.775186+00:00",
+    "generated_at": "2026-05-06T10:03:03.325992+00:00",
     "medication_administration_missing_encounter_id": 1059,
     "medication_administration_missing_patient_id": 0,
     "medication_administration_missing_request_id": 21509,
@@ -1700,6 +1700,11 @@
       "layer": "Silver",
       "rows": 1794,
       "table": "medication"
+    },
+    {
+      "layer": "Silver",
+      "rows": 634,
+      "table": "medication_ingredient"
     },
     {
       "layer": "Silver",

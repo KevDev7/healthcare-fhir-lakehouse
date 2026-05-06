@@ -6,6 +6,12 @@ from typing import Any
 
 import duckdb
 
+from healthcare_fhir_lakehouse.common.table_registry import (
+    GOLD_TABLES,
+    MEDICATION_EVENT_TABLES,
+    SILVER_DASHBOARD_TABLES,
+)
+
 ROOT = Path(__file__).resolve().parents[1]
 GOLD = ROOT / "output" / "gold"
 SILVER = ROOT / "output" / "silver"
@@ -41,7 +47,6 @@ def build_dashboard() -> dict[str, Any]:
     quality = read_json(QUALITY_REPORT)
     relationships = read_json(RELATIONSHIP_AUDIT)
     encounter = table_path("encounter_summary")
-    condition = table_path("condition_summary")
     silver_condition = silver_table_path("condition")
     vitals = table_path("vitals_daily")
     labs = table_path("labs_daily")
@@ -51,91 +56,24 @@ def build_dashboard() -> dict[str, Any]:
 
     table_counts = [
         {"layer": "Bronze", "table": "fhir_resources", "rows": 928935},
-        {"layer": "Silver", "table": "patient", "rows": relationships["patient_rows"]},
-        {
-            "layer": "Silver",
-            "table": "encounter",
-            "rows": relationships["encounter_rows"],
-        },
-        {
-            "layer": "Silver",
-            "table": "observation",
-            "rows": relationships["observation_rows"],
-        },
-        {
-            "layer": "Silver",
-            "table": "condition",
-            "rows": relationships["condition_rows"],
-        },
-        {
-            "layer": "Silver",
-            "table": "medication",
-            "rows": relationships["medication_rows"],
-        },
-        {
-            "layer": "Silver",
-            "table": "medication_request",
-            "rows": relationships["medication_request_rows"],
-        },
-        {
-            "layer": "Silver",
-            "table": "medication_administration",
-            "rows": relationships["medication_administration_rows"],
-        },
-        {
-            "layer": "Silver",
-            "table": "medication_dispense",
-            "rows": relationships["medication_dispense_rows"],
-        },
-        {
-            "layer": "Silver",
-            "table": "medication_statement",
-            "rows": relationships["medication_statement_rows"],
-        },
-        {
-            "layer": "Silver",
-            "table": "procedure",
-            "rows": relationships["procedure_rows"],
-        },
-        {
-            "layer": "Gold",
-            "table": "encounter_summary",
-            "rows": scalar(f"select count(*) from read_parquet('{encounter}')"),
-        },
-        {
-            "layer": "Gold",
-            "table": "condition_summary",
-            "rows": scalar(f"select count(*) from read_parquet('{condition}')"),
-        },
-        {
-            "layer": "Gold",
-            "table": "vitals_daily",
-            "rows": scalar(f"select count(*) from read_parquet('{vitals}')"),
-        },
-        {
-            "layer": "Gold",
-            "table": "labs_daily",
-            "rows": scalar(f"select count(*) from read_parquet('{labs}')"),
-        },
-        {
-            "layer": "Gold",
-            "table": "medication_activity",
-            "rows": scalar(
-                f"select count(*) from read_parquet('{medication_activity}')"
-            ),
-        },
-        {
-            "layer": "Gold",
-            "table": "medication_order_fulfillment",
-            "rows": scalar(
-                f"select count(*) from read_parquet('{medication_fulfillment}')"
-            ),
-        },
-        {
-            "layer": "Gold",
-            "table": "procedure_summary",
-            "rows": scalar(f"select count(*) from read_parquet('{procedure}')"),
-        },
+        *[
+            {
+                "layer": "Silver",
+                "table": spec.dashboard_label,
+                "rows": relationships[spec.relationship_row_key],
+            }
+            for spec in SILVER_DASHBOARD_TABLES
+        ],
+        *[
+            {
+                "layer": "Gold",
+                "table": spec.dashboard_label,
+                "rows": scalar(
+                    f"select count(*) from read_parquet('{table_path(spec.name)}')"
+                ),
+            }
+            for spec in GOLD_TABLES
+        ],
     ]
 
     return {
@@ -150,11 +88,9 @@ def build_dashboard() -> dict[str, Any]:
             "encounters": relationships["encounter_rows"],
             "observations": relationships["observation_rows"],
             "conditions": relationships["condition_rows"],
-            "medication_events": (
-                relationships["medication_request_rows"]
-                + relationships["medication_administration_rows"]
-                + relationships["medication_dispense_rows"]
-                + relationships["medication_statement_rows"]
+            "medication_events": sum(
+                relationships[spec.relationship_row_key]
+                for spec in MEDICATION_EVENT_TABLES
             ),
             "procedures": relationships["procedure_rows"],
             "cloud_status": "Databricks serverless run succeeded",

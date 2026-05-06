@@ -58,13 +58,13 @@ def main() -> None:
     require_non_empty_list(data, "quality_checks")
 
     relationship = data["relationship_audit"]
-    orphan_count = (
-        relationship["observation_orphan_patient_id"]
-        + relationship["observation_orphan_encounter_id"]
-        + relationship["condition_orphan_patient_id"]
-        + relationship["condition_orphan_encounter_id"]
+    orphan_count = sum(
+        value
+        for key, value in relationship.items()
+        if "_orphan_" in key and isinstance(value, int)
     )
-    require(orphan_count == 0, "populated patient/encounter references must resolve")
+    require(relationship["passed"], "relationship audit should pass")
+    require(orphan_count == 0, "populated references must resolve")
 
     measurements = data["measurements"]
     missing_measurements = REQUIRED_MEASUREMENT_KEYS - measurements.keys()

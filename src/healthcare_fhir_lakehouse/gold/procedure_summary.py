@@ -1,15 +1,18 @@
 from __future__ import annotations
 
 from healthcare_fhir_lakehouse.common.config import ProjectConfig
-from healthcare_fhir_lakehouse.gold.writer import GoldWriteResult, write_gold_query
-from healthcare_fhir_lakehouse.silver.writer import silver_output_dir
+from healthcare_fhir_lakehouse.gold.writer import (
+    GoldWriteResult,
+    write_registered_gold_query,
+)
+from healthcare_fhir_lakehouse.silver.writer import silver_parquet_glob
 
 TABLE_NAME = "procedure_summary"
 
 
 def build_procedure_summary(config: ProjectConfig) -> GoldWriteResult:
-    procedure_glob = str(silver_output_dir(config, "procedure") / "*.parquet")
-    encounter_glob = str(silver_output_dir(config, "encounter") / "*.parquet")
+    procedure_glob = silver_parquet_glob(config, "procedure")
+    encounter_glob = silver_parquet_glob(config, "encounter")
 
     sql = """
     select
@@ -32,7 +35,7 @@ def build_procedure_summary(config: ProjectConfig) -> GoldWriteResult:
       e.class_display
     order by procedure_count desc, procedure_display
     """
-    return write_gold_query(
+    return write_registered_gold_query(
         config,
         TABLE_NAME,
         sql,

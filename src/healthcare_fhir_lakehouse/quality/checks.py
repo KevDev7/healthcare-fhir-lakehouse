@@ -11,10 +11,15 @@ import duckdb
 
 from healthcare_fhir_lakehouse.bronze.manifest import validate_bronze_output
 from healthcare_fhir_lakehouse.common.config import ProjectConfig
+from healthcare_fhir_lakehouse.common.table_registry import SILVER_REQUIRED_ID_SPECS
 from healthcare_fhir_lakehouse.gold.validation import validate_gold_tables
 from healthcare_fhir_lakehouse.gold.writer import gold_parquet_glob
 from healthcare_fhir_lakehouse.privacy.audit import build_privacy_audit
-from healthcare_fhir_lakehouse.silver.relationships import build_relationship_audit
+from healthcare_fhir_lakehouse.silver.relationships import (
+    ORPHAN_REFERENCE_SPECS,
+    RELATIONSHIP_WARNING_SPECS,
+    build_relationship_audit,
+)
 from healthcare_fhir_lakehouse.silver.validation import validate_silver_tables
 from healthcare_fhir_lakehouse.silver.writer import silver_output_dir
 
@@ -154,72 +159,30 @@ def check_silver_validation(config: ProjectConfig) -> list[QualityCheckResult]:
 
 
 def check_silver_required_ids(config: ProjectConfig) -> list[QualityCheckResult]:
-    checks = {
-        "patient_required_ids": (
-            "patient",
-            "patient_id is null",
-            "patient_id present",
-        ),
-        "encounter_required_ids": (
-            "encounter",
-            "encounter_id is null or patient_id is null",
-            "encounter_id and patient_id present",
-        ),
-        "observation_required_ids": (
-            "observation",
-            "observation_id is null or patient_id is null",
-            "observation_id and patient_id present",
-        ),
-        "condition_required_ids": (
-            "condition",
-            "condition_id is null or patient_id is null",
-            "condition_id and patient_id present",
-        ),
-        "medication_required_ids": (
-            "medication",
-            "medication_id is null",
-            "medication_id present",
-        ),
-        "medication_request_required_ids": (
-            "medication_request",
-            "medication_request_id is null or patient_id is null",
-            "medication_request_id and patient_id present",
-        ),
-        "medication_administration_required_ids": (
-            "medication_administration",
-            "medication_administration_id is null or patient_id is null",
-            "medication_administration_id and patient_id present",
-        ),
-        "medication_dispense_required_ids": (
-            "medication_dispense",
-            "medication_dispense_id is null or patient_id is null",
-            "medication_dispense_id and patient_id present",
-        ),
-        "medication_statement_required_ids": (
-            "medication_statement",
-            "medication_statement_id is null or patient_id is null",
-            "medication_statement_id and patient_id present",
-        ),
-        "procedure_required_ids": (
-            "procedure",
-            "procedure_id is null or patient_id is null or encounter_id is null",
-            "procedure_id, patient_id, and encounter_id present",
-        ),
-    }
-
     results: list[QualityCheckResult] = []
-    for check_name, (table_name, predicate, expected) in checks.items():
+    for spec in SILVER_REQUIRED_ID_SPECS:
+        check_name = f"{spec.name}_required_ids"
         count = query_scalar(
-            f"select count(*) from read_parquet(?) where {predicate}",
-            [str(silver_output_dir(config, table_name) / "*.parquet")],
+            f"select count(*) from read_parquet(?) where {spec.required_id_predicate}",
+            [str(silver_output_dir(config, spec.name) / "*.parquet")],
         )
         if count == 0:
-            results.append(
-                pass_check(check_name, "silver", count, expected, "No missing ids.")
-            )
+            results.append(pass_check(
+                check_name,
+                "silver",
+                count,
+                spec.required_id_expected,
+                "No missing ids.",
+            ))
         else:
             results.append(
-                fail_check(check_name, "silver", count, expected, "Missing ids found.")
+                fail_check(
+                    check_name,
+                    "silver",
+                    count,
+                    spec.required_id_expected,
+                    "Missing ids found.",
+                )
             )
     return results
 
@@ -240,9 +203,7 @@ def check_relationships(config: ProjectConfig) -> list[QualityCheckResult]:
         )
     else:
         orphan_count = sum(
-            value
-            for key, value in audit.to_dict().items()
-            if key.endswith("_id") and "_orphan_" in key and isinstance(value, int)
+            audit.metric(spec.metric_name) for spec in ORPHAN_REFERENCE_SPECS
         )
         results.append(
             fail_check(
@@ -254,38 +215,17 @@ def check_relationships(config: ProjectConfig) -> list[QualityCheckResult]:
             )
         )
 
-    warning_specs = [
-        (
-            "observation_missing_encounter_id",
-            audit.observation_missing_encounter_id,
-            "FHIR can support observations without encounter references.",
-        ),
-        (
-            "medication_administration_missing_encounter_id",
-            audit.medication_administration_missing_encounter_id,
-            "Some medication administrations lack encounter context in source.",
-        ),
-        (
-            "medication_administration_missing_request_id",
-            audit.medication_administration_missing_request_id,
-            "ICU and some hospital administrations are not order-linked.",
-        ),
-        (
-            "medication_dispense_missing_request_id",
-            audit.medication_dispense_missing_request_id,
-            "ED dispenses are not order-linked in this source.",
-        ),
-    ]
-    for check_name, observed, details in warning_specs:
+    for spec in RELATIONSHIP_WARNING_SPECS:
+        observed = audit.metric(spec.metric_name)
         if observed <= 0:
             continue
         results.append(
             warn_check(
-                check_name,
+                spec.metric_name,
                 "relationships",
                 observed,
                 "reported optional coverage gap",
-                details,
+                spec.warning_details or "",
             )
         )
     return results

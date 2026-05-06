@@ -16,11 +16,10 @@ from healthcare_fhir_lakehouse.silver.writer import (
     SilverWriteResult,
     lineage_columns,
     silver_output_dir,
-    write_silver_table,
+    write_registered_silver_table,
 )
 
 MEDICATION_REQUEST_TABLE = "medication_request"
-MEDICATION_REQUEST_RESOURCE_TYPE = "MedicationRequest"
 MedicationLookup = dict[str, dict[str, str | None]]
 
 
@@ -109,16 +108,14 @@ def build_medication_request_table(config: ProjectConfig) -> SilverWriteResult:
     def transform(resource: dict[str, Any], bronze_record: dict[str, Any]) -> dict:
         return transform_medication_request(resource, bronze_record, medication_lookup)
 
-    return write_silver_table(
+    return write_registered_silver_table(
         config,
         MEDICATION_REQUEST_TABLE,
-        MEDICATION_REQUEST_RESOURCE_TYPE,
         transform,
     )
 
 
 __all__ = [
-    "MEDICATION_REQUEST_RESOURCE_TYPE",
     "MEDICATION_REQUEST_TABLE",
     "MedicationLookup",
     "build_medication_lookup",
