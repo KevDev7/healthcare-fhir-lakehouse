@@ -12,20 +12,20 @@ medications, specimens, locations, and organization metadata.
 
 ---
 
-## Current Implementation Status
+## Implementation Status
 
-The repository currently contains documentation, the downloaded demo dataset, a
-local Python project foundation, source profiling utilities, a local Bronze
-Parquet ingestion layer, core Silver clinical tables, FHIR relationship auditing,
-privacy validation, the first Gold analytics tables, and consolidated data
-quality reporting. A local pipeline runner now executes the full flow and writes
-a run manifest.
+The repository contains a local Python implementation with source profiling,
+Bronze Parquet ingestion, core Silver clinical tables, FHIR relationship
+auditing, privacy validation, Gold analytics tables, and consolidated data
+quality reporting. A local pipeline runner executes the full flow and writes a
+run manifest.
 
-Milestone 10 also ports the core pipeline to Databricks/Spark/Delta. The
+The project also includes a Databricks/Spark/Delta implementation. The
 Databricks version has run successfully on serverless compute and writes Bronze,
 Silver, Gold, and audit Delta tables in Unity Catalog.
 
-The architecture below is the intended implementation target.
+The sections below describe the implemented architecture and its extension
+boundaries.
 
 ---
 
@@ -98,7 +98,7 @@ Local resource families:
 
 Preserve the source data exactly as received while adding operational metadata.
 
-### Recommended Table Shape
+### Table Shape
 
 Implemented local table: `output/bronze/fhir_resources/*.parquet`
 
@@ -159,7 +159,7 @@ output/silver/
   condition/
 ```
 
-Planned later extensions:
+Extension opportunities:
 
 * `silver_procedure`
 * `silver_medication`
@@ -226,7 +226,7 @@ references should resolve.
 Prevent analytics outputs from accidentally exposing fields that are unsuitable
 for downstream sharing or presentation.
 
-### What It Should Check
+### Validation Checks
 
 Implemented checks:
 
@@ -245,9 +245,10 @@ Implemented local artifacts:
 * `output/privacy/privacy_audit.json`
 * `documentation/privacy_audit.md`
 
-The current audit treats Silver findings as expected governance inventory rather
+The audit treats Silver findings as expected governance inventory rather
 than publish-blocking failures. Bronze and Silver preserve identifiers for
-lineage; future Gold validation should enforce stricter publishable-output rules.
+lineage; Gold validation enforces stricter publishable-output rules for
+analytics tables.
 
 ### Scope Boundary
 
@@ -268,7 +269,7 @@ tables.
 
 Create analytics-ready tables from validated Silver data.
 
-### Recommended Gold Tables
+### Gold Tables
 
 Implemented local outputs:
 
@@ -277,7 +278,7 @@ Implemented local outputs:
 * `output/gold/vitals_daily/*.parquet`
 * `output/gold/labs_daily/*.parquet`
 
-Planned later outputs:
+Extension opportunities:
 
 * `gold_patient_timeline`
 * `gold_medication_activity`
@@ -346,7 +347,7 @@ Current steps:
 
 The local runner is intentionally linear and stops on the first failed step.
 Scheduling, backfills, incremental processing, and cloud execution belong to
-later milestones.
+separate production orchestration work.
 
 ### Example Questions Supported
 
@@ -359,20 +360,22 @@ later milestones.
 
 ---
 
-## Implementation Strategy
+## Design Rationale
 
-Recommended order:
+Layering strategy:
 
-1. Use the local Bronze ingestion from `.ndjson.gz`.
-2. Use the core Silver Patient, Encounter, Observation, and Condition tables.
-3. Add privacy validation checks against Silver and Gold schemas.
-4. Build Gold encounter summaries and vitals/labs aggregates.
-5. Add medication and procedure tables.
-6. Port the pipeline to Spark/Delta/Databricks if production-style execution is
-   desired.
+1. Preserve compressed FHIR NDJSON in a raw Bronze table with lineage.
+2. Normalize high-value Patient, Encounter, Observation, and Condition resources
+   into Silver tables.
+3. Validate Silver relationships and privacy-sensitive fields before analytics
+   modeling.
+4. Build Gold encounter summaries and vitals/labs aggregates with safer
+   pseudonymous keys.
+5. Run the same core lakehouse pattern in Databricks/Spark/Delta for cloud
+   execution evidence.
 
-This order proves the end-to-end architecture quickly while keeping the first
-slice grounded in the highest-value, highest-volume resources.
+This order demonstrates the end-to-end architecture while keeping the core
+implementation grounded in the highest-value, highest-volume resources.
 
 ## Cloud Lakehouse Implementation
 
@@ -420,8 +423,8 @@ Cloud run evidence is captured in `documentation/cloud_run_evidence.md`.
 
 ## Summary
 
-The planned architecture is feasible. The dataset is well matched to a healthcare
-lakehouse demo because it contains realistic linked FHIR resources across
-patients, encounters, labs, vitals, diagnoses, procedures, medications, and ED/ICU
-events. The main adjustment is scope: describe the project as a demo-scale,
-privacy-aware lakehouse rather than a production HIPAA compliance system.
+The architecture is feasible for a demo-scale healthcare lakehouse. The dataset
+contains realistic linked FHIR resources across patients, encounters, labs,
+vitals, diagnoses, procedures, medications, and ED/ICU events. The appropriate
+scope is a privacy-aware analytics lakehouse demonstration, not a production
+HIPAA compliance system.

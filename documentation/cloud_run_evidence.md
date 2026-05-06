@@ -131,14 +131,14 @@ FHIR data. Populated patient and encounter references resolve with zero orphans.
 
 `databricks bundle validate` succeeds for `databricks.yml`.
 
-`databricks bundle deploy` was blocked by the local Databricks CLI Terraform
-download path:
+The validated cloud run used the Databricks Jobs API/CLI path because the local
+Databricks CLI Terraform download path returned:
 
 ```text
 unable to verify checksums signature: openpgp: key expired
 ```
 
-The successful run used the Databricks Jobs API/CLI to create the same serverless
-job and execute the same source-controlled Spark pipeline from a managed Unity
-Catalog volume. The generated `.databricks/` payload files are intentionally
-ignored and are not part of the portfolio repository.
+The run created the same serverless job and executed the same source-controlled
+Spark pipeline from a managed Unity Catalog volume. The generated `.databricks/`
+payload files are intentionally ignored and are not part of the portfolio
+repository.

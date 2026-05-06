@@ -22,7 +22,7 @@ Cloud validation:
 
 * Databricks CLI
 * Authenticated CLI profile with access to the target workspace
-* Existing Unity Catalog schemas and managed volume from Milestone 10
+* Existing Unity Catalog schemas and managed volume for the project namespace
 * Databricks serverless Jobs support
 
 ## Local Setup
@@ -123,7 +123,7 @@ Expected result:
 Validation OK!
 ```
 
-Cloud objects created during Milestone 10:
+Cloud objects used by the Databricks implementation:
 
 ```text
 catalog: workspace
@@ -168,15 +168,15 @@ Expected cloud data quality result:
 10 passing checks, 0 failing checks
 ```
 
-## Known Cloud Note
+## Cloud Deployment Note
 
 `databricks bundle validate` succeeds, but the first successful run used a Jobs
-API/CLI workaround because `databricks bundle deploy` failed locally while
+API/CLI deployment path because `databricks bundle deploy` failed locally while
 downloading Terraform with an expired OpenPGP signing key.
 
-The workaround does not hide project logic. The source-controlled files still
-contain the Spark pipeline and intended bundle definition. Databricks contains
-runtime data, generated tables, logs, and job runs.
+This does not hide project logic. The source-controlled files contain the Spark
+pipeline and bundle definition. Databricks contains runtime data, generated
+tables, logs, and job runs.
 
 ## Cleanup
 

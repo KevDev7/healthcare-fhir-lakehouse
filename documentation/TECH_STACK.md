@@ -2,16 +2,17 @@
 
 ## Overview
 
-This project can be implemented with a production-style lakehouse stack or a
-lighter local-first stack. The source data is small enough for local development
-but realistic enough to model the same layers used in Spark/Delta pipelines.
+This project uses a local-first Python stack for fast reproducibility and a
+Databricks/Spark/Delta implementation for cloud lakehouse evidence. The source
+data is small enough for local development but realistic enough to model the
+same layers used in Spark/Delta pipelines.
 
 ---
 
-## Recommended Development Path
+## Development Path
 
-Start locally, then port to Databricks/Spark once the transformation logic is
-clear.
+The implementation starts locally, then runs the same lakehouse pattern on
+Databricks/Spark once the transformation logic is proven.
 
 Local-first development is useful because the demo dataset is only about 50 MB
 compressed and contains 100 patients. That is large enough to exercise nested
@@ -62,7 +63,7 @@ Good fit for:
 
 ### Databricks / Apache Spark
 
-Target compute engine for a production-like lakehouse implementation.
+Cloud compute engine for the production-style lakehouse implementation.
 
 Good fit for:
 
@@ -76,7 +77,8 @@ matches common healthcare data platform tooling.
 
 ### Delta Lake
 
-Recommended table format for Bronze, Silver, and Gold layers.
+Table format for Bronze, Silver, and Gold layers in the Databricks
+implementation.
 
 Good fit for:
 
@@ -87,7 +89,7 @@ Good fit for:
 
 ### Amazon S3
 
-Recommended cloud object storage for a production-style setup.
+Common cloud object storage choice for a production-style setup.
 
 Good fit for:
 
@@ -125,7 +127,7 @@ tables. S3 remains the likely next step for a more production-like deployment.
 
 ### Intermediate and Output
 
-Recommended:
+Implemented formats:
 
 * Delta tables in Databricks
 * Parquet files locally
@@ -194,10 +196,10 @@ Databricks:
 
 ## Privacy Tooling
 
-The first implementation should use explicit, testable validation rules rather
-than heavy NLP.
+The implementation uses explicit, testable validation rules rather than heavy
+NLP.
 
-Recommended first checks:
+Implemented and extensible checks:
 
 * Identifier-column detection
 * Pattern checks for email, phone, SSN-like values, IP addresses, and URLs
@@ -205,7 +207,7 @@ Recommended first checks:
 * Age-over-89 grouping checks
 * Allowlist/denylist checks for columns permitted in analytics tables
 
-Future optional tools:
+Extension options:
 
 * Microsoft Presidio for named-entity PHI detection
 * Great Expectations or Soda for data quality rules
@@ -218,7 +220,7 @@ Future optional tools:
 The local project uses a `make pipeline` command and Typer CLI runner. The cloud
 project now uses a Databricks serverless job.
 
-Good later options:
+Production orchestration options:
 
 * Databricks Workflows
 * Apache Airflow
@@ -234,7 +236,7 @@ For this portfolio project, the current progression is:
 
 ## Testing
 
-Recommended tests:
+Validation coverage:
 
 * Bronze row counts match source NDJSON line counts
 * Silver tables extract expected patient, encounter, code, value, unit, and time
@@ -248,8 +250,8 @@ Recommended tests:
 
 ## Summary
 
-The original stack choice of Databricks, Spark, S3, and Delta Lake is reasonable
-for the intended lakehouse architecture. For this specific 100-patient demo
-dataset, a local Python/DuckDB/Parquet implementation is the fastest way to prove
-the design, and the Databricks/Spark/Delta port demonstrates that the same
-concepts can run on a healthcare-relevant cloud lakehouse platform.
+The stack choice of Databricks, Spark, S3-style object storage, and Delta Lake is
+reasonable for the lakehouse architecture. For this 100-patient demo dataset,
+the local Python/DuckDB/Parquet implementation proves the design quickly, and
+the Databricks/Spark/Delta port demonstrates that the same concepts run on a
+healthcare-relevant cloud lakehouse platform.

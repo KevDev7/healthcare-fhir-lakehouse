@@ -25,4 +25,4 @@ Steps completed: 7.
 * This is a local linear pipeline runner.
 * The pipeline stops on the first failed step.
 * Cloud scheduling, incremental processing, and backfills are intentionally left
-  for later milestones.
+  to production orchestration extensions.

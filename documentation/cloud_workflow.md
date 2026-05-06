@@ -2,7 +2,7 @@
 
 ## Databricks Job
 
-Milestone 10 runs the cloud lakehouse as a Databricks serverless job.
+The cloud lakehouse runs as a Databricks serverless job.
 
 ```text
 job name: healthcare_fhir_lakehouse_pipeline
@@ -56,8 +56,8 @@ validation succeeds:
 make cloud-validate
 ```
 
-The first successful run used a manual Jobs API/CLI job reset instead of bundle
-deployment because `databricks bundle deploy` failed while downloading Terraform
-with an expired OpenPGP signing key. The workaround does not change the project
-architecture: GitHub still stores the implementation and bundle definition, while
-Databricks stores runtime objects and generated Delta tables.
+The validated run used the Databricks Jobs API/CLI job path because
+`databricks bundle deploy` failed locally while downloading Terraform with an
+expired OpenPGP signing key. This does not change the project architecture:
+GitHub stores the implementation and bundle definition, while Databricks stores
+runtime objects and generated Delta tables.

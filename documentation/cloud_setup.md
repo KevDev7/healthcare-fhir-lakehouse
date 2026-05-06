@@ -1,9 +1,9 @@
 # Cloud Setup
 
-## Target
+## Cloud Target
 
-Milestone 10 uses the existing Databricks workspace as the cloud runtime for the
-healthcare FHIR lakehouse.
+The project uses Databricks as the cloud runtime for the healthcare FHIR
+lakehouse.
 
 The GitHub repository remains the source of truth. Databricks is the deployment
 and execution target.
@@ -24,11 +24,9 @@ Confirmed through Databricks CLI:
 * The workspace supports serverless jobs. Classic job-cluster creation is not
   available in this workspace.
 
-No Databricks MCP connector is required for this milestone.
-
 ## Project Namespace
 
-Preferred cloud namespace from the initial plan:
+Production-style namespace:
 
 ```text
 catalog: healthcare_fhir_lakehouse
@@ -42,7 +40,7 @@ volume:
   healthcare_fhir_lakehouse.raw.fhir_demo
 ```
 
-Actual implemented namespace:
+Implemented demo namespace:
 
 ```text
 catalog: workspace
@@ -56,8 +54,8 @@ volume:
   workspace.healthcare_fhir_lakehouse_raw.fhir_demo
 ```
 
-The dedicated catalog was not used because catalog creation failed without a
-configured metastore storage root. The `workspace` catalog fallback is still a
+The implemented demo uses the existing `workspace` catalog because the metastore
+does not expose a storage root for a dedicated project catalog. This is still a
 real Unity Catalog layout and keeps the project isolated with prefixed schemas.
 
 ## Source Control Strategy
@@ -110,7 +108,7 @@ evidence, not scale testing.
 
 ## Cost Boundary
 
-This milestone can start compute and may incur Databricks/cloud charges.
+Cloud runs can start compute and may incur Databricks/cloud charges.
 
 Keep compute usage limited to:
 
@@ -118,9 +116,9 @@ Keep compute usage limited to:
 * one successful end-to-end demo run
 * short troubleshooting runs if needed
 
-## Setup Order
+## Setup Flow
 
-1. Create or confirm the project catalog and schemas.
+1. Create or confirm the project schemas.
 2. Create a managed Unity Catalog volume for raw FHIR files.
 3. Upload source `.ndjson.gz` files into the managed volume.
 4. Add source-controlled Spark implementation files.
@@ -130,16 +128,16 @@ Keep compute usage limited to:
 8. Run the cloud workflow.
 9. Capture cloud run evidence in documentation.
 
-## Bundle Status
+## Deployment Path
 
 `databricks bundle validate` succeeds against the local `databricks.yml`.
 
-`databricks bundle deploy` was not used for the first successful run because the
-Databricks CLI attempted to download Terraform and failed signature validation
-with an expired OpenPGP key. The workaround was to create the job through the
-Databricks Jobs API/CLI and run the same source-controlled Spark script from a
-Unity Catalog volume.
+The cloud job is represented in source control by `databricks.yml`. The current
+validated run used the Databricks Jobs API/CLI to create the job and run the same
+source-controlled Spark script from a Unity Catalog volume because the local
+Databricks CLI Terraform download path failed signature validation with an
+expired OpenPGP key.
 
-The bundle remains useful as the source-controlled target definition. Once the
-CLI/Terraform signature issue is resolved, deployment can move from the manual
-job reset workaround to `databricks bundle deploy`.
+The bundle remains the source-controlled deployment definition. When the local
+CLI/Terraform signature issue is resolved, the deployment path can use
+`databricks bundle deploy` directly.

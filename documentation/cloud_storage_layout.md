@@ -2,10 +2,10 @@
 
 ## Selected Layout
 
-Milestone 10 uses Unity Catalog managed storage in the existing Databricks
+The Databricks implementation uses Unity Catalog managed storage in the existing
 workspace.
 
-The initial preferred namespace was a dedicated catalog:
+Production-style namespace:
 
 ```text
 catalog: healthcare_fhir_lakehouse
@@ -17,7 +17,7 @@ schemas:
   audit
 ```
 
-Actual implemented namespace:
+Implemented demo namespace:
 
 ```text
 catalog: workspace
@@ -29,8 +29,8 @@ schemas:
   healthcare_fhir_lakehouse_audit
 ```
 
-The fallback was necessary because dedicated catalog creation failed without a
-configured metastore storage root.
+The implemented demo uses the existing `workspace` catalog because the metastore
+does not expose a storage root for a dedicated project catalog.
 
 ## Raw Volume
 
