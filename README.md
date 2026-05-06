@@ -245,6 +245,7 @@ Start with:
 * `documentation/portfolio_brief.md` for the project signal summary
 * `documentation/runbook.md` for reproduction steps
 * `documentation/ARCHITECTURE.md` for system design
+* `documentation/table_lineage.md` for the Mermaid schema and lineage diagram
 * `documentation/TECH_STACK.md` for stack decisions
 * `documentation/source_data_profile.md` for dataset profiling
 * `documentation/data_quality_report.md` for quality checks
