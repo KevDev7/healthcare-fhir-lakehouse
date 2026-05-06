@@ -63,8 +63,10 @@ def test_config_command_prints_resolved_paths() -> None:
     assert "output_dir=" in result.stdout
 
 
-def test_doctor_command_passes_for_current_scaffold() -> None:
-    result = runner.invoke(app, ["doctor"])
+def test_doctor_command_passes_for_current_scaffold(tmp_path: Path) -> None:
+    config_path = write_test_config(tmp_path)
+
+    result = runner.invoke(app, ["doctor", "--config", str(config_path)])
 
     assert result.exit_code == 0
     assert "Project check passed." in result.stdout
