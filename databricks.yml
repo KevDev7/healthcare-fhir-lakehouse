@@ -1,0 +1,65 @@
+bundle:
+  name: healthcare_fhir_lakehouse
+
+sync:
+  exclude:
+    - .venv/**
+    - .pytest_cache/**
+    - .ruff_cache/**
+    - __pycache__/**
+    - output/**
+    - mimic-iv-clinical-database-demo-on-fhir-2.1.0/**
+
+variables:
+  catalog:
+    default: workspace
+  raw_schema:
+    default: healthcare_fhir_lakehouse_raw
+  bronze_schema:
+    default: healthcare_fhir_lakehouse_bronze
+  silver_schema:
+    default: healthcare_fhir_lakehouse_silver
+  gold_schema:
+    default: healthcare_fhir_lakehouse_gold
+  audit_schema:
+    default: healthcare_fhir_lakehouse_audit
+  raw_volume:
+    default: fhir_demo
+  raw_subdir:
+    default: fhir
+
+resources:
+  jobs:
+    healthcare_fhir_lakehouse_pipeline:
+      name: healthcare_fhir_lakehouse_pipeline
+      tasks:
+        - task_key: run_cloud_pipeline
+          environment_key: serverless_default
+          spark_python_task:
+            python_file: ./src/healthcare_fhir_lakehouse_spark/cloud_pipeline.py
+            parameters:
+              - --catalog
+              - ${var.catalog}
+              - --raw-schema
+              - ${var.raw_schema}
+              - --bronze-schema
+              - ${var.bronze_schema}
+              - --silver-schema
+              - ${var.silver_schema}
+              - --gold-schema
+              - ${var.gold_schema}
+              - --audit-schema
+              - ${var.audit_schema}
+              - --raw-volume
+              - ${var.raw_volume}
+              - --raw-subdir
+              - ${var.raw_subdir}
+      environments:
+        - environment_key: serverless_default
+          spec:
+            environment_version: "2"
+
+targets:
+  dev:
+    default: true
+    mode: development

@@ -1,0 +1,8 @@
+[paths]
+source_dataset_dir = "mimic-iv-clinical-database-demo-on-fhir-2.1.0"
+source_fhir_dir = "mimic-iv-clinical-database-demo-on-fhir-2.1.0/fhir"
+output_dir = "output"
+
+[dataset]
+name = "mimic-iv-clinical-database-demo-on-fhir"
+version = "2.1.0"
