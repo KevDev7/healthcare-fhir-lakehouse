@@ -33,13 +33,17 @@ function displayLabel(label) {
 
 function renderMetrics(data) {
   const metrics = [
-    ["FHIR resources", data.meta.source_resources, "Bronze input volume"],
-    ["Patients", data.meta.patients, "Silver patient rows"],
-    ["Encounters", data.meta.encounters, "Silver encounter rows"],
-    ["Observations", data.meta.observations, "Silver observation rows"],
-    ["Conditions", data.meta.conditions, "Silver condition rows"],
-    ["Medication events", data.meta.medication_events, "Requests, admins, dispenses, statements"],
-    ["Procedures", data.meta.procedures, "Silver procedure rows"],
+    ["FHIR resources", data.meta.source_resources, "Raw EHR-style input"],
+    ["Patients", data.meta.patients, "Normalized patient records"],
+    ["Encounters", data.meta.encounters, "Normalized encounter records"],
+    ["Observations", data.meta.observations, "Normalized clinical observations"],
+    ["Conditions", data.meta.conditions, "Diagnosis and condition records"],
+    [
+      "Medication events",
+      data.meta.medication_events,
+      "Orders, administrations, dispenses, statements",
+    ],
+    ["Procedures", data.meta.procedures, "Normalized procedure records"],
     [
       "Quality checks",
       data.quality_checks.length,
@@ -201,7 +205,7 @@ function renderQuality(data) {
     .reduce((total, [, value]) => total + value, 0);
 
   const auditHeroRows = [
-    ["Orphan references", orphanReferences, "populated references"],
+    ["Orphan references", orphanReferences, "clinical references"],
     [
       "Missing encounter context",
       relationship.observation_missing_encounter_id,
@@ -232,19 +236,19 @@ function renderQuality(data) {
   );
 
   const auditRows = [
-    ["Patient rows", relationship.patient_rows],
-    ["Encounter rows", relationship.encounter_rows],
-    ["Observation rows", relationship.observation_rows],
-    ["Condition rows", relationship.condition_rows],
-    ["Medication request rows", relationship.medication_request_rows],
-    ["Medication administration rows", relationship.medication_administration_rows],
-    ["Medication dispense rows", relationship.medication_dispense_rows],
-    ["Medication statement rows", relationship.medication_statement_rows],
-    ["Procedure rows", relationship.procedure_rows],
-    ["Observation orphan patients", relationship.observation_orphan_patient_id],
-    ["Observation orphan encounters", relationship.observation_orphan_encounter_id],
-    ["Condition orphan patients", relationship.condition_orphan_patient_id],
-    ["Condition orphan encounters", relationship.condition_orphan_encounter_id],
+    ["Patients", relationship.patient_rows],
+    ["Encounters", relationship.encounter_rows],
+    ["Observations", relationship.observation_rows],
+    ["Conditions", relationship.condition_rows],
+    ["Medication requests", relationship.medication_request_rows],
+    ["Medication administrations", relationship.medication_administration_rows],
+    ["Medication dispenses", relationship.medication_dispense_rows],
+    ["Medication statements", relationship.medication_statement_rows],
+    ["Procedures", relationship.procedure_rows],
+    ["Observation orphan patient refs", relationship.observation_orphan_patient_id],
+    ["Observation orphan encounter refs", relationship.observation_orphan_encounter_id],
+    ["Condition orphan patient refs", relationship.condition_orphan_patient_id],
+    ["Condition orphan encounter refs", relationship.condition_orphan_encounter_id],
   ];
 
   const auditList = el("div", "audit-list");

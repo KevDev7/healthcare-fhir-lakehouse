@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Healthcare FHIR Lakehouse Dashboard</title>
+    <title>Healthcare FHIR Clinical Analytics Dashboard</title>
     <link rel="icon" href="data:," />
     <link rel="stylesheet" href="./assets/styles.css" />
   </head>
@@ -11,7 +11,7 @@
     <header class="topbar">
       <div>
         <p class="eyebrow">Healthcare FHIR Lakehouse</p>
-        <h1>Lakehouse Quality And Analytics Dashboard</h1>
+        <h1>Clinical Data Quality And Analytics Dashboard</h1>
       </div>
       <a class="repo-link" href="https://github.com/KevDev7/healthcare-fhir-lakehouse">Repository</a>
     </header>
@@ -33,9 +33,9 @@
             <h2 id="dataset-title">MIMIC-IV Demo on FHIR</h2>
           </div>
           <p class="summary-copy">
-            FHIR resources transformed into Bronze, Silver, Gold, and audit
-            tables with local Python pipelines and Databricks Spark/Delta
-            execution.
+            EHR-style FHIR resources normalized into clinical analytics, data
+            quality, privacy, and audit outputs with local Python pipelines and
+            Databricks Spark/Delta execution.
           </p>
           <div class="status-row">
             <span id="quality-status" class="status-pill">Loading</span>
@@ -57,8 +57,11 @@
 
       <section class="view active" id="overview">
         <div class="section-header">
-          <h2>Lakehouse Tables</h2>
-          <p>Row counts across the generated Bronze, Silver, and Gold layers.</p>
+          <h2>Data Model Coverage</h2>
+          <p>
+            Published row counts across raw FHIR inputs, normalized clinical
+            tables, and analytics-ready outputs.
+          </p>
         </div>
         <div id="table-counts" class="chart-grid"></div>
       </section>
@@ -113,7 +116,7 @@
       <section class="view" id="measurements">
         <div class="section-header">
           <h2>Vitals And Labs</h2>
-          <p>Gold measurement volumes and indexed event-day trends.</p>
+          <p>Measurement volumes and indexed clinical event-day trends.</p>
         </div>
         <div class="chart-grid two">
           <article class="chart-panel">
@@ -183,7 +186,10 @@
       <section class="view" id="quality">
         <div class="section-header">
           <h2>Audit And Quality</h2>
-          <p>Reference integrity, privacy checks, and consolidated data quality results.</p>
+          <p>
+            FHIR reference integrity, privacy validation, and consolidated data
+            quality results.
+          </p>
         </div>
         <div class="quality-layout">
           <article class="chart-panel">
@@ -191,7 +197,8 @@
             <div id="audit-hero" class="audit-hero-grid"></div>
             <p class="panel-note">
               Missing Observation encounter references are tracked as a FHIR-valid
-              coverage gap. Populated patient and encounter references resolve.
+              coverage gap. Populated clinical references resolve, and
+              PHI/identifier risk patterns are handled in privacy validation.
             </p>
             <div id="relationship-summary" class="audit-list"></div>
           </article>
@@ -209,9 +216,9 @@
           records are published in this dashboard.
         </div>
         <div class="footer-links">
-          <a href="../documentation/cloud_run_evidence.md">Cloud evidence</a>
-          <a href="../documentation/privacy_audit.md">Privacy audit</a>
-          <a href="../documentation/data_quality_report.md">Quality report</a>
+          <a href="https://github.com/KevDev7/healthcare-fhir-lakehouse/blob/main/documentation/cloud_run_evidence.md">Cloud evidence</a>
+          <a href="https://github.com/KevDev7/healthcare-fhir-lakehouse/blob/main/documentation/privacy_audit.md">Privacy audit</a>
+          <a href="https://github.com/KevDev7/healthcare-fhir-lakehouse/blob/main/documentation/data_quality_report.md">Quality report</a>
         </div>
       </footer>
     </main>
